@@ -6,8 +6,6 @@ How to run locally HealthcareManagement
 
     1.2 Make sure the env password matches yours
 
-![alt text](image.png)
-
 2. Open Package Manager Console (View->Other Windows->Package Manager Console)
 
 3. Type the following: Update-Database
