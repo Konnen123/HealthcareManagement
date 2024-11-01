@@ -1,0 +1,87 @@
+# .NET Core & .NET Framework
+## Ignore build outputs
+bin/
+obj/
+out/
+
+## Ignore env files
+
+.env
+
+## Ignore NuGet Packages
+*.nupkg
+*.snupkg
+*.nuspec
+# Uncomment if you have NuGet package restore enabled.
+# packages/
+# If using PackageReference, nuget packages will be downloaded to the global-packages folder:
+# %userprofile%\.nuget\packages\
+# Uncomment if necessary, but generally it will be ignored globally
+# .nuget/
+
+## Ignore Visual Studio and Rider specific files
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+## Ignore build results
+*.exe
+*.dll
+*.log
+*.sql
+*.pdb
+*.cache
+*.diff
+*.patch
+*.csv
+*.config
+
+# Include if running tests
+TestResults/
+
+## Ignore database files
+*.mdf
+*.ldf
+
+## Ignore Azure build config
+.vscode/
+.vs/
+.vscode-server/
+
+## Ignore Rider specific settings
+.idea/
+
+# Ignore ASP.NET specific folders
+wwwroot/
+
+# Ignore Dotnet Global tools
+.dotnet_tools/
+
+# Ignore other compiled output
+**/*.db
+**/*.db-shm
+**/*.db-wal
+*.vscodeignore
+
+# Ignore Publish folder
+publish/
+
+# Ignore JetBrains Rider IDE project folder
+.idea/
+
+# Ignore temporary files from IDE
+*.tmp
+*.swp
+*~
+
+## Ignore Coverage Output
+coverage/
+.coverage
+*.coveragexml
+*.tddtestconfig
