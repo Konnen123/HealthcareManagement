@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
+using Application.Utils;
 
 namespace Application
 {
@@ -9,6 +10,7 @@ namespace Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(MappingProfile));
             services.AddMediatR(
                 cfg =>
                 {

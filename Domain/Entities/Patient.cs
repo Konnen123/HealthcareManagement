@@ -1,7 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class Pacient : User
+    public class Patient : User
     {
-
     }
 }

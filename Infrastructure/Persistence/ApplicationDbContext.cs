@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Staff> Staffs { get; set; }
-        public DbSet<Pacient> Pacients { get; set; }
+        public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<SuperAdmin> SuperAdmins { get; set; }
@@ -33,7 +33,7 @@ namespace Infrastructure.Persistence
             var password = configuration["ConnectionStrings:Password"];
             var database = configuration["ConnectionStrings:Database"];
 
-            var connectionString = $"Host={host};Port={port};Username={username};Password={password};Database={database}";
+            var connectionString = $"Host={host};Port={port};Username={username};Password={password};Database={database};Include Error Detail=true";
             optionsBuilder.UseNpgsql(connectionString);
         }
 
@@ -61,10 +61,10 @@ namespace Infrastructure.Persistence
                     entity.Property(entity => entity.CreatedAt).IsRequired();
                 }
             );
-            modelBuilder.Entity<Pacient>(
+            modelBuilder.Entity<Patient>(
                  entity =>
                  {
-                     entity.ToTable("pacients");
+                     entity.ToTable("patients");
                      entity.HasBaseType<User>();
                  });
             modelBuilder.Entity<Staff>(
@@ -106,10 +106,17 @@ namespace Infrastructure.Persistence
                     entity.Property(entity => entity.Date).IsRequired();
                     entity.Property(entity => entity.StartTime).IsRequired();
                     entity.Property(entity => entity.EndTime).IsRequired();
+                    
+                    entity.HasOne(e => e.Patient)
+                        .WithMany()
+                        .HasForeignKey(e => e.PatientId)
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    entity.HasOne(e => e.Doctor)
+                        .WithMany()
+                        .HasForeignKey(e => e.DoctorId)
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
-
-            
-
         }
     }
 }
