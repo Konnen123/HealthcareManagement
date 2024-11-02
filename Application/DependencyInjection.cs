@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 using Application.Utils;
+using FluentValidation;
 
 namespace Application
 {
@@ -15,7 +16,9 @@ namespace Application
                 cfg =>
                 {
                     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
                 });
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             return services;
         }

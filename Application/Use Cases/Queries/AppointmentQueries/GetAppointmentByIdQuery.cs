@@ -1,11 +1,10 @@
 using Application.DTOs;
-using Domain.Entities;
+using Application.Use_Cases.Commands;
 using Domain.Utils;
 using MediatR;
 
 namespace Application.Use_Cases.Queries.AppointmentQueries;
 
-public class GetAppointmentByIdQuery : IRequest<Result<AppointmentDto>>
+public class GetAppointmentByIdQuery : IdCommand, IRequest<Result<AppointmentDto>>
 {
-    public Guid Id { get; set; }
 }
