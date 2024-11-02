@@ -11,4 +11,5 @@ public static class AppointmentErrors
     public static Error CancelFailed(string description) => new Error("Appointment.CancelFailed", description);
     public static Error UpdateFailed(string description) => new Error("Appointment.UpdateFailed", description);
     public static Error DeleteFailed(string description) => new Error("Appointment.DeleteFailed", description);
+    public static Error AlreadyCanceled(string description) => new Error("Appointment.AlreadyCanceled", description);
 }

@@ -31,6 +31,11 @@ public class CancelAppointmentCommandHandler : IRequestHandler<CancelAppointment
         {
             return Result<Unit>.Failure(AppointmentErrors.NotAllowedToCancel($"Appointment that is tried to be canceled was made by user with id {resultObject.Value.PatientId} and patient trying to cancel it has id: {command.PatientId}"));
         }
+        
+        if(resultObject.Value.CanceledAt.HasValue)
+        {
+            return Result<Unit>.Failure(AppointmentErrors.AlreadyCanceled("Appointment is already canceled"));
+        }
 
         var secondResult = await _repository.CancelAsync(command.AppointmentId, command.CancellationReason);
         return secondResult.Match<Result<Unit>>(

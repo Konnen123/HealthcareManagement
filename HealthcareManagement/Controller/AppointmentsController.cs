@@ -48,13 +48,13 @@ namespace HealthcareManagement.Controller
         }
 
         [HttpPatch("Cancel")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CancelAppointment(CancelAppointmentCommand command)
         {
             var resultObject = await mediator.Send(command);
             return resultObject.Match<IActionResult>(
-                onSuccess: unit => CreatedAtAction(nameof(GetAppointmentById), new {id = command.AppointmentId}, command.AppointmentId),
+                onSuccess: unit => NoContent(),
                 onFailure: error => BadRequest(error) 
             );
         }
