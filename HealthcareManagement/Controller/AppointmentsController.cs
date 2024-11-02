@@ -1,4 +1,5 @@
 ﻿using Application.Use_Cases.Commands;
+using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Queries.AppointmentQueries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -55,6 +56,32 @@ namespace HealthcareManagement.Controller
             return resultObject.Match<IActionResult>(
                 onSuccess: unit => CreatedAtAction(nameof(GetAppointmentById), new {id = command.AppointmentId}, command.AppointmentId),
                 onFailure: error => BadRequest(error) 
+            );
+        }
+
+
+        [HttpPatch("Update")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateAppointment([FromBody] UpdateAppointmentCommand command)
+        {
+            var resultObject = await mediator.Send(command);
+            return resultObject.Match<IActionResult>(
+                onSuccess: unit => NoContent(),
+                onFailure: error => BadRequest(error)
+            );
+        }
+
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteAppointment(Guid id)
+        {
+            var resultObject = await mediator.Send(new DeleteAppointmentCommand { AppointmentId = id });
+            return resultObject.Match<IActionResult>(
+                onSuccess: unit => Ok(),
+                onFailure: error => BadRequest(error)
             );
         }
     }

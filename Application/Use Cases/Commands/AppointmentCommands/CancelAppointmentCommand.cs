@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Use_Cases.Commands;
 
-public class CancelAppointmentCommand :CancelIdCommand, IRequest<Result<Unit>>
+public class CancelAppointmentCommand : CancelIdCommand, IRequest<Result<Unit>>
 {
     public string CancellationReason { get; set; }
 }

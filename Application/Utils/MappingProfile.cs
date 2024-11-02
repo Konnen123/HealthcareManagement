@@ -1,5 +1,6 @@
 using Application.DTOs;
 using Application.Use_Cases.Commands;
+using Application.Use_Cases.Commands.AppointmentCommands;
 using AutoMapper;
 using Domain.Entities;
 
@@ -11,6 +12,6 @@ public class MappingProfile : Profile
     {
         CreateMap<Appointment, AppointmentDto>().ReverseMap();
         CreateMap<CreateAppointmentCommand, Appointment>().ReverseMap();
-        // CreateMap<UpdateAppointmentCommand, AppointmentDto>().ReverseMap();
+        CreateMap<UpdateAppointmentCommand, Appointment>().ReverseMap();
     }
 }

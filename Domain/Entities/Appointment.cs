@@ -10,7 +10,7 @@
 
         public DateTime EndTime { get; set; }
 
-        public TimeSpan Duration => EndTime- StartTime;
+        public TimeSpan Duration => EndTime - StartTime;
 
         
         public string? UserNotes { get; set; }

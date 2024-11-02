@@ -9,4 +9,6 @@ public static class AppointmentErrors
     public static Error GetFailed(string description) => new Error("Appointment.GetFailed", description);
     public static Error NotAllowedToCancel(string description) => new Error("Appointment.NotAllowedToCancel", description);
     public static Error CancelFailed(string description) => new Error("Appointment.CancelFailed", description);
+    public static Error UpdateFailed(string description) => new Error("Appointment.UpdateFailed", description);
+    public static Error DeleteFailed(string description) => new Error("Appointment.DeleteFailed", description);
 }

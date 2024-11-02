@@ -4,6 +4,7 @@ using Domain.Repositories;
 using Domain.Utils;
 using Infrastructure.Persistence;
 using MediatR;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Infrastructure.Repositories
 {
@@ -32,7 +33,27 @@ namespace Infrastructure.Repositories
 
         public async Task<Result<Unit>> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var appointmentResult = await GetAsync(id);
+
+                if (!appointmentResult.IsSuccess)
+                {
+                    return Result<Unit>.Failure(AppointmentErrors.NotFound(id));
+                }
+                var appointment = appointmentResult.Value!;
+
+                context.Appointments.Remove(appointment);
+                await context.SaveChangesAsync();
+
+                return Result<Unit>.Success(Unit.Value);
+            }
+            catch(Exception e)
+            {
+                return Result<Unit>.Failure(
+                    AppointmentErrors.DeleteFailed(e.InnerException?.Message ?? "An unexpected error occurred while deleting the appointment")
+                );
+            }
         }
 
         public async Task<Result<IEnumerable<Appointment>>> GetAllAsync()
@@ -56,7 +77,36 @@ namespace Infrastructure.Repositories
 
         public async Task<Result<Unit>> UpdateAsync(Appointment appointment)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingAppointmentResult = await GetAsync(appointment.Id);
+
+                if (!existingAppointmentResult.IsSuccess)
+                {
+                    return Result<Unit>.Failure(AppointmentErrors.NotFound(appointment.Id));
+                }
+
+                
+                var existingAppointment = existingAppointmentResult.Value!;
+
+                existingAppointment.Date = appointment.Date;
+                existingAppointment.StartTime = appointment.StartTime;
+                existingAppointment.EndTime = appointment.EndTime;
+                existingAppointment.UserNotes = appointment.UserNotes;
+                existingAppointment.DoctorId = appointment.DoctorId;
+
+                existingAppointment.UpdatedAt = DateTime.UtcNow;
+                await context.SaveChangesAsync();
+
+                return Result<Unit>.Success(Unit.Value); 
+            }
+            catch (Exception e)
+            {
+                return Result<Unit>.Failure(
+                    AppointmentErrors.UpdateFailed(e.InnerException?.Message ?? "An unexpected error occurred while updating the appointment")
+                );
+            }
+
         }
 
         public async Task<Result<Unit>> CancelAsync(Guid AppointmentId, string cancellationReason)
