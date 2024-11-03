@@ -4,6 +4,7 @@ using Domain.Repositories;
 using Domain.Utils;
 using Infrastructure.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Infrastructure.Repositories
@@ -58,7 +59,18 @@ namespace Infrastructure.Repositories
 
         public async Task<Result<IEnumerable<Appointment>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var appointments = await context.Appointments.ToListAsync();
+                return appointments.Count == 0
+                    ? Result<IEnumerable<Appointment>>.Failure(AppointmentErrors.GetFailed("No appointments found."))
+                    : Result<IEnumerable<Appointment>>.Success(appointments);
+            }
+            catch (Exception e)
+            {
+                return Result<IEnumerable<Appointment>>.Failure(AppointmentErrors.GetFailed(
+                    e.InnerException?.Message ?? "An unexpected error occurred while retrieving appointments."));
+            }
         }
 
         public async Task<Result<Appointment>> GetAsync(Guid id)

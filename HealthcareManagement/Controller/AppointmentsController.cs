@@ -47,6 +47,19 @@ namespace HealthcareManagement.Controller
             );
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAllAppointments()
+        {
+            var resultObject = await mediator.Send(new GetAllAppointmentsQuery());
+            return resultObject.Match<IActionResult>(
+                onSuccess: value => Ok(value),
+                onFailure: error => NotFound(error)
+            );
+        }
+
+
         [HttpPatch("Cancel")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
