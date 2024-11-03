@@ -4,6 +4,7 @@ using Application.Use_Cases.Queries.AppointmentQueries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace HealthcareManagement.Controller
 {
@@ -94,6 +95,23 @@ namespace HealthcareManagement.Controller
             var resultObject = await mediator.Send(new DeleteAppointmentCommand { AppointmentId = id });
             return resultObject.Match<IActionResult>(
                 onSuccess: unit => Ok(),
+                onFailure: error => BadRequest(error)
+            );
+        }
+        
+        [HttpPatch("Reschedule/{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [SwaggerOperation(Description = "User can ask to reschedule an appointment by changing the date and time of the appointment.")]
+        public async Task<IActionResult> RescheduleAppointment(Guid id, [FromBody] RescheduleAppointmentCommand command)
+        {
+            if (id != command.AppointmentId)
+            {
+                return BadRequest("Route id and body id must match");
+            }
+            var resultObject = await mediator.Send(command);
+            return resultObject.Match<IActionResult>(
+                onSuccess: _ => NoContent(),
                 onFailure: error => BadRequest(error)
             );
         }
