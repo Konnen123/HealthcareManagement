@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241103161332_AddUpdateRequestsForAppointments")]
+    partial class AddUpdateRequestsForAppointments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,14 +82,10 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("uuid_generate_v4()");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AppointmentId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsProcessed")
                         .HasColumnType("boolean");
@@ -96,6 +95,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("NewStartTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NewUserNotes")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

@@ -1,14 +1,9 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence
-{
+{ 
     public class ApplicationDbContext : DbContext
     {
         private readonly IConfiguration configuration;
@@ -24,6 +19,7 @@ namespace Infrastructure.Persistence
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<SuperAdmin> SuperAdmins { get; set; }
+        public DbSet<AppointmentUpdateRequest> AppointmentUpdateRequests { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -102,7 +98,12 @@ namespace Infrastructure.Persistence
                     .HasColumnType("uuid")
                     .HasDefaultValueSql("uuid_generate_v4()")
                     .ValueGeneratedOnAdd();
-
+                    
+                    entity.HasMany(a => a.UpdateRequests)
+                        .WithOne(ur => ur.Appointment)
+                        .HasForeignKey(ur => ur.AppointmentId)
+                        .OnDelete(DeleteBehavior.Cascade);
+                    
                     entity.Property(entity => entity.Date).IsRequired();
                     entity.Property(entity => entity.StartTime).IsRequired();
                     entity.Property(entity => entity.EndTime).IsRequired();
@@ -117,6 +118,14 @@ namespace Infrastructure.Persistence
                         .HasForeignKey(e => e.DoctorId)
                         .OnDelete(DeleteBehavior.Cascade);
                 });
+            modelBuilder.Entity<AppointmentUpdateRequest>(entity =>
+            {
+                entity.ToTable("appointment_update_requests");
+                entity.Property(e => e.Id)
+                    .HasColumnType("uuid")
+                    .HasDefaultValueSql("uuid_generate_v4()")
+                    .ValueGeneratedOnAdd();
+            });
         }
     }
 }
