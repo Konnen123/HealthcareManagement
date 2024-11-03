@@ -17,30 +17,30 @@ namespace HealthcareManagement.Controller
         {
             this.mediator = mediator;
         }
-        
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateAppointment([FromBody] CreateAppointmentCommand command)
         {
-            
+
             var resultObject = await mediator.Send(command);
             Console.WriteLine(resultObject.Value);
             Console.WriteLine(resultObject.Error);
-            
-            
+
+
             return resultObject.Match<IActionResult>(
-                onSuccess: value=> CreatedAtAction(nameof(GetAppointmentById), new {id = value}, value),
+                onSuccess: value => CreatedAtAction(nameof(GetAppointmentById), new { id = value }, value),
                 onFailure: error => BadRequest(error)
             );
         }
-        
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAppointmentById(Guid id)
         {
-            var resultObject = await mediator.Send(new GetAppointmentByIdQuery {Id = id});
+            var resultObject = await mediator.Send(new GetAppointmentByIdQuery { Id = id });
             return resultObject.Match<IActionResult>(
                 onSuccess: value => Ok(value),
                 onFailure: error => NotFound(error)
@@ -68,16 +68,21 @@ namespace HealthcareManagement.Controller
             var resultObject = await mediator.Send(command);
             return resultObject.Match<IActionResult>(
                 onSuccess: unit => NoContent(),
-                onFailure: error => BadRequest(error) 
+                onFailure: error => BadRequest(error)
             );
         }
 
 
-        [HttpPatch("Update")]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateAppointment([FromBody] UpdateAppointmentCommand command)
+        public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody] UpdateAppointmentCommand command)
         {
+            if (id != command.Id)
+            {
+                return BadRequest("The ID in the URL does not match the ID in the request body.");
+            }
+
             var resultObject = await mediator.Send(command);
             return resultObject.Match<IActionResult>(
                 onSuccess: unit => NoContent(),
