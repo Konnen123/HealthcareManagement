@@ -22,7 +22,7 @@ namespace Infrastructure
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-
+            services.AddScoped<IRescheduledAppointmentsRepository, RescheduledAppointmentsRepository>();
             return services;
         }
     }
