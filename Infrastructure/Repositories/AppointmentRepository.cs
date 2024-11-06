@@ -28,7 +28,7 @@ namespace Infrastructure.Repositories
             }
             catch (Exception e)
             {
-                return Result<Guid>.Failure(AppointmentErrors.CreateFailed(e.InnerException?.Message ?? "An unexpected error occurred while creating the appointment"));
+                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(Appointment),e.InnerException?.Message ?? "An unexpected error occurred while creating the appointment"));
             }
         }
 
@@ -40,7 +40,7 @@ namespace Infrastructure.Repositories
 
                 if (!appointmentResult.IsSuccess)
                 {
-                    return Result<Unit>.Failure(AppointmentErrors.NotFound(id));
+                    return Result<Unit>.Failure(EntityErrors.NotFound("Appointment",id));
                 }
                 var appointment = appointmentResult.Value!;
 
@@ -52,7 +52,7 @@ namespace Infrastructure.Repositories
             catch(Exception e)
             {
                 return Result<Unit>.Failure(
-                    AppointmentErrors.DeleteFailed(e.InnerException?.Message ?? "An unexpected error occurred while deleting the appointment")
+                    EntityErrors.DeleteFailed(nameof(Appointment), e.InnerException?.Message ?? "An unexpected error occurred while deleting the appointment")
                 );
             }
         }
@@ -63,12 +63,12 @@ namespace Infrastructure.Repositories
             {
                 var appointments = await context.Appointments.ToListAsync();
                 return appointments.Count == 0
-                    ? Result<IEnumerable<Appointment>>.Failure(AppointmentErrors.GetFailed("No appointments found."))
+                    ? Result<IEnumerable<Appointment>>.Failure(EntityErrors.GetFailed(nameof(Appointment), "No appointments found."))
                     : Result<IEnumerable<Appointment>>.Success(appointments);
             }
             catch (Exception e)
             {
-                return Result<IEnumerable<Appointment>>.Failure(AppointmentErrors.GetFailed(
+                return Result<IEnumerable<Appointment>>.Failure(EntityErrors.GetFailed(nameof(Appointment),
                     e.InnerException?.Message ?? "An unexpected error occurred while retrieving appointments."));
             }
         }
@@ -78,11 +78,11 @@ namespace Infrastructure.Repositories
             try
             {
                 var appointment = await context.Appointments.FindAsync(id);
-                return appointment == null ? Result<Appointment>.Failure(AppointmentErrors.NotFound(id)) : Result<Appointment>.Success(appointment);
+                return appointment == null ? Result<Appointment>.Failure(EntityErrors.NotFound(nameof(Appointment), id)) : Result<Appointment>.Success(appointment);
             }
             catch (Exception e)
             {
-                return Result<Appointment>.Failure(AppointmentErrors.GetFailed(e.InnerException?.Message ?? $"An unexpected error occurred while retrieving the appointment with id {id}"));
+                return Result<Appointment>.Failure(EntityErrors.GetFailed(nameof(Appointment), e.InnerException?.Message ?? $"An unexpected error occurred while retrieving the appointment with id {id}"));
             }
         }
         
@@ -95,7 +95,7 @@ namespace Infrastructure.Repositories
 
                 if (!existingAppointmentResult.IsSuccess)
                 {
-                    return Result<Unit>.Failure(AppointmentErrors.NotFound(appointment.Id));
+                    return Result<Unit>.Failure(EntityErrors.NotFound("Appointment", appointment.Id));
                 }
 
                 
@@ -115,7 +115,7 @@ namespace Infrastructure.Repositories
             catch (Exception e)
             {
                 return Result<Unit>.Failure(
-                    AppointmentErrors.UpdateFailed(e.InnerException?.Message ?? "An unexpected error occurred while updating the appointment")
+                    EntityErrors.UpdateFailed(nameof(Appointment), e.InnerException?.Message ?? "An unexpected error occurred while updating the appointment")
                 );
             }
 

@@ -1,11 +1,6 @@
 ﻿using Application.Use_Cases.Commands;
-using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Utils;
 using FluentValidation;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Application.Validators
 {

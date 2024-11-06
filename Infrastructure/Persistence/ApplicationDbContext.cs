@@ -20,7 +20,10 @@ namespace Infrastructure.Persistence
         public DbSet<Admin> Admins { get; set; }
         public DbSet<SuperAdmin> SuperAdmins { get; set; }
         public DbSet<AppointmentUpdateRequest> AppointmentUpdateRequests { get; set; }
-
+        public DbSet<DailyDoctorSchedule> DailyDoctorSchedules { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<ScheduleIrregularity> ScheduleIrregularities { get; set; }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var host = configuration["ConnectionStrings:Host"];
@@ -75,6 +78,15 @@ namespace Infrastructure.Persistence
                 {
                     entity.ToTable("doctors");
                     entity.HasBaseType<Staff>();
+                    entity.HasMany(d => d.DailySchedules)
+                        .WithOne(ds => ds.Doctor)
+                        .HasForeignKey(ds => ds.DoctorId)
+                        .OnDelete(DeleteBehavior.Cascade);
+                    
+                    entity.HasMany(d => d.ScheduleIrregularities)
+                        .WithOne(si => si.Doctor)
+                        .HasForeignKey(si => si.DoctorId)
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
             modelBuilder.Entity<Admin>(
                 entity =>
@@ -126,6 +138,56 @@ namespace Infrastructure.Persistence
                     .HasDefaultValueSql("uuid_generate_v4()")
                     .ValueGeneratedOnAdd();
             });
+            
+            modelBuilder.Entity<DailyDoctorSchedule>().ToTable("daily_doctor_schedules");
+            modelBuilder.Entity<DailyDoctorSchedule>()
+                .HasKey(ds => new { ds.DoctorId, ds.DayOfWeek });
+
+            modelBuilder.Entity<DailyDoctorSchedule>()
+                .HasOne(ds => ds.Location)
+                .WithMany(l => l.DoctorSchedules)
+                .HasForeignKey(ds => ds.LocationId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            
+            modelBuilder.Entity<ScheduleIrregularity>().ToTable("schedule_irregularities");
+            modelBuilder.Entity<ScheduleIrregularity>()
+                .HasKey(si => new { si.DoctorId, si.Date });
+            
+            
+            modelBuilder.Entity<Location>().ToTable("locations");
+            modelBuilder.Entity<Location>()
+                .HasIndex(l => l.RoomNo).IsUnique();
         }
+        
+        // public override int SaveChanges()
+        // {
+        //     var result = base.SaveChanges();
+        //     SeedDb();
+        //     return result;
+        // }
+        
+        // private void SeedDb()
+        // {
+        //     if(Locations.Any()) return;
+        //     
+        //     const int maxRoomNo = 250;
+        //     const int maxFloorNo = 4;
+        //     
+        //     for (var floor = 0; floor < maxFloorNo; floor++)
+        //     {
+        //         for (var room = 1; room <= maxRoomNo; room++)
+        //         {
+        //             Locations.Add(new Location
+        //             {
+        //                 LocationId = Guid.NewGuid(),
+        //                 RoomNo = room,
+        //                 Floor = floor,
+        //                 Indications = $"Floor {floor}, Room {room}"
+        //             });
+        //         }
+        //     }
+        //     SaveChanges();
+        // }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using Application.Use_Cases.Commands;
 using Application.Utils;
 using FluentValidation;
-using Infrastructure.Persistence;
 
 //Ar trebui regandita arhitectura la validatori,TO DO.
-namespace Application.Validators
+namespace Application.Validators.AppointmentValidators
 {
     public class BaseAppointmentCommandValidator<T> : AbstractValidator<T> where T : BaseAppointmentCommand
     {

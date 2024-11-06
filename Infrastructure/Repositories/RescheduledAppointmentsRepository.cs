@@ -26,7 +26,7 @@ public class RescheduledAppointmentsRepository : IRescheduledAppointmentsReposit
         }
         catch (Exception e)
         {
-            return Result<IEnumerable<AppointmentUpdateRequest>>.Failure(RescheduledAppointmentsErrors.GetFailed(e.InnerException?.Message ?? "Something went wrong in getting appointment requests"));
+            return Result<IEnumerable<AppointmentUpdateRequest>>.Failure(EntityErrors.GetFailed(nameof(AppointmentUpdateRequest), e.InnerException?.Message ?? "Something went wrong in getting appointment requests"));
         }
     }
 
@@ -35,11 +35,11 @@ public class RescheduledAppointmentsRepository : IRescheduledAppointmentsReposit
         try
         {
             var appointmentUpdateRequest = await _context.AppointmentUpdateRequests.FirstOrDefaultAsync(x => x.AppointmentId == appointmentId);
-            return appointmentUpdateRequest == null ? Result<AppointmentUpdateRequest>.Failure(RescheduledAppointmentsErrors.NotFound(appointmentId)) : Result<AppointmentUpdateRequest>.Success(appointmentUpdateRequest);
+            return appointmentUpdateRequest == null ? Result<AppointmentUpdateRequest>.Failure(EntityErrors.NotFound(nameof(AppointmentUpdateRequest), appointmentId)) : Result<AppointmentUpdateRequest>.Success(appointmentUpdateRequest);
         }
         catch (Exception e)
         {
-            return Result<AppointmentUpdateRequest>.Failure(RescheduledAppointmentsErrors.GetFailed(e.InnerException?.Message ?? "Something went wrong in getting appointment request"));
+            return Result<AppointmentUpdateRequest>.Failure(EntityErrors.GetFailed(nameof(AppointmentUpdateRequest), e.InnerException?.Message ?? "Something went wrong in getting appointment request"));
         }
     }
 
@@ -53,7 +53,7 @@ public class RescheduledAppointmentsRepository : IRescheduledAppointmentsReposit
         }
         catch (Exception e)
         {
-            return Result<Guid>.Failure(RescheduledAppointmentsErrors.CreateFailed(e.InnerException?.Message ?? "Something went wrong in creating appointment request"));
+            return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(AppointmentUpdateRequest), e.InnerException?.Message ?? "Something went wrong in creating appointment request"));
         }
     }
 
@@ -69,7 +69,7 @@ public class RescheduledAppointmentsRepository : IRescheduledAppointmentsReposit
             var appointmentUpdateRequest = _context.AppointmentUpdateRequests.FirstOrDefault(x => x.Id == id);
             if (appointmentUpdateRequest == null)
             {
-                return Task.FromResult(Result<Unit>.Failure(RescheduledAppointmentsErrors.NotFound(id)));
+                return Task.FromResult(Result<Unit>.Failure(EntityErrors.NotFound(nameof(AppointmentUpdateRequest), id)));
             }
             _context.AppointmentUpdateRequests.Remove(appointmentUpdateRequest);
             _context.SaveChanges();
@@ -77,7 +77,7 @@ public class RescheduledAppointmentsRepository : IRescheduledAppointmentsReposit
         }
         catch (Exception e)
         {
-            return Task.FromResult(Result<Unit>.Failure(RescheduledAppointmentsErrors.DeleteFailed(e.InnerException?.Message ?? "Something went wrong in deleting appointment request")));
+            return Task.FromResult(Result<Unit>.Failure(EntityErrors.DeleteFailed(nameof(AppointmentUpdateRequest), e.InnerException?.Message ?? "Something went wrong in deleting appointment request")));
         }
     }
 }
