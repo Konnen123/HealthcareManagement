@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Domain.Repositories;
 
-public interface ICrudRepository<T>
+public interface IAsyncCrudRepository<T>
 {
     Task<Result<IEnumerable<T>>> GetAllAsync();
     Task<Result<T>> GetAsync(Guid id);

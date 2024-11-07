@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities
 {
     public abstract class User
     {
@@ -10,7 +12,8 @@
         public string Email { get; set; }
 
         public string Password { get; set; }
-
+        
+        public string PhoneNumber { get; set; }
         public DateOnly DateOfBirth { get; set; }
 
         public DateOnly CreatedAt { get; set; }

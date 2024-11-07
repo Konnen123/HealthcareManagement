@@ -4,6 +4,6 @@ using MediatR;
 
 namespace Domain.Repositories;
 
-public interface IRescheduledAppointmentsRepository : ICrudRepository<AppointmentUpdateRequest>
+public interface IRescheduledAppointmentsRepository : IAsyncCrudRepository<AppointmentUpdateRequest>
 {
 }

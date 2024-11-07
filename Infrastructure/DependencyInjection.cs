@@ -23,6 +23,7 @@ namespace Infrastructure
 
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IRescheduledAppointmentsRepository, RescheduledAppointmentsRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
             return services;
         }
     }
