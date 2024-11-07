@@ -63,4 +63,29 @@ public class LocationsController : ControllerBase
             onFailure: error => NotFound(error)
         );
     }
+    
+    [HttpPost("bulk-insert")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> BulkInsertLocations([FromQuery] int maxFloorNo = 3, [FromQuery] int roomsPerFloor = 25)
+    {
+        var command = new BulkInsertLocationCommand { MaxFloorNo = maxFloorNo, RoomsPerFloor = roomsPerFloor };
+        var resultObject = await _mediator.Send(command);
+        return resultObject.Match<IActionResult>(
+            onSuccess: value => Created(string.Empty, value),
+            onFailure: error => BadRequest(error)
+        );
+    }
+    
+    // [HttpGet("paginated")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<IActionResult> GetPaginatedLocations([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    // {
+    //     var resultObject = await _mediator.Send(new GetPaginatedLocationsQuery { Page = page, PageSize = pageSize });
+    //     return resultObject.Match<IActionResult>(
+    //         onSuccess: value => Ok(value),
+    //         onFailure: error => BadRequest(error)
+    //     );
+    // }
 }
