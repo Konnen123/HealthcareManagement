@@ -1,4 +1,3 @@
-using Domain.Entities;
 using Domain.Utils;
 using MediatR;
 

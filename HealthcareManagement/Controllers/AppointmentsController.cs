@@ -2,7 +2,6 @@
 using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Queries.AppointmentQueries;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
