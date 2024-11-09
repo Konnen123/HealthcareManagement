@@ -61,9 +61,7 @@ namespace Infrastructure.Repositories
             try
             {
                 var appointments = await context.Appointments.ToListAsync();
-                return appointments.Count == 0
-                    ? Result<IEnumerable<Appointment>>.Failure(EntityErrors.GetFailed(nameof(Appointment), "No appointments found."))
-                    : Result<IEnumerable<Appointment>>.Success(appointments);
+                return Result<IEnumerable<Appointment>>.Success(appointments);
             }
             catch (Exception e)
             {
