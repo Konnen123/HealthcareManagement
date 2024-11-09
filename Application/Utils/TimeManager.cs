@@ -8,6 +8,10 @@ namespace Application.Utils
 {
     public class TimeManager
     {
+        private TimeManager()
+        {
+            
+        }
         public static TimeOnly GetCurrentTimeOnly()
         {
             return TimeOnly.FromDateTime(DateTime.Now);

@@ -8,6 +8,10 @@ namespace Application.Utils
 {
     public class DateManager
     {
+        protected DateManager()
+        {
+            
+        }
         public static DateOnly GetCurrentDateOnly()
         {
             return DateOnly.FromDateTime(DateTime.Now);
