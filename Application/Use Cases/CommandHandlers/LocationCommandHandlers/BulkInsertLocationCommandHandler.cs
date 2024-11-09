@@ -35,7 +35,7 @@ public class BulkInsertLocationCommandHandler : IRequestHandler<BulkInsertLocati
         var locations = new List<Location>();
         for (var floorIndex = 0; floorIndex < maxFloorNo; floorIndex++)
         {
-            for (var roomIndex = 1 + 25*floorIndex; roomIndex <= roomsPerFloor + 25*floorIndex; roomIndex++)
+            for (var roomIndex = 1 + roomsPerFloor*floorIndex; roomIndex <= roomsPerFloor*(floorIndex+1); roomIndex++)
             {
                 locations.Add(new Location
                 {

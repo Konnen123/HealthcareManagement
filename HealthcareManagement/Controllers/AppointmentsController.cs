@@ -25,8 +25,6 @@ namespace HealthcareManagement.Controller
         {
 
             var resultObject = await mediator.Send(command);
-            Console.WriteLine(resultObject.Value);
-            Console.WriteLine(resultObject.Error);
 
 
             return resultObject.Match<IActionResult>(
