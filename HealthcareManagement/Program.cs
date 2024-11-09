@@ -1,13 +1,17 @@
 using System.Reflection;
 using Application;
 using DotNetEnv;
+using HealthcareManagement.JsonConverters;
 using Infrastructure;
 
 Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
+});
 
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);

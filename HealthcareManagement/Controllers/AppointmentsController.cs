@@ -2,7 +2,6 @@
 using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Queries.AppointmentQueries;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -26,8 +25,6 @@ namespace HealthcareManagement.Controller
         {
 
             var resultObject = await mediator.Send(command);
-            Console.WriteLine(resultObject.Value);
-            Console.WriteLine(resultObject.Error);
 
 
             return resultObject.Match<IActionResult>(
