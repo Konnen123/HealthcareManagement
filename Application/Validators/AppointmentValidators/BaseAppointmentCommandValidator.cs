@@ -39,7 +39,7 @@ namespace Application.Validators.AppointmentValidators
                 .MaximumLength(500).WithMessage("User notes cannot exceed 500 characters.");
         }
 
-        private bool BeAValidDate(DateOnly date)
+        private static bool BeAValidDate(DateOnly date)
         {
             return date != default;
         }
