@@ -4,27 +4,36 @@ using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
+            IConfiguration configuration)
         {
+            string connectionString = GetConnectionString(configuration);
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
-                    configuration.GetConnectionString("DefaultConnection"),
+                    connectionString,
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IRescheduledAppointmentsRepository, RescheduledAppointmentsRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             return services;
+        }
+
+        private static string GetConnectionString(IConfiguration configuration)
+        {
+            var host = configuration["ConnectionStrings:Host"];
+            var port = configuration["ConnectionStrings:Port"];
+            var username = configuration["ConnectionStrings:Username"];
+            var password = configuration["ConnectionStrings:Password"];
+            var database = configuration["ConnectionStrings:Database"];
+
+            return $"Host={host};Port={port};Username={username};Password={password};Database={database};Include Error Detail=true";
         }
     }
 }

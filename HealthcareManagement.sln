@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5D4238B2-7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{C8F6D391-6BEE-4E99-BCA3-CACBF5242815}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration Tests", "Integration Tests", "{6593AF85-5A44-4FA3-872B-9AF4D1729DAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareManagement.IntegrationTests", "HealthcareManagement.IntegrationTests\HealthcareManagement.IntegrationTests.csproj", "{6B0280AB-D992-46BF-8683-26FB28EE1865}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,10 @@ Global
 		{C8F6D391-6BEE-4E99-BCA3-CACBF5242815}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8F6D391-6BEE-4E99-BCA3-CACBF5242815}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8F6D391-6BEE-4E99-BCA3-CACBF5242815}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B0280AB-D992-46BF-8683-26FB28EE1865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B0280AB-D992-46BF-8683-26FB28EE1865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B0280AB-D992-46BF-8683-26FB28EE1865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B0280AB-D992-46BF-8683-26FB28EE1865}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,8 @@ Global
 		{176F21A0-8C24-41D1-8546-7FE051A5B37B} = {4CB8BAB0-F506-4E86-94B9-B2D154625C99}
 		{6BD588F3-A188-40A7-B78D-44AFD4D677C0} = {4D456F8E-99C6-4FEE-BABA-8FE63F34AFC2}
 		{C8F6D391-6BEE-4E99-BCA3-CACBF5242815} = {001509BA-246A-4B77-BAAF-8A982B3BF5B1}
+		{6593AF85-5A44-4FA3-872B-9AF4D1729DAD} = {5D4238B2-77A5-4DB0-B37F-8ECF85AEADE5}
+		{6B0280AB-D992-46BF-8683-26FB28EE1865} = {6593AF85-5A44-4FA3-872B-9AF4D1729DAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BB3B3E99-D761-4A7E-AA58-9A8A26F71205}

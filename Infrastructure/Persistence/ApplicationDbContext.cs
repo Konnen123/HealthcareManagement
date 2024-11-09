@@ -24,19 +24,6 @@ namespace Infrastructure.Persistence
         public DbSet<Location> Locations { get; set; }
         public DbSet<ScheduleIrregularity> ScheduleIrregularities { get; set; }
         
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var host = configuration["ConnectionStrings:Host"];
-            var port = configuration["ConnectionStrings:Port"];
-            var username = configuration["ConnectionStrings:Username"];
-            var password = configuration["ConnectionStrings:Password"];
-            var database = configuration["ConnectionStrings:Database"];
-
-            var connectionString = $"Host={host};Port={port};Username={username};Password={password};Database={database};Include Error Detail=true";
-            optionsBuilder.UseNpgsql(connectionString);
-        }
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");

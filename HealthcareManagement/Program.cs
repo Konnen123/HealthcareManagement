@@ -7,9 +7,6 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-
-
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 builder.Configuration.AddEnvironmentVariables();
@@ -23,6 +20,7 @@ builder.Configuration["ConnectionStrings:Database"] = Environment.GetEnvironment
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddControllers();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -45,3 +43,7 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 app.Run();
+
+public partial class Program
+{
+}
