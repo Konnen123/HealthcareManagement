@@ -1,5 +1,4 @@
-﻿using Application.Use_Cases.Commands;
-using Application.Use_Cases.Commands.AppointmentCommands;
+﻿using Application.Use_Cases.Commands.AppointmentCommands;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Errors;
