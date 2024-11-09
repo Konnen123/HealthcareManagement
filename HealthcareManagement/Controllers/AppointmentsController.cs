@@ -47,14 +47,13 @@ namespace HealthcareManagement.Controller
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllAppointments()
         {
             var resultObject = await mediator.Send(new GetAllAppointmentsQuery());
             return resultObject.Match<IActionResult>(
-                onSuccess: value => value.Any() ? Ok(value) : NoContent(),
-                onFailure: error => BadRequest(error)
+                onSuccess: value => Ok(value),
+                onFailure: error => NotFound(error)
             );
         }
 
@@ -97,7 +96,7 @@ namespace HealthcareManagement.Controller
         {
             var resultObject = await mediator.Send(new DeleteAppointmentCommand { AppointmentId = id });
             return resultObject.Match<IActionResult>(
-                onSuccess: unit => NoContent(),
+                onSuccess: unit => Ok(),
                 onFailure: error => BadRequest(error)
             );
         }
