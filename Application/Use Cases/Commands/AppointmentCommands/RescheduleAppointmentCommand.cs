@@ -7,6 +7,6 @@ public class RescheduleAppointmentCommand : IRequest<Result<Unit>>
 {
     public Guid PatientId { get; set; }
     public Guid AppointmentId { get; set; }
-    public DateOnly? NewDate { get; set; }
-    public TimeOnly? NewStartTime { get; set; }
+    public DateTime? NewDate { get; set; }
+    public DateTime? NewStartTime { get; set; }
 }
