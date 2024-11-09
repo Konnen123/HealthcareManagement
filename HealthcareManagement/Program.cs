@@ -1,5 +1,6 @@
 using System.Reflection;
 using Application;
+using Application.Utils;
 using DotNetEnv;
 using Infrastructure;
 

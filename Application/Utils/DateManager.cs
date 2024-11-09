@@ -8,9 +8,7 @@ namespace Application.Utils
 {
     public class DateManager
     {
-        public static DateManager Instance { get; } = new DateManager();
-
-        public DateOnly GetCurrentDateOnly()
+        public static DateOnly GetCurrentDateOnly()
         {
             return DateOnly.FromDateTime(DateTime.Now);
         }

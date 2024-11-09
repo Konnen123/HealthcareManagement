@@ -8,9 +8,7 @@ namespace Application.Utils
 {
     public class TimeManager
     {
-        public static TimeManager Instance { get; } = new TimeManager();
-
-        public TimeOnly GetCurrentTimeOnly()
+        public static TimeOnly GetCurrentTimeOnly()
         {
             return TimeOnly.FromDateTime(DateTime.Now);
         }

@@ -1,23 +1,27 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-public class TimeOnlyConverter : JsonConverter<TimeOnly>
+namespace Application.Utils
 {
-    public override TimeOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public class TimeOnlyConverter : JsonConverter<TimeOnly>
     {
-        string timeString = reader.GetString();
-        const int timeWithoutSecondsLength = 5;
-
-        if (timeString.Length == timeWithoutSecondsLength) // HH:mm format
+        public override TimeOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            timeString += ":00";
-        }
-        return TimeOnly.ParseExact(timeString, "HH:mm:ss");
-    }
+            string timeString = reader.GetString();
+            const int timeWithoutSecondsLength = 5;
 
-    public override void Write(Utf8JsonWriter writer, TimeOnly value, JsonSerializerOptions options)
-    {
-        writer.WriteStringValue(value.ToString("HH:mm:ss"));
+            if (timeString.Length == timeWithoutSecondsLength) // HH:mm format
+            {
+                timeString += ":00";
+            }
+            return TimeOnly.ParseExact(timeString, "HH:mm:ss", CultureInfo.InvariantCulture);
+        }
+
+        public override void Write(Utf8JsonWriter writer, TimeOnly value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString("HH:mm:ss"));
+        }
     }
 }

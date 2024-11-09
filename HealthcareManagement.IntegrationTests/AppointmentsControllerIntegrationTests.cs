@@ -367,9 +367,9 @@ namespace HealthcareManagement.IntegrationTests
             return new CreateAppointmentCommand
             {
                 PatientId = patientId,
-                Date = DateManager.Instance.GetCurrentDateOnly().AddDays(1),
-                StartTime = TimeManager.Instance.GetCurrentTimeOnly(),
-                EndTime = TimeManager.Instance.GetCurrentTimeOnly().AddMinutes(appointmentDurationInMinutes),
+                Date = DateManager.GetCurrentDateOnly().AddDays(1),
+                StartTime = TimeManager.GetCurrentTimeOnly(),
+                EndTime = TimeManager.GetCurrentTimeOnly().AddMinutes(appointmentDurationInMinutes),
                 UserNotes = "Test User Notes",
                 DoctorId = doctorId
             };
@@ -380,9 +380,9 @@ namespace HealthcareManagement.IntegrationTests
             return new Appointment
             {
                 Id = Guid.NewGuid(),
-                Date = DateManager.Instance.GetCurrentDateOnly(),
-                StartTime = TimeManager.Instance.GetCurrentTimeOnly(),
-                EndTime = TimeManager.Instance.GetCurrentTimeOnly().AddMinutes(appointmentDurationInMinutes),
+                Date = DateManager.GetCurrentDateOnly(),
+                StartTime = TimeManager.GetCurrentTimeOnly(),
+                EndTime = TimeManager.GetCurrentTimeOnly().AddMinutes(appointmentDurationInMinutes),
                 PatientId = Guid.NewGuid(),
                 DoctorId = Guid.NewGuid(),
                 UserNotes = "Test User Notes"
@@ -405,9 +405,9 @@ namespace HealthcareManagement.IntegrationTests
             {
                 Id = appointmentId,
                 PatientId = patientId,
-                Date = DateManager.Instance.GetCurrentDateOnly(),
-                StartTime = TimeManager.Instance.GetCurrentTimeOnly(),
-                EndTime = TimeManager.Instance.GetCurrentTimeOnly().AddMinutes(appointmentDurationInMinutes),
+                Date = DateManager.GetCurrentDateOnly(),
+                StartTime = TimeManager.GetCurrentTimeOnly(),
+                EndTime = TimeManager.GetCurrentTimeOnly().AddMinutes(appointmentDurationInMinutes),
                 UserNotes = "Test User Notes",
                 DoctorId = Guid.NewGuid()
             };
@@ -419,8 +419,8 @@ namespace HealthcareManagement.IntegrationTests
             {
                 PatientId = patientId,
                 AppointmentId = appointmentId,
-                NewDate = DateManager.Instance.GetCurrentDateOnly(),
-                NewStartTime = TimeManager.Instance.GetCurrentTimeOnly(),
+                NewDate = DateManager.GetCurrentDateOnly(),
+                NewStartTime = TimeManager.GetCurrentTimeOnly(),
             };
         }
 
@@ -434,7 +434,7 @@ namespace HealthcareManagement.IntegrationTests
                 Password = "mockPassword",
                 PhoneNumber = "0752122923",
                 DateOfBirth = new DateOnly(2000, 2, 2),
-                CreatedAt = DateManager.Instance.GetCurrentDateOnly(),
+                CreatedAt = DateManager.GetCurrentDateOnly(),
                 IsEnabled = true,
                 MedicalRank = "mock"
             };
@@ -450,7 +450,7 @@ namespace HealthcareManagement.IntegrationTests
                 Password = "mockPassword",
                 PhoneNumber = "0752122923",
                 DateOfBirth = new DateOnly(2000, 2, 2),
-                CreatedAt = DateManager.Instance.GetCurrentDateOnly(),
+                CreatedAt = DateManager.GetCurrentDateOnly(),
                 IsEnabled = true
             };
         }
