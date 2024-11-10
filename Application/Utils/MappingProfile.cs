@@ -2,6 +2,7 @@ using Application.DTOs;
 using Application.Use_Cases.Commands;
 using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Commands.LocationCommands;
+using Application.Use_Cases.Commands.SchedulesCommands;
 using AutoMapper;
 using Domain.Entities;
 
@@ -17,5 +18,8 @@ public class MappingProfile : Profile
         CreateMap<RescheduleAppointmentCommand, AppointmentUpdateRequest>().ReverseMap();
         CreateMap<CreateLocationCommand, Location>().ReverseMap();
         CreateMap<Location, LocationDto>().ReverseMap();
+        CreateMap<DailyDoctorSchedule, DailyDoctorScheduleDto>().ReverseMap();
+        CreateMap<CreateDailyDoctorScheduleCommand, DailyDoctorSchedule>().ReverseMap();
+        CreateMap<UpdateDailyDoctorScheduleCommand, DailyDoctorSchedule>().ReverseMap();
     }
 }
