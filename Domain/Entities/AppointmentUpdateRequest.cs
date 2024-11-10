@@ -8,5 +8,5 @@ public class AppointmentUpdateRequest
     public TimeOnly? NewStartTime { get; set; }
     public bool IsProcessed { get; set; } = false;
     public bool IsAccepted { get; set; } = false;
-    public Appointment Appointment { get; set; }
+    public required Appointment Appointment { get; set; }
 }

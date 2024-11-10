@@ -9,7 +9,7 @@ namespace Application.Utils
     {
         public override TimeOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            string timeString = reader.GetString();
+            string timeString = reader.GetString()!;
             const int timeWithoutSecondsLength = 5;
 
             if (timeString.Length == timeWithoutSecondsLength) // HH:mm format

@@ -113,10 +113,9 @@ namespace Infrastructure.Repositories
         {
             try
             {
-            
                 var existingScheduleResult = await GetAsync(dailyDoctorSchedule.DoctorId,dailyDoctorSchedule.DayOfWeek);
 
-                if (!existingScheduleResult.IsSuccess)
+                if (!existingScheduleResult.IsSuccess || existingScheduleResult.Value == null)
                 {
                     return Result<Unit>.Failure(EntityErrors.NotFound("DailyDoctorSchedule", dailyDoctorSchedule.DailyDoctorScheduleId));
                 }

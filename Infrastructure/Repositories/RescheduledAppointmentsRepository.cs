@@ -30,12 +30,12 @@ public class RescheduledAppointmentsRepository : IRescheduledAppointmentsReposit
         }
     }
 
-    public async Task<Result<AppointmentUpdateRequest>> GetAsync(Guid appointmentId)
+    public async Task<Result<AppointmentUpdateRequest>> GetAsync(Guid id)
     {
         try
         {
-            var appointmentUpdateRequest = await _context.AppointmentUpdateRequests.FirstOrDefaultAsync(x => x.AppointmentId == appointmentId);
-            return appointmentUpdateRequest == null ? Result<AppointmentUpdateRequest>.Failure(EntityErrors.NotFound(nameof(AppointmentUpdateRequest), appointmentId)) : Result<AppointmentUpdateRequest>.Success(appointmentUpdateRequest);
+            var appointmentUpdateRequest = await _context.AppointmentUpdateRequests.FirstOrDefaultAsync(x => x.AppointmentId == id);
+            return appointmentUpdateRequest == null ? Result<AppointmentUpdateRequest>.Failure(EntityErrors.NotFound(nameof(AppointmentUpdateRequest), id)) : Result<AppointmentUpdateRequest>.Success(appointmentUpdateRequest);
         }
         catch (Exception e)
         {

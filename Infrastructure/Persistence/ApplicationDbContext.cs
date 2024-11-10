@@ -4,14 +4,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Persistence
 { 
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> option) : DbContext(option)
     {
-        private readonly IConfiguration configuration;
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> option, IConfiguration configuration) : base(option)
-        {
-            this.configuration = configuration;
-        }
-
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Staff> Staffs { get; set; }
@@ -160,35 +154,5 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Location>()
                 .HasIndex(l => l.RoomNo).IsUnique();
         }
-
-        // public override int SaveChanges()
-        // {
-        //     var result = base.SaveChanges();
-        //     SeedDb();
-        //     return result;
-        // }
-
-        // private void SeedDb()
-        // {
-        //     if(Locations.Any()) return;
-        //     
-        //     const int maxRoomNo = 250;
-        //     const int maxFloorNo = 4;
-        //     
-        //     for (var floor = 0; floor < maxFloorNo; floor++)
-        //     {
-        //         for (var room = 1; room <= maxRoomNo; room++)
-        //         {
-        //             Locations.Add(new Location
-        //             {
-        //                 LocationId = Guid.NewGuid(),
-        //                 RoomNo = room,
-        //                 Floor = floor,
-        //                 Indications = $"Floor {floor}, Room {room}"
-        //             });
-        //         }
-        //     }
-        //     SaveChanges();
-        // }
     }
 }

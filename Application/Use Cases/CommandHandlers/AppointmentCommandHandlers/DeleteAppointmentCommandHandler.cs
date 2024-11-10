@@ -10,12 +10,10 @@ namespace Application.Use_Cases.CommandHandlers.AppointmentCommandHandlers
 {
     public class DeleteAppointmentCommandHandler : IRequestHandler<DeleteAppointmentCommand, Result<Unit>>
     {
-        private readonly IMapper _mapper;
         private readonly IAppointmentRepository _repository;
 
-        public DeleteAppointmentCommandHandler(IMapper mapper, IAppointmentRepository repository)
+        public DeleteAppointmentCommandHandler(IAppointmentRepository repository)
         {
-            _mapper = mapper;
             _repository = repository;
         }
 
