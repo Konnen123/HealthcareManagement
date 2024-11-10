@@ -8,7 +8,7 @@ public class DailyDoctorSchedule
     public TimeOnly EndingTime { get; set; }
     public int SlotDurationMinutes { get; set; }
     public Guid DoctorId { get; set; }
-    public Doctor Doctor { get; set; }
+    public Doctor? Doctor { get; set; }
     public Guid LocationId { get; set; }
-    public Location Location { get; set; }
+    public Location? Location { get; set; }
 }
