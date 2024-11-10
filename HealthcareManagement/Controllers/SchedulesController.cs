@@ -1,3 +1,5 @@
+using Application.Use_Cases.Commands.SchedulesCommands;
+using Application.Use_Cases.Queries.DailyDoctorSchedulesQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,32 +17,97 @@ public class SchedulesController : ControllerBase
     }
     
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAllSchedules()
     {
-        return Ok("Schedules GET ALL");
+        var resultObject = await _mediator.Send(new GetAllSchedulesQuery());
+        return resultObject.Match<IActionResult>(
+            onSuccess: value => Ok(value),
+            onFailure: error => NotFound(error)
+        );
     }
-    
-    [HttpGet("{id}")]
+
+    [HttpGet(("{doctorId}/{dayOfWeek}"))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetScheduleByIdAndDayOfWeek(Guid doctorId, DayOfWeek dayOfWeek)
+    {
+        var resultObject = await _mediator.Send(new GetScheduleByIdAndDayOfWeekQuery { Id = doctorId, DayOfWeek = dayOfWeek });
+        return resultObject.Match<IActionResult>(
+           onSuccess: value => Ok(value),
+           onFailure: error => NotFound(error)
+       );
+    }
+    [HttpGet(("{id}"))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetScheduleById(Guid id)
     {
-        return Ok($"Schedules GET By Id: {id}");
+        var resultObject = await _mediator.Send(new GetDailyDoctorScheduleByIdQuery { Id = id });
+        return resultObject.Match<IActionResult>(
+           onSuccess: value => Ok(value),
+           onFailure: error => NotFound(error)
+       );
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> CreateSchedule()
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateSchedule([FromBody] CreateDailyDoctorScheduleCommand command)
     {
-        return Ok("Schedules POST");
+        var resultObject = await _mediator.Send(command);
+        Console.WriteLine(resultObject.Value);
+        Console.WriteLine(resultObject.Error);
+        return resultObject.Match<IActionResult>(
+             onSuccess: value => CreatedAtAction(nameof(GetScheduleById), new { id = value }, value),
+             onFailure: error => BadRequest(error)
+         );
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateSchedule(Guid id)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateSchedule(Guid id, [FromBody] UpdateDailyDoctorScheduleCommand command)
     {
-        return Ok($"Schedules PUT: {id}");
+        if(id != command.Id)
+        {
+            return BadRequest("The ID in the URL does not match the ID in the request body.");
+        }
+
+        
+        var resultObject = await _mediator.Send(command);
+        return resultObject.Match<IActionResult>(
+           onSuccess: unit => NoContent(),
+           onFailure: error => BadRequest(error)
+       );
     }
-    
+
+    [HttpDelete("{doctorId}/{dayOfWeek}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteSchedule(Guid doctorId, DayOfWeek dayOfWeek)
+    {
+
+        var resultObject = await _mediator.Send(new DeleteDailyDoctorScheduleByDoctorIdAndDayOfWeekCommand { DoctorId = doctorId, DayOfWeek = dayOfWeek });
+        return resultObject.Match<IActionResult>(
+            onSuccess: _ => NoContent(),
+            onFailure: error => NotFound(error)
+        );
+         
+    }
+
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteSchedule(Guid id)
     {
-        return Ok($"Schedules DELETE: {id}");
+
+        var resultObject = await _mediator.Send(new DeleteDailyDoctorScheduleByIdCommand { Id = id });
+        return resultObject.Match<IActionResult>(
+            onSuccess: _ => NoContent(),
+            onFailure: error => NotFound(error)
+        );
+
     }
 }
