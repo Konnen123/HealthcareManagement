@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace Application.Utils
 {
-    public class DateManager
+    public class TimeSingleton
     {
-        protected DateManager()
+        private TimeSingleton()
         {
             
         }
-        public static DateOnly GetCurrentDateOnly()
+        public static TimeOnly GetCurrentTimeOnly()
         {
-            return DateOnly.FromDateTime(DateTime.Now);
+            return TimeOnly.FromDateTime(DateTime.Now);
         }
-
     }
 }

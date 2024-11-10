@@ -85,3 +85,6 @@ coverage/
 .coverage
 *.coveragexml
 *.tddtestconfig
+CodeCoverageScript.bat
+.sonarqube/conf
+coverage.xml
