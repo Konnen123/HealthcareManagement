@@ -118,11 +118,11 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<Result<Unit>> CancelAsync(Guid AppointmentId, string cancellationReason)
+        public async Task<Result<Unit>> CancelAsync(Guid appointmentId, string cancellationReason)
         {
             try
             {
-                var resultObject = await GetAsync(AppointmentId);
+                var resultObject = await GetAsync(appointmentId);
                 var appointment = resultObject.Value!;
                 appointment.CanceledAt = DateTime.UtcNow;
                 appointment.CancellationReason = cancellationReason;

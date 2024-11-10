@@ -98,7 +98,12 @@ namespace HealthcareManagement.IntegrationTests
         public async Task GetAppointmentById_GivenEntityIsInTheDatabase_ShouldReturnAppointmentDto()
         {
             // Arrange
-            Appointment appointment = AppointmentSUT(10);
+            User doctor = DoctorSUT();
+            User patient = PatientSUT();
+            dbContext.Users.Add(patient);
+            dbContext.Users.Add(doctor);
+
+            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -122,7 +127,12 @@ namespace HealthcareManagement.IntegrationTests
         public async Task GetAppointmentById_GivenEntityIsNotInTheDatabase_ShouldReturnNotFoundResponse()
         {
             // Arrange
-            Appointment appointment = AppointmentSUT(10);
+            User doctor = DoctorSUT();
+            User patient = PatientSUT();
+            dbContext.Users.Add(patient);
+            dbContext.Users.Add(doctor);
+
+            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -144,8 +154,17 @@ namespace HealthcareManagement.IntegrationTests
         public async Task GetAllAppointments_GivenEntitiesAreInTheDatabase_ShouldReturnListOfAppointmentDtos()
         {
             // Arrange
-            Appointment appointment1 = AppointmentSUT(10);
-            Appointment appointment2 = AppointmentSUT(10);
+            User doctor = DoctorSUT();
+            User doctor2 = DoctorSUT();
+            User patient = PatientSUT();
+            User patient2 = PatientSUT();
+            dbContext.Users.Add(patient);
+            dbContext.Users.Add(patient2);
+            dbContext.Users.Add(doctor);
+            dbContext.Users.Add(doctor2);
+
+            Appointment appointment1 = AppointmentSUT(10, patient.Id, doctor.Id);
+            Appointment appointment2 = AppointmentSUT(15, patient2.Id, doctor2.Id);
             dbContext.Appointments.Add(appointment1);
             dbContext.Appointments.Add(appointment2);
             await dbContext.SaveChangesAsync();
@@ -193,7 +212,12 @@ namespace HealthcareManagement.IntegrationTests
         public async Task CancelAppointment_GivenCancelAppointmentCommandValid_ShouldReturnNoContentResponse()
         {
             // Arrange
-            Appointment appointment = AppointmentSUT(10);
+            User doctor = DoctorSUT();
+            User patient = PatientSUT();
+            dbContext.Users.Add(patient);
+            dbContext.Users.Add(doctor);
+
+            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -230,7 +254,12 @@ namespace HealthcareManagement.IntegrationTests
         public async Task UpdateAppointment_GivenUpdateAppointmentCommandValid_ShouldReturnNoContentResponse()
         {
             // Arrange
-            Appointment appointment = AppointmentSUT(10);
+            User doctor = DoctorSUT();
+            User patient = PatientSUT();
+            dbContext.Users.Add(patient);
+            dbContext.Users.Add(doctor);
+
+            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -286,7 +315,12 @@ namespace HealthcareManagement.IntegrationTests
         public async Task DeleteAppointment_GivenAppointmentIdExists_ShouldReturnNoContentResponse()
         {
             // Arrange
-            Appointment appointment = AppointmentSUT(10);
+            User doctor = DoctorSUT();
+            User patient = PatientSUT();
+            dbContext.Users.Add(patient);
+            dbContext.Users.Add(doctor);
+
+            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -321,7 +355,12 @@ namespace HealthcareManagement.IntegrationTests
         public async Task RescheduleAppointment_GivenRescheduleAppointmentCommandValid_ShouldReturnNoContentResponse()
         {
             // Arrange
-            Appointment appointment = AppointmentSUT(10);
+            User doctor = DoctorSUT();
+            User patient = PatientSUT();
+            dbContext.Users.Add(patient);
+            dbContext.Users.Add(doctor);
+
+            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -357,12 +396,13 @@ namespace HealthcareManagement.IntegrationTests
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             dbContext.Database.EnsureDeleted();
             dbContext.Dispose();
         }
         #region SUTs
 
-        private CreateAppointmentCommand CreateAppointmentCommandSUT(int appointmentDurationInMinutes, Guid patientId, Guid doctorId)
+        private static CreateAppointmentCommand CreateAppointmentCommandSUT(int appointmentDurationInMinutes, Guid patientId, Guid doctorId)
         {
             return new CreateAppointmentCommand
             {
@@ -375,11 +415,10 @@ namespace HealthcareManagement.IntegrationTests
             };
         }
 
-        private Appointment AppointmentSUT(int appointmentDurationInMinutes)
+        private static Appointment AppointmentSUT(int appointmentDurationInMinutes, Guid patientId, Guid doctorId)
         {
             return new Appointment
             {
-                Id = Guid.NewGuid(),
                 Date = DateSingleton.GetCurrentDateOnly(),
                 StartTime = TimeSingleton.GetCurrentTimeOnly(),
                 EndTime = TimeSingleton.GetCurrentTimeOnly().AddMinutes(appointmentDurationInMinutes),
@@ -389,7 +428,7 @@ namespace HealthcareManagement.IntegrationTests
             };
         }
 
-        private CancelAppointmentCommand CancelAppointmentCommandSUT(Guid appointmentId, Guid pacientId)
+        private static CancelAppointmentCommand CancelAppointmentCommandSUT(Guid appointmentId, Guid pacientId)
         {
             return new CancelAppointmentCommand
             {
@@ -399,7 +438,7 @@ namespace HealthcareManagement.IntegrationTests
             };
         }
 
-        private UpdateAppointmentCommand UpdateAppointmentCommandSUT(Guid appointmentId, Guid patientId , int appointmentDurationInMinutes)
+        private static UpdateAppointmentCommand UpdateAppointmentCommandSUT(Guid appointmentId, Guid patientId , int appointmentDurationInMinutes)
         {
             return new UpdateAppointmentCommand
             {
@@ -413,7 +452,7 @@ namespace HealthcareManagement.IntegrationTests
             };
         }
 
-        private RescheduleAppointmentCommand RescheduleAppointmentCommandSUT(Guid patientId, Guid appointmentId)
+        private static RescheduleAppointmentCommand RescheduleAppointmentCommandSUT(Guid patientId, Guid appointmentId)
         {
             return new RescheduleAppointmentCommand
             {
@@ -424,7 +463,7 @@ namespace HealthcareManagement.IntegrationTests
             };
         }
 
-        private Doctor DoctorSUT()
+        private static Doctor DoctorSUT()
         {
             return new Doctor
             {
@@ -440,7 +479,7 @@ namespace HealthcareManagement.IntegrationTests
             };
         }
 
-        private Patient PatientSUT()
+        private static Patient PatientSUT()
         {
             return new Patient
             {

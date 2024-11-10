@@ -2,6 +2,6 @@
 {
     public abstract class Staff : User
     {
-        public string MedicalRank { get; set; }
+        public required string MedicalRank { get; set; }
     }
 }

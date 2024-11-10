@@ -30,7 +30,7 @@ public class BulkInsertLocationCommandHandler : IRequestHandler<BulkInsertLocati
         return Result<Unit>.Success(default);
     }
     
-    private ICollection<Location> CreateLocations(int maxFloorNo, int roomsPerFloor)
+    private static List<Location> CreateLocations(int maxFloorNo, int roomsPerFloor)
     {
         var locations = new List<Location>();
         for (var floorIndex = 0; floorIndex < maxFloorNo; floorIndex++)

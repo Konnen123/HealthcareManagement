@@ -32,7 +32,9 @@ namespace Application
                     var error = new Error("Validation failed", string.Join(" ", failures.Select(f => f.ErrorMessage)));
                     var resultType = typeof(TResponse).GetGenericTypeDefinition().MakeGenericType(typeof(TResponse).GetGenericArguments());
                     var failureMethod = resultType.GetMethod("Failure", BindingFlags.Static | BindingFlags.Public);
-                    return (TResponse)failureMethod.Invoke(null, new object[] { error });
+                    TResponse response = (TResponse)failureMethod?.Invoke(null, [error])!;
+
+                    return response;
                 }
             }
 

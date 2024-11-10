@@ -9,12 +9,10 @@ namespace Application.Use_Cases.CommandHandlers.AppointmentCommandHandlers;
 
 public class CancelAppointmentCommandHandler : IRequestHandler<CancelAppointmentCommand, Result<Unit>>
 {
-    private readonly IMapper _mapper;
     private readonly IAppointmentRepository _repository;
 
-    public CancelAppointmentCommandHandler(IMapper mapper, IAppointmentRepository repository)
+    public CancelAppointmentCommandHandler(IAppointmentRepository repository)
     {
-        _mapper = mapper;
         _repository = repository;
     }
     
