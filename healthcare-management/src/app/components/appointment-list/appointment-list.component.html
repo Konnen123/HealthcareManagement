@@ -1,1 +1,12 @@
 <p>appointment-list works!</p>
+
+<p *ngFor="let appointment of appointments">
+  ID: {{appointment.id}},
+  Patient ID: {{appointment.patientId}},
+  Date: {{appointment.date}},
+  Start Time: {{appointment.starTime}},
+  End Time: {{appointment.endTime}},
+  User Notes: {{appointment.userNotes}},
+  Doctor ID: {{appointment.doctorId}}
+
+</p>

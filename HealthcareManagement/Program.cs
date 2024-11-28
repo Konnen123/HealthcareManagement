@@ -18,6 +18,18 @@ builder.Configuration["ConnectionStrings:Username"] = Environment.GetEnvironment
 builder.Configuration["ConnectionStrings:Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD");
 builder.Configuration["ConnectionStrings:Database"] = Environment.GetEnvironmentVariable("DB_NAME");
 
+var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigin,
+                    policy =>
+                    {
+                        policy.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_URL")!);
+                        policy.AllowAnyHeader();
+                        policy.AllowAnyMethod();
+                    });
+});
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -43,6 +55,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseCors(MyAllowSpecificOrigin);
 
 app.UseHttpsRedirection();
 

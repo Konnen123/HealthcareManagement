@@ -79,8 +79,7 @@
               "buildTarget": "healthcare-management:build:production"
             },
             "development": {
-              "buildTarget": "healthcare-management:build:development",
-              "proxyConfig": "src/proxy.conf.json"
+              "buildTarget": "healthcare-management:build:development"
             }
           },
           "defaultConfiguration": "development"

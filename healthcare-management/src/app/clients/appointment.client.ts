@@ -8,9 +8,13 @@ import {Appointment} from '../models/appointment.model';
 @Injectable({
   providedIn: 'root',
 })
-export class AppointmentClient {
-  private baseUrl: string = '/api/v1/Appointments';
-  constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig, private http: HttpClient) {}
+export class AppointmentClient
+{
+  private readonly baseUrl: string;
+  constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig, private http: HttpClient)
+  {
+    this.baseUrl = this.config.apiEndpoint + '/v1/Appointments';
+  }
 
   public getAllAppointments(): Observable<Appointment[]>
   {
