@@ -26,10 +26,10 @@ namespace HealthcareManagement.IntegrationTests
             {
                 builder.ConfigureServices(services =>
                 {
-                    var descriptor = services.SingleOrDefault(
-                        d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+                    var descriptors = services.Where(
+                        d => d.ServiceType.FullName.Contains("Microsoft.EntityFrameworkCore")).ToList();
 
-                    if (descriptor != null)
+                    foreach (var descriptor in descriptors)
                     {
                         services.Remove(descriptor);
                     }
