@@ -20,4 +20,9 @@ export class AppointmentClient
   {
     return this.http.get<Appointment[]>(this.baseUrl);
   }
+
+  public createAppointment(appointment: Appointment): Observable<any>
+  {
+    return this.http.post<Appointment>(this.baseUrl, appointment);
+  }
 }

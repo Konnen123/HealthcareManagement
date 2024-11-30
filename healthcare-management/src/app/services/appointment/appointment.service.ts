@@ -22,5 +22,19 @@ export class AppointmentService{
     return await firstValueFrom(this.appointmentClient.getAllAppointments());
   }
 
+  public async createAsync(appointment: Appointment): Promise<any> {
+    if (!this.isBrowser) {
+      return Promise.reject('Not running in a browser environment.');
+    }
+
+    try {
+      const result = this.appointmentClient.createAppointment(appointment);
+      console.log('Server response:', result);
+      return result;
+    } catch (error) {
+      console.error('Error while creating appointment:', error);
+      throw error;
+    }
+  }
 
 }
