@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = './src/environments';
 
+if(!process.env.production) {
+  console.log('Production environment variable not set!');
+  process.exit(1);
+}
+
 if (!fs.existsSync(path)) {
   fs.mkdirSync(path, { recursive: true }); // Create the folder if it doesn't exist
   console.log('Environments folder created!');
@@ -9,7 +14,7 @@ if (!fs.existsSync(path)) {
   // Fetch environment variables from process.env
   const environment = `
     export const environment = {
-        production: ${process.env['production']},
+        production: ${process.env.production},
         apiEndpoint: '${process.env.apiEndpoint}'
     };
     `;
