@@ -17,6 +17,7 @@ builder.Configuration["ConnectionStrings:Port"] = Environment.GetEnvironmentVari
 builder.Configuration["ConnectionStrings:Username"] = Environment.GetEnvironmentVariable("DB_USER");
 builder.Configuration["ConnectionStrings:Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD");
 builder.Configuration["ConnectionStrings:Database"] = Environment.GetEnvironmentVariable("DB_NAME");
+builder.Configuration["CORS:ClientUrl"] = Environment.GetEnvironmentVariable("CLIENT_URL");
 
 var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
 builder.Services.AddCors(options =>
@@ -24,7 +25,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigin,
                     policy =>
                     {
-                        policy.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_URL")! ?? "");
+                        policy.WithOrigins(Environment.GetEnvironmentVariable("CLIENT_URL") ?? "http://localhost:4200");
                         policy.AllowAnyHeader();
                         policy.AllowAnyMethod();
                     });
@@ -64,7 +65,7 @@ app.UseCors(MyAllowSpecificOrigin);
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
+app.MapControllers();   
 app.Run();
 
 public partial class Program
