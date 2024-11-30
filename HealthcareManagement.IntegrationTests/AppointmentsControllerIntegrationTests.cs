@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 using FluentAssertions;
 using Domain.Entities;
 using Application.Use_Cases.Commands.AppointmentCommands;
+using DotNetEnv;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace HealthcareManagement.IntegrationTests
 {
@@ -24,6 +27,8 @@ namespace HealthcareManagement.IntegrationTests
         {
             this.factory = factory.WithWebHostBuilder(builder =>
             {
+                Env.Load();
+                var clientUrl = Environment.GetEnvironmentVariable("CLIENT_URL");
                 builder.ConfigureServices(services =>
                 {
                     var descriptors = services.Where(
@@ -37,6 +42,15 @@ namespace HealthcareManagement.IntegrationTests
                     services.AddDbContext<ApplicationDbContext>(options =>
                     {
                         options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    });
+                });
+                
+                //Injectam acel URL in care se afla CLIENT_URL
+                builder.ConfigureAppConfiguration((context, configBuilder) =>
+                {
+                    configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+                    {
+                        { "CLIENT_URL", clientUrl } 
                     });
                 });
             });
