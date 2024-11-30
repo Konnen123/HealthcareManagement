@@ -9,5 +9,9 @@ export const routes: Routes = [
   {
     path: 'appointments/create',
     loadComponent: () =>import('./components/appointment-create/appointment-create.component').then(m=>m.AppointmentCreateComponent)
+  },
+  {
+    path: 'appointments/:id',
+    loadComponent: () =>import('./components/appointment-detail/appointment-detail.component').then(m=>m.AppointmentDetailComponent)
   }
 ];

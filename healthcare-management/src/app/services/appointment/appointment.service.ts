@@ -26,7 +26,6 @@ export class AppointmentService{
     if (!this.isBrowser) {
       return Promise.reject('Not running in a browser environment.');
     }
-
     try {
       const result = this.appointmentClient.createAppointment(appointment);
       console.log('Server response:', result);
@@ -37,4 +36,13 @@ export class AppointmentService{
     }
   }
 
+  public async getByIdAsync(id: string): Promise<Appointment> {
+    try {
+      //console.log('Server response:', result);
+      return await firstValueFrom(this.appointmentClient.getAppointmentById(id));
+    } catch (error) {
+      //console.error('Error while fetching appointment:', error);
+      throw error;
+    }
+  }
 }

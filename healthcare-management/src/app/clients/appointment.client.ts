@@ -25,4 +25,10 @@ export class AppointmentClient
   {
     return this.http.post<Appointment>(this.baseUrl, appointment);
   }
+
+  public getAppointmentById(id: string): Observable<Appointment>
+  {
+    return this.http.get<Appointment>(`${this.baseUrl}/${id}`);
+  }
+
 }

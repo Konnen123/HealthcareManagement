@@ -1,0 +1,56 @@
+<mat-card *ngIf="!errorMessage && !loading">
+  <h3>Appointment Details</h3>
+  <div class="form-row">
+    <!-- Patient ID -->
+    <div class="detail-item">
+      <div class="detail-item-row">
+        <mat-icon>person</mat-icon>
+        <strong>Patient ID:</strong>
+      </div>
+      <span>{{appointmentDetails.patientId}}</span>
+    </div>
+    <!-- Doctor ID -->
+    <div class="detail-item">
+      <div class="detail-item-row">
+        <mat-icon>medical_services</mat-icon>
+        <strong>Doctor ID:</strong>
+      </div>
+      <span>{{ appointmentDetails.doctorId }}</span>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <!-- Date -->
+    <div class="detail-item">
+      <div class="detail-item-row">
+        <mat-icon>calendar_today</mat-icon>
+        <strong>Date:</strong>
+      </div>
+      <span>{{appointmentDetails.date}}</span>
+    </div>
+    <!-- Time -->
+    <div class="detail-item">
+      <div class="detail-item-row">
+        <mat-icon>access_time</mat-icon>
+        <strong>Time:</strong>
+      </div>
+      <span>{{appointmentDetails.startTime}} - {{appointmentDetails.endTime}}</span>
+    </div>
+  </div>
+
+  <!-- Additional Notes -->
+  <div class="form-row">
+    <div class="detail-item">
+      <div class="detail-item-row">
+        <mat-icon>notes</mat-icon>
+        <strong>Additional Notes:</strong>
+      </div>
+      <span class="user-notes">{{appointmentDetails.userNotes}}</span>
+    </div>
+  </div>
+
+  <div class="form-actions">
+<!--    <button mat-flat-button color="primary" (click)="onEdit()">Edit</button>-->
+<!--    <button mat-stroked-button color="warn" (click)="onDelete()">Delete</button>-->
+  </div>
+</mat-card>

@@ -3,7 +3,7 @@ export interface Appointment
   id?: string,
   patientId: string,
   date: Date,
-  starTime: string,
+  startTime: string,
   endTime: string,
   userNotes?: string,
   doctorId: string,
