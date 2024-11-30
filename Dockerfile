@@ -36,4 +36,5 @@ ENV PATH="${PATH}:/root/.dotnet/tools"
 EXPOSE 80
 
 # Define the entry point to run the app
-ENTRYPOINT ["dotnet", "HealthcareManagement.dll"]
+#ENTRYPOINT ["dotnet", "HealthcareManagement.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet HealthcareManagement.dll
