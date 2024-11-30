@@ -1,8 +1,7 @@
 const fs = require('fs');
 
 // Check if the environment is set to production
-if (process.env.production === true)
-{
+
   // Fetch environment variables from process.env
   const environment = `
     export const environment = {
@@ -14,4 +13,3 @@ if (process.env.production === true)
   // Write the file to the environments folder
   fs.writeFileSync('./src/environments/environment.ts', environment);
   console.log('Production environment file created successfully!');
-}
