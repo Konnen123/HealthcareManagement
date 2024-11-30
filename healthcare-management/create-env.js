@@ -9,11 +9,12 @@ if (!fs.existsSync(path)) {
   // Fetch environment variables from process.env
   const environment = `
     export const environment = {
-        production: true,
+        production: ${process.env['production']},
         apiEndpoint: '${process.env.apiEndpoint}'
     };
     `;
 
   // Write the file to the environments folder
   fs.writeFileSync(`${path}/environment.ts`, environment);
+  console.log(environment);
   console.log('Production environment file created successfully!');
