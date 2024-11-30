@@ -45,14 +45,6 @@ namespace HealthcareManagement.IntegrationTests
                     });
                 });
                 
-                //Injectam acel URL in care se afla CLIENT_URL
-                builder.ConfigureAppConfiguration((context, configBuilder) =>
-                {
-                    configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
-                    {
-                        { "CLIENT_URL", clientUrl } 
-                    });
-                });
             });
 
             var scope = this.factory.Services.CreateScope();
