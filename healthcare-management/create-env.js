@@ -1,13 +1,13 @@
 const fs = require('fs');
 
 // Check if the environment is set to production
-if (process.env.NODE_ENV === 'production')
+if (process.env.production === true)
 {
   // Fetch environment variables from process.env
   const environment = `
     export const environment = {
         production: true,
-        apiEndpoint: '${process.env.API_URL}'
+        apiEndpoint: '${process.env.apiEndpoint}'
     };
     `;
 
