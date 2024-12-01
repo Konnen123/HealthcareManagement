@@ -1,8 +1,13 @@
 using System.Reflection;
 using Application;
+using Application.DTOs;
 using Application.Utils;
+using Domain.Entities;
 using DotNetEnv;
 using Infrastructure;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 
 Env.Load();
 
@@ -34,11 +39,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
-    });
+builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count().AddRouteComponents("odata", GetEdmModel()));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -67,6 +68,13 @@ app.UseHttpsRedirection();
 
 app.MapControllers();   
 app.Run();
+
+IEdmModel GetEdmModel()
+{
+    var odataBuilder = new ODataConventionModelBuilder();
+    odataBuilder.EntitySet<Appointment>("Appointments");
+    return odataBuilder.GetEdmModel();
+}
 
 public partial class Program
 {
