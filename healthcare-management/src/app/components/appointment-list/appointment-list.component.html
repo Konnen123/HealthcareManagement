@@ -1,12 +1,53 @@
-<p>appointment-list works!</p>
+<div class="appointment-list">
+  <h1>All Appointments</h1>
 
-<p *ngFor="let appointment of appointments">
-  ID: {{appointment.id}},
-  Patient ID: {{appointment.patientId}},
-  Date: {{appointment.date}},
-  Start Time: {{appointment.starTime}},
-  End Time: {{appointment.endTime}},
-  User Notes: {{appointment.userNotes}},
-  Doctor ID: {{appointment.doctorId}}
+  <table mat-table [dataSource]="appointments" class="mat-elevation-z8" *ngIf="!loading">
 
-</p>
+    <!-- Patient ID Column -->
+    <ng-container matColumnDef="patientId">
+      <th mat-header-cell *matHeaderCellDef> Patient ID </th>
+      <td mat-cell *matCellDef="let appointment">
+        <span matTooltip="{{ appointment.patientId }}">
+        {{ appointment.patientId | slice:0:4 }}...{{ appointment.patientId | slice:-4 }}
+      </span>
+      </td>
+    </ng-container>
+
+    <!-- Doctor ID Column -->
+    <ng-container matColumnDef="doctorId">
+      <th mat-header-cell *matHeaderCellDef> Doctor ID </th>
+      <td mat-cell *matCellDef="let appointment">
+        <span matTooltip="{{ appointment.doctorId }}">
+        {{ appointment.doctorId | slice:0:4 }}...{{ appointment.doctorId | slice:-4 }}
+      </span>
+      </td>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let appointment">
+        {{appointment.date}}
+      </td>
+    </ng-container>
+
+    <!-- Time Column -->
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef> Time </th>
+      <td mat-cell *matCellDef="let appointment">
+        {{appointment.startTime}}-{{appointment.endTime}}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="appointments"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onPageChange($event)" ><!-- Event triggered when user changes page -->
+
+  </mat-paginator>
+</div>

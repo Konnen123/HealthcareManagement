@@ -109,6 +109,8 @@ export class AppointmentCreateComponent {
     }
   }
 
+
+
   formatDate(date: Date | string): string {
     const d = new Date(date);
     const year = d.getFullYear();

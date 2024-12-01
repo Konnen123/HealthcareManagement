@@ -27,4 +27,7 @@ form {
   @include mat.form-field-density($compact-theme);
 }
 
-
+.error-snackbar{
+  background-color: #da0f0f !important;
+  color: black !important;
+}

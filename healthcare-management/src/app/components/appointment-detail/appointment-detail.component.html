@@ -1,4 +1,4 @@
-<mat-card *ngIf="!errorMessage && !loading">
+<mat-card *ngIf="!loading">
   <h3>Appointment Details</h3>
   <div class="form-row">
     <!-- Patient ID -->
@@ -51,6 +51,6 @@
 
   <div class="form-actions">
 <!--    <button mat-flat-button color="primary" (click)="onEdit()">Edit</button>-->
-<!--    <button mat-stroked-button color="warn" (click)="onDelete()">Delete</button>-->
+    <button mat-stroked-button color="warn" (click)="onDelete()">Delete</button>
   </div>
 </mat-card>

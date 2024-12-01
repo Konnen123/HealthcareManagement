@@ -27,21 +27,49 @@ export class AppointmentService{
       return Promise.reject('Not running in a browser environment.');
     }
     try {
-      const result = this.appointmentClient.createAppointment(appointment);
-      console.log('Server response:', result);
+      const result = firstValueFrom(this.appointmentClient.createAppointment(appointment));
+      console.log('Server response in the service :', result);
       return result;
     } catch (error) {
-      console.error('Error while creating appointment:', error);
+      console.error('Error while creating appointment in service', error);
       throw error;
     }
   }
 
   public async getByIdAsync(id: string): Promise<Appointment> {
     try {
-      //console.log('Server response:', result);
       return await firstValueFrom(this.appointmentClient.getAppointmentById(id));
     } catch (error) {
-      //console.error('Error while fetching appointment:', error);
+      throw error;
+    }
+  }
+
+  public async updateAsync(appointment: Appointment): Promise<any> {
+    try {
+      const result = firstValueFrom(this.appointmentClient.updateAppointment(appointment));
+      console.log('Server response:', result);
+      return result;
+    } catch (error) {
+      console.error('Error while updating appointment in service:', error);
+      throw error;
+    }
+  }
+
+  public async deleteAsync(id: string): Promise<any> {
+    try {
+      const result = firstValueFrom(this.appointmentClient.deleteAppointment(id));
+      console.log('Server response:', result);
+      return result;
+    } catch (error) {
+      console.error('Error while deleting appointment in service:', error);
+      throw error;
+    }
+  }
+
+  public async getAppointmentsPaginatedAsync(pageSize: number, pageIndex: number): Promise<Appointment[]> {
+    try {
+      return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(pageSize, pageIndex));
+    } catch (error) {
       throw error;
     }
   }

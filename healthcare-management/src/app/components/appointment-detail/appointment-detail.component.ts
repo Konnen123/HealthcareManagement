@@ -3,13 +3,14 @@ import {
   MatCard
 } from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {AppointmentService} from '../../services/appointment/appointment.service';
 import {Appointment} from '../../models/appointment.model';
 import {HttpErrorResponse} from '@angular/common/http';
 import {NgIf} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AbstractControl, ValidationErrors} from '@angular/forms';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -17,6 +18,7 @@ import {AbstractControl, ValidationErrors} from '@angular/forms';
     MatCard,
     MatIcon,
     NgIf,
+    MatButton,
   ],
   templateUrl: './appointment-detail.component.html',
   styleUrl: './appointment-detail.component.scss'
@@ -24,13 +26,13 @@ import {AbstractControl, ValidationErrors} from '@angular/forms';
 export class AppointmentDetailComponent implements OnInit{
   appointmentId!: string;
   appointmentDetails!: Appointment;
-  errorMessage: string | null = null;
   loading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private appointmentService: AppointmentService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
   }
 
@@ -41,10 +43,17 @@ export class AppointmentDetailComponent implements OnInit{
     });
   }
 
+  onDelete() {
+    this.appointmentService.deleteAsync(this.appointmentId).then(() => {
+      console.log('Appointment deleted successfully.');
+      this.router.navigate(['/appointments']).then(r => console.log('Navigated to appointments.'));
+    }).catch((error) => {
+      this.showErrorSnackbar('An error occurred while deleting the appointment.');
+    });
+  }
 
   fetchAppointmentDetails(): void {
     this.loading = true;
-    this.errorMessage = null; // Reset error state
     this.appointmentService.getByIdAsync(this.appointmentId)
       .then((appointment) => {
         this.appointmentDetails = appointment;
@@ -52,18 +61,18 @@ export class AppointmentDetailComponent implements OnInit{
       })
       .catch((error: HttpErrorResponse) => {
         this.loading = false;
-        this.errorMessage = error.status === 404
+        this.showErrorSnackbar(error.status === 404
           ? `Appointment not found.`
-          : 'An unexpected error occurred.';
-        this.showErrorSnackbar();
+          : 'An unexpected error occurred.');
       });
   }
 
-  showErrorSnackbar(): void {
-    this.snackBar.open(this.errorMessage || 'An error occurred.', 'Close', {
-      duration: 5000,
+  private showErrorSnackbar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
+      panelClass: ['error-snackbar'],
     });
   }
 
