@@ -19,8 +19,6 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 @Component({
   selector: 'app-appointment-list',
   imports: [
-    NgForOf,
-    MatProgressSpinner,
     MatTable,
     MatColumnDef,
     MatHeaderCell,
@@ -43,49 +41,57 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 export class AppointmentListComponent implements OnInit
 {
   appointments!: Appointment[];
+  totalCountAppointments: number = 0;
   pageSize: number = 10;
   currentPage: number = 0;
-  loading: boolean = true;
+  pageSizeOptions: number[] = [5, 10, 20];
   displayedColumns: string[] = ['patientId', 'doctorId', 'date', 'time'];
 
   constructor(
     private appointmentService: AppointmentService,
     private snackBar: MatSnackBar
-    ) {}
+    ) {
+  }
 
   ngOnInit(): void {
+    this.fetchAppointments();
+    this.initializePage();
+  }
+
+  initializePage(): void {
     this.loadAppointments(this.pageSize, this.currentPage * this.pageSize);
+
   }
 
   loadAppointments(top: number, skip: number): void {
     this.appointmentService.getAppointmentsPaginatedAsync(top, skip).then(appointments => {
       this.appointments = appointments;
-      this.loading = false;
+      console.log('Appointments:', this.appointments);
     }).catch(error => {
       console.error('Error while fetching appointments:', error);
       this.showErrorSnackbar('Error while fetching appointments');
     });
   }
 
+  handlePageEvent(event: PageEvent): void {
+    console.log('Page Index:', event.pageIndex);
+    console.log('Page Size:', event.pageSize);
+    console.log('Total Items:', this.totalCountAppointments);
 
-  onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
+    this.currentPage = event.pageIndex; // o based index , prima pagina e 10*0, a doua e 10*1
     const skip = this.currentPage * this.pageSize;
     this.loadAppointments(this.pageSize, skip);
   }
 
-  // fetchAppointments(): void{
-  //   this.loading = true;
-  //   this.appointmentService.getAllAsync().then(appointments => {
-  //     this.appointments = appointments;
-  //     this.loading = false;
-  //   }).catch(error => {
-  //     console.error('Error while fetching appointments:', error);
-  //     this.loading = false;
-  //     this.showErrorSnackbar('Error while fetching appointments');
-  //   })
-  // }
+  fetchAppointments(): void{
+    this.appointmentService.getAllAsync().then(app => {
+      this.totalCountAppointments = app.length;
+    }).catch(error => {
+      console.error('Error while fetching appointments:', error);
+      this.showErrorSnackbar('Error while fetching appointments');
+    })
+  }
 
   private showErrorSnackbar(message: string): void {
     this.snackBar.open(message, 'Close', {

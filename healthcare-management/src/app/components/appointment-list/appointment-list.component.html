@@ -1,7 +1,7 @@
 <div class="appointment-list">
   <h1>All Appointments</h1>
 
-  <table mat-table [dataSource]="appointments" class="mat-elevation-z8" *ngIf="!loading">
+  <table mat-table [dataSource]="appointments" class="mat-elevation-z8">
 
     <!-- Patient ID Column -->
     <ng-container matColumnDef="patientId">
@@ -44,10 +44,13 @@
   </table>
 
   <mat-paginator
-    [length]="appointments"
+    (page)="handlePageEvent($event)"
+    [length]="totalCountAppointments"
     [pageSize]="pageSize"
-    [pageSizeOptions]="[5, 10, 20]"
-    (page)="onPageChange($event)" ><!-- Event triggered when user changes page -->
-
+    [pageSizeOptions]="pageSizeOptions"
+    [showFirstLastButtons]="true"
+    [pageIndex]="currentPage"
+    aria-label="Select page">
+      >
   </mat-paginator>
 </div>
