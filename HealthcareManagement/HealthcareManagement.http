@@ -3,4 +3,22 @@
 GET {{HealthcareManagement_HostAddress}}/weatherforecast/
 Accept: application/json
 
+#Operanzii pentru comparare sunt eq(=), lt(<), le(<=), gt(>), ge(>=), ne(!=)
 ###
+http://localhost:5072/api/v1/Appointments?$filter=startTime lt 11:50:00
+###
+http://localhost:5072/api/v1/Appointments?$filter=date gt 2023-12-12
+###
+http://localhost:5072/api/v1/Appointments?$filter=date gt 2023-12-12
+###
+http://localhost:5072/api/v1/Appointments?$filter=RoomNo eq '25'
+###
+http://localhost:5072/api/v1/Appointments?$filter=duration eq duration'PT10M'
+# PT10M inseamna Period of Time: 10 minutes
+###
+#Pag 1 cu 10 rezultate
+http://localhost:5072/api/v1/Appointments?$top=10&$skip=0
+###
+#Pag 2 cu 10 rezultate
+http://localhost:5072/api/v1/Appointments?$top=10&$skip=10
+

@@ -1,18 +1,19 @@
-﻿using Application.Use_Cases.Commands;
+﻿using Application.DTOs;
+using Application.Use_Cases.Commands;
 using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Queries.AppointmentQueries;
 using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace HealthcareManagement.Controller
+namespace HealthcareManagement.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class AppointmentsController : ControllerBase
+    public class AppointmentsController : ODataController
     {
         private readonly IMediator mediator;
 
@@ -47,16 +48,16 @@ namespace HealthcareManagement.Controller
             );
         }
 
-        [HttpGet]
+        [HttpGet]   
         [EnableQuery]
-        [SwaggerOperation(
-        Summary = "Get all appointments with OData query support",
-        Description = "Supports OData query options like $filter, $orderby, $top, and $skip."
-    )]
-        public async Task<ActionResult<IQueryable<Appointment>>> GetAllAppointments()
+    //     [SwaggerOperation(
+    //     Summary = "Get all appointments with OData query support",
+    //     Description = "Supports OData query options like $filter, $orderby, $top, and $skip."
+    // )]
+        public async Task<ActionResult<IQueryable<AppointmentDto>>> GetAllAppointments()
         {
             var res = await mediator.Send(new GetAllAppointmentsQuery());
-            return Ok(res);
+            return Ok(res.Value);
         }
 
 
