@@ -1,57 +1,67 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
   Validators
 } from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AppointmentService} from '../../services/appointment/appointment.service';
-import {Router} from '@angular/router';
-import {MatError, MatFormField, MatHint, MatLabel, MatSuffix} from '@angular/material/form-field';
-import {MatInput} from '@angular/material/input';
-import {MatIcon, MatIconModule} from '@angular/material/icon';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {HttpErrorResponse} from '@angular/common/http';
 import {MatButton} from '@angular/material/button';
-import {
-  MatDatepicker,
-  MatDatepickerInput,
-  MatDatepickerToggle
-} from '@angular/material/datepicker';
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
+import {MatError, MatFormField, MatHint, MatLabel, MatSuffix} from '@angular/material/form-field';
+import {MatIcon} from '@angular/material/icon';
+import {MatInput} from '@angular/material/input';
 import {NgIf} from '@angular/common';
 import {CustomValidators} from '../../shared/custom-validators';
-import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-appointment-create',
+  selector: 'app-appointment-update',
   imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatInput,
-    MatIconModule,
-    MatLabel,
-    MatError,
-    MatIcon,
+    FormsModule,
     MatButton,
-    MatHint,
-    MatDatepickerToggle,
     MatDatepicker,
-    MatSuffix,
     MatDatepickerInput,
-    NgIf
+    MatDatepickerToggle,
+    MatError,
+    MatFormField,
+    MatHint,
+    MatIcon,
+    MatInput,
+    MatLabel,
+    MatSuffix,
+    NgIf,
+    ReactiveFormsModule
   ],
-  templateUrl: './appointment-create.component.html',
-  styleUrl: './appointment-create.component.scss'
+  templateUrl: './appointment-update.component.html',
+  styleUrl: './appointment-update.component.scss'
 })
-export class AppointmentCreateComponent {
-  appointmentForm: FormGroup;
+export class AppointmentUpdateComponent implements OnInit {
+  appointmentForm!: FormGroup;
+  appointmentId!: string;
+  loading: boolean = true;
 
   constructor(
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     private appointmentService: AppointmentService,
     private snackBar: MatSnackBar,
     private router: Router
   ) {
+  }
+
+  ngOnInit(): void {
+    // Get the appointment from the URL
+    this.route.params.subscribe(params => {
+      this.appointmentId = params['id'];
+      this.loadAppointmentDetails();
+    });
+
     this.appointmentForm = this.fb.group({
       patientId: [
         '',
@@ -74,9 +84,29 @@ export class AppointmentCreateComponent {
     });
   }
 
-  ngOnit(): void {}
+  private loadAppointmentDetails() {
+    //Fetch appointment details
+    this.appointmentService.getByIdAsync(this.appointmentId).then(appointment => {
+      this.appointmentForm.patchValue(appointment);
+      this.loading = false;
+    }).catch((error: HttpErrorResponse) => {
+      this.loading = false;
+      this.showErrorSnackbar(error.status === 404
+        ? `Appointment not found.`
+        : 'An unexpected error occurred.');
+    });
+  }
 
-  onSubmit() {
+  private showErrorSnackbar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['error-snackbar'],
+    });
+  }
+
+  onSubmit(){
     if (this.appointmentForm.valid) {
       //console.log(this.appointmentForm.value);
       const rawData = this.appointmentForm.value;
@@ -86,16 +116,16 @@ export class AppointmentCreateComponent {
         date: this.formatDate(rawData.date), // Format date
         startTime: this.formatTime(rawData.startTime), // Format start time
         endTime: this.formatTime(rawData.endTime), // Format end time
+        id: this.appointmentId
       };
       //console.log(appointmentData);
-      this.appointmentService.createAsync(appointmentData).then((res) => {
+      this.appointmentService.updateAsync(appointmentData).then((res) => {
         console.log('Server response:', res);
         //this.router.navigate(['/appointments']);
       }).catch((error) => {
         console.error('Error while creating appointment in component:', error);
-
-        if (error.status === 400) {
-          this.snackBar.open('Invalid appointment data. Please check the form and try again.', 'Close', {
+        if (error.status === 400){
+          this.snackBar.open('Unable to update the appointment. Please check the form and try again.', 'Close', {
             duration: 5000,
             panelClass: ['error-snackbar'],
           });
@@ -105,7 +135,7 @@ export class AppointmentCreateComponent {
             panelClass: ['error-snackbar'],
           });
         }
-      })
+      });
     }
   }
 
