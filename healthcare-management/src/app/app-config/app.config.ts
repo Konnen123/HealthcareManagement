@@ -1,4 +1,4 @@
-import {environment} from '../../environments/environment.development';
+import {environment} from '../../environments/environment';
 import {AppConfig} from './app.config.interface';
 import {InjectionToken} from '@angular/core';
 
