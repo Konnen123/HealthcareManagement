@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import {AppointmentCreateComponent} from './components/appointment-create/appointment-create.component';
 
 export const routes: Routes = [
   {

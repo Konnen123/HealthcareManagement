@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators
 } from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {AppointmentService} from '../../services/appointment/appointment.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -51,7 +49,6 @@ export class AppointmentUpdateComponent implements OnInit {
     private fb: FormBuilder,
     private appointmentService: AppointmentService,
     private snackBar: MatSnackBar,
-    private router: Router
   ) {
   }
 
@@ -113,7 +110,7 @@ export class AppointmentUpdateComponent implements OnInit {
 
       const appointmentData = {
         ...rawData,
-        date: this.formatDate(rawData.date), // Format date
+        date: rawData.date, // Format date
         startTime: this.formatTime(rawData.startTime), // Format start time
         endTime: this.formatTime(rawData.endTime), // Format end time
         id: this.appointmentId
@@ -139,13 +136,13 @@ export class AppointmentUpdateComponent implements OnInit {
     }
   }
 
-  formatDate(date: Date | string): string {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-based
-    const day = d.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+  // formatDate(date: Date | string): string {
+  //   const d = new Date(date);
+  //   const year = d.getFullYear();
+  //   const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-based
+  //   const day = d.getDate().toString().padStart(2, '0');
+  //   return `${year}-${month}-${day}`;
+  // }
 
   formatTime(time: string): string {
     const [hours, minutes] = time.split(':'); // Assume the input is `HH:mm`
