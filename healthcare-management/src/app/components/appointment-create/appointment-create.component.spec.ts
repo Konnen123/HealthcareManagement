@@ -13,8 +13,6 @@ describe('AppointmentCreateComponent', () => {
   let component: AppointmentCreateComponent;
   let fixture: ComponentFixture<AppointmentCreateComponent>;
   let appointmentService: jasmine.SpyObj<AppointmentService>;
-  let router: jasmine.SpyObj<Router>;
-  let snackBar: jasmine.SpyObj<MatSnackBar>;
 
   beforeEach(async () => {
     const appointmentServiceSpy = jasmine.createSpyObj('AppointmentService', ['createAsync']);
@@ -39,8 +37,6 @@ describe('AppointmentCreateComponent', () => {
     fixture = TestBed.createComponent(AppointmentCreateComponent);
     component = fixture.componentInstance;
     appointmentService = TestBed.inject(AppointmentService) as jasmine.SpyObj<AppointmentService>;
-    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    snackBar = TestBed.inject(MatSnackBar) as jasmine.SpyObj<MatSnackBar>;
     fixture.detectChanges();
   });
 
@@ -75,7 +71,5 @@ describe('AppointmentCreateComponent', () => {
 
     expect(appointmentService.createAsync).toHaveBeenCalled();
   });
-
-
 
 });
