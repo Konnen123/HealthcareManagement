@@ -39,20 +39,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// builder.Services.AddControllers()
-//     .AddOData(options =>
-//         options.Select()   
-//                .Filter()  
-//                .OrderBy() 
-//                .Expand()   
-//                .Count()
-//                .SetMaxTop(100)
-//                .AddRouteComponents("odata", GetEdmModel()))
-//     .AddJsonOptions(options =>
-//     {
-//         options.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
-//     });
-
 builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count().AddRouteComponents("odata", GetEdmModel()));
 
 // Add services to the container.
