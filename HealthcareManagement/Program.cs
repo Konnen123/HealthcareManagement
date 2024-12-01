@@ -3,6 +3,7 @@ using Application;
 using Application.Utils;
 using DotNetEnv;
 using Infrastructure;
+using Microsoft.AspNetCore.OData;
 
 Env.Load();
 
@@ -35,10 +36,17 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers()
+    .AddOData(options =>
+        options.Select()   
+               .Filter()  
+               .OrderBy() 
+               .Expand()   
+               .SetMaxTop(100))
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
     });
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

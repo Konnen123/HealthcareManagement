@@ -1,9 +1,11 @@
 ﻿using Application.Use_Cases.Commands;
 using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Queries.AppointmentQueries;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace HealthcareManagement.Controller
@@ -46,16 +48,15 @@ namespace HealthcareManagement.Controller
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllAppointments()
+        [EnableQuery]
+        [SwaggerOperation(
+        Summary = "Get all appointments with OData query support",
+        Description = "Supports OData query options like $filter, $orderby, $top, and $skip."
+    )]
+        public async Task<ActionResult<IQueryable<Appointment>>> GetAllAppointments()
         {
-            var resultObject = await mediator.Send(new GetAllAppointmentsQuery());
-            return resultObject.Match<IActionResult>(
-                onSuccess: value => value.Any() ? Ok(value) : NoContent(),
-                onFailure: error => BadRequest(error)
-            );
+            var res = await mediator.Send(new GetAllAppointmentsQuery());
+            return Ok(res);
         }
 
 
