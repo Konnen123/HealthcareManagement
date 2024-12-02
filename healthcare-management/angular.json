@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "externalDependencies":[""],
             "outputPath": "dist/healthcare-management",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -105,5 +106,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

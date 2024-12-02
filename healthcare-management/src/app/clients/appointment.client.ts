@@ -20,4 +20,29 @@ export class AppointmentClient
   {
     return this.http.get<Appointment[]>(this.baseUrl);
   }
+
+  public createAppointment(appointment: Appointment): Observable<any>
+  {
+    return this.http.post<Appointment>(this.baseUrl, appointment);
+  }
+
+  public getAppointmentById(id: string): Observable<Appointment>
+  {
+    return this.http.get<Appointment>(`${this.baseUrl}/${id}`);
+  }
+
+  public updateAppointment(appointment: Appointment): Observable<any>
+  {
+    return this.http.put(`${this.baseUrl}/${appointment.id}`, appointment);
+  }
+
+  public deleteAppointment(id: string): Observable<any>
+  {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
+
+  public getAppointmentsPaginated(top: number, skip:number) {
+    return this.http.get<Appointment[]>(`${this.baseUrl}?$top=${top}&$skip=${skip}`);
+  }
+
 }
