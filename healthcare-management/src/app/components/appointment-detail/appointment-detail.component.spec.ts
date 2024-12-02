@@ -43,7 +43,6 @@ describe('AppointmentDetailComponent', () => {
     component = fixture.componentInstance;
     appointmentService = TestBed.inject(AppointmentService) as jasmine.SpyObj<AppointmentService>;
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    snackBar = TestBed.inject(MatSnackBar) as jasmine.SpyObj<MatSnackBar>;
     fixture.detectChanges();
   });
 

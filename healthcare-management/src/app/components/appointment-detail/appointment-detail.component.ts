@@ -29,10 +29,10 @@ export class AppointmentDetailComponent implements OnInit{
   loading: boolean = true;
 
   constructor(
-    private route: ActivatedRoute,
-    private appointmentService: AppointmentService,
-    private snackBar: MatSnackBar,
-    private router: Router
+    readonly route: ActivatedRoute,
+    readonly appointmentService: AppointmentService,
+    readonly snackBar: MatSnackBar,
+    readonly router: Router
   ) {
   }
 

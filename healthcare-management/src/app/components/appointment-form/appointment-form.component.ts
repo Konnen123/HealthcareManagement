@@ -34,7 +34,7 @@ export class AppointmentFormComponent {
 
   appointmentForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(readonly fb: FormBuilder) {
     this.appointmentForm = this.fb.group({
       patientId: ['', [Validators.required, CustomValidators.isValidGuid, CustomValidators.isNotEmptyGuid]],
       doctorId: ['', [Validators.required, CustomValidators.isValidGuid, CustomValidators.isNotEmptyGuid]],

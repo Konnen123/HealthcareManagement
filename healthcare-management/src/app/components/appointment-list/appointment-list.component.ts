@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AppointmentService} from '../../services/appointment/appointment.service';
 import {Appointment} from '../../models/appointment.model';
-import {NgForOf, NgIf, SlicePipe} from '@angular/common';
+import {SlicePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
+
 import {
   MatCell,
   MatCellDef,
@@ -47,8 +47,8 @@ export class AppointmentListComponent implements OnInit
   displayedColumns: string[] = ['patientId', 'doctorId', 'date', 'time'];
 
   constructor(
-    private appointmentService: AppointmentService,
-    private snackBar: MatSnackBar
+    readonly appointmentService: AppointmentService,
+    readonly snackBar: MatSnackBar
     ) {
   }
 

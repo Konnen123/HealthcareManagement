@@ -40,6 +40,7 @@ export class AppointmentService{
     try {
       return await firstValueFrom(this.appointmentClient.getAppointmentById(id));
     } catch (error) {
+      console.error('Error while getting appointment in service:', error);
       throw error;
     }
   }
@@ -70,6 +71,7 @@ export class AppointmentService{
     try {
       return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(pageSize, pageIndex));
     } catch (error) {
+      console.error('Error while getting appointments paginated in service:', error);
       throw error;
     }
   }

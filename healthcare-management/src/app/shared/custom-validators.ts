@@ -2,9 +2,7 @@ import {AbstractControl, ValidationErrors} from '@angular/forms';
 
 export class CustomValidators {
   static isValidGuid(control: AbstractControl): ValidationErrors | null {
-    const guidRegex = new RegExp('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
-    const isValid = guidRegex.test(control.value);
-    console.log(`Validating GUID: ${control.value}, isValid: ${isValid}`);
+    const guidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
     return guidRegex.test(control.value) ? null : {invalidGuid: true};
   }
 

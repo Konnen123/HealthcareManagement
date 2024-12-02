@@ -13,9 +13,9 @@ import {AppointmentFormComponent} from '../appointment-form/appointment-form.com
 })
 export class AppointmentCreateComponent {
   constructor(
-    private appointmentService: AppointmentService,
-    private snackBar: MatSnackBar,
-    private router: Router
+    readonly appointmentService: AppointmentService,
+    readonly snackBar: MatSnackBar,
+    readonly router: Router
   ) {}
 
   onFormSubmit(formData: any): void {

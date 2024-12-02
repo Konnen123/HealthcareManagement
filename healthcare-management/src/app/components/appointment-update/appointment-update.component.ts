@@ -15,9 +15,9 @@ export class AppointmentUpdateComponent implements OnInit {
   appointmentData: any;
 
   constructor(
-    private route: ActivatedRoute,
-    private appointmentService: AppointmentService,
-    private snackBar: MatSnackBar
+    readonly route: ActivatedRoute,
+    readonly appointmentService: AppointmentService,
+    readonly snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
