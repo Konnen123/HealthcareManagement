@@ -42,36 +42,7 @@ describe('AppointmentListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // it('should fetch appointments and set appointments property', async () => {
-  //   const mockAppointments: Appointment[] = [
-  //     {
-  //       id: '1',
-  //       patientId: '123e4567-e89b-12d3-a456-426614174000',
-  //       doctorId: '123e4567-e89b-12d3-a456-426614174000',
-  //       date: new Date('2024-12-01'),
-  //       startTime: '10:00',
-  //       endTime: '11:00',
-  //       userNotes: 'Test notes 1'
-  //     },
-  //     {
-  //       id: '2',
-  //       patientId: '123e4567-e89b-12d3-a456-426614174001',
-  //       doctorId: '123e4567-e89b-12d3-a456-426614174001',
-  //       date: new Date('2024-12-02'),
-  //       startTime: '12:00',
-  //       endTime: '13:00',
-  //       userNotes: 'Test notes 2'
-  //     }
-  //   ];
-  //
-  //   appointmentService.getAllAsync.and.returnValue(Promise.resolve(mockAppointments));
-  //   component.fetchAppointments();
-  //
-  //   await fixture.whenStable();
-  //
-  //   expect(appointmentService.getAllAsync).toHaveBeenCalled();
-  //   expect(component.appointments).toEqual(mockAppointments);
-  // });
+
 });
 
 

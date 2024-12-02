@@ -26,7 +26,6 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
     MatHeaderRow,
     MatCellDef,
     MatHeaderCellDef,
-    NgIf,
     MatHeaderRowDef,
     MatRow,
     MatRowDef,
@@ -79,7 +78,7 @@ export class AppointmentListComponent implements OnInit
     console.log('Total Items:', this.totalCountAppointments);
 
     this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex; // o based index , prima pagina e 10*0, a doua e 10*1
+    this.currentPage = event.pageIndex;
     const skip = this.currentPage * this.pageSize;
     this.loadAppointments(this.pageSize, skip);
   }
