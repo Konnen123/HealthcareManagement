@@ -1,13 +1,12 @@
-using System.Reflection;
 using Application;
-using Application.DTOs;
-using Application.Utils;
 using Domain.Entities;
 using DotNetEnv;
 using Infrastructure;
+using Identity;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using Microsoft.OpenApi.Models;
 
 Env.Load();
 
@@ -23,6 +22,7 @@ builder.Configuration["ConnectionStrings:Username"] = Environment.GetEnvironment
 builder.Configuration["ConnectionStrings:Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD");
 builder.Configuration["ConnectionStrings:Database"] = Environment.GetEnvironmentVariable("DB_NAME");
 builder.Configuration["CORS:ClientUrl"] = Environment.GetEnvironmentVariable("CLIENT_URL");
+builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_SECRET");
 
 var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
 builder.Services.AddCors(options =>
@@ -38,6 +38,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddIdentity(builder.Configuration);
 
 builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count().AddRouteComponents("odata", GetEdmModel()));
 
@@ -46,7 +47,33 @@ builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().OrderBy(
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.EnableAnnotations();
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Healthcare Management", Version = "v1" });
+
+    // Add JWT Bearer Authorization
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: Bearer abcdef12345"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
 var app = builder.Build();
@@ -65,6 +92,10 @@ app.UseRouting();
 app.UseCors(MyAllowSpecificOrigin);
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();   
 app.Run();
