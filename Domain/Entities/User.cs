@@ -1,4 +1,6 @@
 ﻿
+using Domain.Utils;
+
 namespace Domain.Entities
 {
     public abstract class User
@@ -18,5 +20,7 @@ namespace Domain.Entities
         public DateOnly CreatedAt { get; set; }
 
         public bool IsEnabled { get; set; }
+
+        public RolesEnum Role {  get; set; }
     }
 }
