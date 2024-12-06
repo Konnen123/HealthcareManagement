@@ -1,3 +1,5 @@
+using Domain.Entities.User;
+
 namespace Domain.Entities;
 
 public class DailyDoctorSchedule

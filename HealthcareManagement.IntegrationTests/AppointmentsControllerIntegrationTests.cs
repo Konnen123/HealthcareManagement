@@ -13,6 +13,8 @@ using Application.Use_Cases.Commands.AppointmentCommands;
 using DotNetEnv;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Domain.Entities.User;
+using Identity;
 
 namespace HealthcareManagement.IntegrationTests
 {
@@ -40,6 +42,10 @@ namespace HealthcareManagement.IntegrationTests
                     }
 
                     services.AddDbContext<ApplicationDbContext>(options =>
+                    {
+                        options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    });
+                    services.AddDbContext<UsersDbContext>(options =>
                     {
                         options.UseInMemoryDatabase("InMemoryDbForTesting");
                     });
