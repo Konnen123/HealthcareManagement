@@ -1,7 +1,6 @@
-﻿
-using Domain.Utils;
+﻿using Domain.Utils;
 
-namespace Domain.Entities
+namespace Domain.Entities.User
 {
     public abstract class User
     {
@@ -13,7 +12,7 @@ namespace Domain.Entities
         public required string Email { get; set; }
 
         public required string Password { get; set; }
-        
+
         public required string PhoneNumber { get; set; }
         public DateOnly DateOfBirth { get; set; }
 
@@ -21,6 +20,6 @@ namespace Domain.Entities
 
         public bool IsEnabled { get; set; }
 
-        public RolesEnum Role {  get; set; }
+        public RolesEnum Role { get; set; }
     }
 }

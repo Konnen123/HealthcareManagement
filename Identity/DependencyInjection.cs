@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Shared;
 using System.Text;
 
 namespace Identity
@@ -12,12 +13,11 @@ namespace Identity
     public static class DependencyInjection
     {
         public static IServiceCollection AddIdentity(this IServiceCollection services, 
-            IConfiguration configuration)
+            IConfiguration configuration, string connectionStringPrefix)
         {
-            //To add connection string for DB
+            DbContextSingleton.AddDbContext<UsersDbContext>(services, configuration, connectionStringPrefix);
 
-            string jwtSecret = configuration["Jwt:Key"];
-            Console.WriteLine("SECRET:" +  jwtSecret);
+            string jwtSecret = configuration["Jwt:Key"] ?? "testJwt";
             var key = Encoding.ASCII.GetBytes(jwtSecret);
             services.AddAuthentication(options =>
             {

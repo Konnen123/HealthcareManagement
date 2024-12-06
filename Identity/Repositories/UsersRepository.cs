@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.User;
 using Domain.Repositories;
 using Domain.Utils;
 using Microsoft.Extensions.Configuration;

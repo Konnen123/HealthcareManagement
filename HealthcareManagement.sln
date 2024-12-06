@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthcareManagement.Integr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "Identity\Identity.csproj", "{54DFD45C-9934-4E26-825C-60F649B13F33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{953D3446-B5B4-4E76-9EE5-D0719B7EE954}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{54DFD45C-9934-4E26-825C-60F649B13F33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54DFD45C-9934-4E26-825C-60F649B13F33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54DFD45C-9934-4E26-825C-60F649B13F33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953D3446-B5B4-4E76-9EE5-D0719B7EE954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953D3446-B5B4-4E76-9EE5-D0719B7EE954}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953D3446-B5B4-4E76-9EE5-D0719B7EE954}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953D3446-B5B4-4E76-9EE5-D0719B7EE954}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{6593AF85-5A44-4FA3-872B-9AF4D1729DAD} = {5D4238B2-77A5-4DB0-B37F-8ECF85AEADE5}
 		{6B0280AB-D992-46BF-8683-26FB28EE1865} = {6593AF85-5A44-4FA3-872B-9AF4D1729DAD}
 		{54DFD45C-9934-4E26-825C-60F649B13F33} = {001509BA-246A-4B77-BAAF-8A982B3BF5B1}
+		{953D3446-B5B4-4E76-9EE5-D0719B7EE954} = {001509BA-246A-4B77-BAAF-8A982B3BF5B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BB3B3E99-D761-4A7E-AA58-9A8A26F71205}

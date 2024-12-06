@@ -1,9 +1,11 @@
 ﻿using Domain.Entities;
+using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Shared;
 
 namespace Infrastructure.Persistence
-{ 
+{
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> option) : DbContext(option)
     {
         public DbSet<Appointment> Appointments { get; set; }
@@ -39,8 +41,8 @@ namespace Infrastructure.Persistence
                     entity.Property(entity => entity.DateOfBirth).IsRequired();
                     entity.Property(entity => entity.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
                     entity.Property(entity => entity.CreatedAt).IsRequired();
-                }
-            );
+                });
+
             modelBuilder.Entity<Patient>(
                  entity =>
                  {

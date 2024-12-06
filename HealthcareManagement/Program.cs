@@ -16,11 +16,21 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 
 builder.Configuration.AddEnvironmentVariables();
 
-builder.Configuration["ConnectionStrings:Host"] = Environment.GetEnvironmentVariable("DB_HOST");
-builder.Configuration["ConnectionStrings:Port"] = Environment.GetEnvironmentVariable("DB_PORT");
-builder.Configuration["ConnectionStrings:Username"] = Environment.GetEnvironmentVariable("DB_USER");
-builder.Configuration["ConnectionStrings:Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD");
-builder.Configuration["ConnectionStrings:Database"] = Environment.GetEnvironmentVariable("DB_NAME");
+string defaultConnectionStringPrefix = "ConnectionStrings:DefaultConnection:";
+string identityConnectionStringPrefix = "ConnectionStrings:IdentityConnection:";
+
+builder.Configuration[$"{defaultConnectionStringPrefix}Host"] = Environment.GetEnvironmentVariable("DB_HOST");
+builder.Configuration[$"{defaultConnectionStringPrefix}Port"] = Environment.GetEnvironmentVariable("DB_PORT");
+builder.Configuration[$"{defaultConnectionStringPrefix}Username"] = Environment.GetEnvironmentVariable("DB_USER");
+builder.Configuration[$"{defaultConnectionStringPrefix}Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD");
+builder.Configuration[$"{defaultConnectionStringPrefix}Database"] = Environment.GetEnvironmentVariable("DB_NAME");
+
+builder.Configuration[$"{identityConnectionStringPrefix}Host"] = Environment.GetEnvironmentVariable("IDENTITY_DB_HOST");
+builder.Configuration[$"{identityConnectionStringPrefix}Port"] = Environment.GetEnvironmentVariable("IDENTITY_DB_PORT");
+builder.Configuration[$"{identityConnectionStringPrefix}Username"] = Environment.GetEnvironmentVariable("IDENTITY_DB_USER");
+builder.Configuration[$"{identityConnectionStringPrefix}Password"] = Environment.GetEnvironmentVariable("IDENTITY_DB_PASSWORD");
+builder.Configuration[$"{identityConnectionStringPrefix}Database"] = Environment.GetEnvironmentVariable("IDENTITY_DB_NAME");
+
 builder.Configuration["CORS:ClientUrl"] = Environment.GetEnvironmentVariable("CLIENT_URL");
 builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_SECRET");
 
@@ -37,8 +47,8 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddIdentity(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration, defaultConnectionStringPrefix);
+builder.Services.AddIdentity(builder.Configuration, identityConnectionStringPrefix);
 
 builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count().AddRouteComponents("odata", GetEdmModel()));
 
