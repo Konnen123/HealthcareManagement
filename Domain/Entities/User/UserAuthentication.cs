@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.User
 {
-    public class UserImplementation : User
+    public class UserAuthentication : User
     {
 
     }
