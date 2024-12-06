@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Shared;
 using System.Text;
+using Domain.Services;
+using Identity.Persistence;
+using Identity.Services;
 
 namespace Identity
 {
@@ -28,16 +31,20 @@ namespace Identity
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
             services.AddScoped<IUsersRepository, UsersRepository>();
-
+            services.AddScoped<IPasswordHashingService, PasswordHashingService>();
+            services.AddScoped<ITokenService, TokenService>();
             return services;
         }
     }

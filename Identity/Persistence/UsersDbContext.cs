@@ -2,20 +2,24 @@
 using Microsoft.EntityFrameworkCore;
 using Shared;
 
-namespace Identity
+namespace Identity.Persistence
 {
     public class UsersDbContext(DbContextOptions<UsersDbContext> option) : DbContext(option)
     {
 
-        public DbSet<UserImplementation> Users { get; set; }
+        public DbSet<UserAuthentication> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
-            modelBuilder.Entity<UserImplementation>(
-                entity => DbContextSingleton.ConfigureUserProperties<UserImplementation>(entity));
-
+            modelBuilder.Entity<UserAuthentication>(
+                entity => 
+                {
+                    DbContextSingleton.ConfigureUserProperties<UserAuthentication>(entity);
+                    entity.Property(e => e.Password).HasMaxLength(100);
+                });
+            
         }
     }
 }

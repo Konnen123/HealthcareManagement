@@ -4,6 +4,7 @@ using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Queries.AppointmentQueries;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -35,7 +36,8 @@ namespace HealthcareManagement.Controllers
                 onFailure: error => BadRequest(error)
             );
         }
-
+        
+        [Authorize(Roles = "PACIENT")]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -47,7 +49,8 @@ namespace HealthcareManagement.Controllers
                 onFailure: error => NotFound(error)
             );
         }
-
+        
+        [Authorize(Roles = "DOCTOR")]
         [HttpGet]   
         [EnableQuery]
     //     [SwaggerOperation(

@@ -18,13 +18,21 @@ namespace HealthcareManagement.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterUserCommand command)
         {
-            return Ok(Result<string>.Success("Hello register endpoint"));
+            var resultObject = await _mediator.Send(command);
+            return resultObject.Match<IActionResult>(
+                onSuccess: value => Ok(value),
+                onFailure: error => BadRequest(error)
+            );
         }
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginUserCommand command)
         {
-            return Ok(Result<string>.Success("Hello login endpoint"));
+            var resultObject = await _mediator.Send(command);
+            return resultObject.Match<IActionResult>(
+                onSuccess: value => Ok(value),
+                onFailure: error => BadRequest(error)
+            );
         }
     }
 }

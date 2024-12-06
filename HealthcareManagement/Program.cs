@@ -1,6 +1,7 @@
 using Application;
 using Domain.Entities;
 using DotNetEnv;
+using HealthcareManagement.JsonConverters;
 using Infrastructure;
 using Identity;
 using Microsoft.AspNetCore.OData;
@@ -33,6 +34,8 @@ builder.Configuration[$"{identityConnectionStringPrefix}Database"] = Environment
 
 builder.Configuration["CORS:ClientUrl"] = Environment.GetEnvironmentVariable("CLIENT_URL");
 builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_SECRET");
+builder.Configuration["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER");
+builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 
 var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
 builder.Services.AddCors(options =>
@@ -50,26 +53,25 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, defaultConnectionStringPrefix);
 builder.Services.AddIdentity(builder.Configuration, identityConnectionStringPrefix);
 
-builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count().AddRouteComponents("odata", GetEdmModel()));
+builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count().AddRouteComponents("odata", GetEdmModel()))
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new UserRoleConverter());
+    });
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Healthcare Management", Version = "v1" });
-
-    // Add JWT Bearer Authorization
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: Bearer abcdef12345"
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
     });
-
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {

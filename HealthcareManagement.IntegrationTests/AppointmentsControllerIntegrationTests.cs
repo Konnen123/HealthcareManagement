@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Domain.Entities.User;
 using Identity;
+using Identity.Persistence;
 
 namespace HealthcareManagement.IntegrationTests
 {
