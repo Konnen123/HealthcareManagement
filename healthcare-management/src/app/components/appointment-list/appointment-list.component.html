@@ -1,6 +1,24 @@
 <div class="appointment-list">
   <h1>All Appointments</h1>
 
+  <!-- Filter and Paginator Container -->
+  <div class="header-controls">
+    <mat-paginator class="paginator-custom"
+      (page)="handlePageEvent($event)"
+      [length]="totalCountAppointments"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      [pageIndex]="currentPage"
+      aria-label="Select page">
+    </mat-paginator>
+
+    <button class="match-input-height" mat-stroked-button (click)="openFiltersDialog()">
+      <mat-icon>filter_list</mat-icon>
+      Filters
+    </button>
+  </div>
+
   <table mat-table [dataSource]="appointments" class="mat-elevation-z8">
 
     <!-- Patient ID Column -->
@@ -43,14 +61,15 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator
-    (page)="handlePageEvent($event)"
-    [length]="totalCountAppointments"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions"
-    [showFirstLastButtons]="true"
-    [pageIndex]="currentPage"
-    aria-label="Select page">
-      >
-  </mat-paginator>
+<!--  <mat-paginator-->
+<!--    (page)="handlePageEvent($event)"-->
+<!--    [length]="totalCountAppointments"-->
+<!--    [pageSize]="pageSize"-->
+<!--    [pageSizeOptions]="pageSizeOptions"-->
+<!--    [showFirstLastButtons]="true"-->
+<!--    [pageIndex]="currentPage"-->
+<!--    aria-label="Select page">-->
+<!--      >-->
+<!--  </mat-paginator>-->
+
 </div>

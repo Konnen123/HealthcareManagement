@@ -7,6 +7,7 @@ import {MatInput} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CustomValidators} from '../../shared/custom-validators';
+import {formatDate, formatTime} from '../../shared/date-time.utils';
 
 @Component({
   selector: 'app-appointment-form',
@@ -59,25 +60,13 @@ export class AppointmentFormComponent {
 
       const appointmentData = {
         ...rawData,
-        date: this.formatDate(rawData.date),
-        startTime: this.formatTime(rawData.startTime),
-        endTime: this.formatTime(rawData.endTime),
+        date: formatDate(rawData.date),
+        startTime: formatTime(rawData.startTime),
+        endTime: formatTime(rawData.endTime),
       };
       //console.log(appointmentData);
       this.formSubmit.emit(appointmentData);
     }
   }
-
-    formatDate(date: Date | string): string {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-based
-    const day = d.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
-    formatTime(time: string): string {
-    const [hours, minutes] = time.split(':'); // Assume the input is `HH:mm`
-    return `${hours}:${minutes}`;
-  }
+  
 }

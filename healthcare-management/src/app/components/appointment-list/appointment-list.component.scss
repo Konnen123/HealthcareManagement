@@ -13,3 +13,15 @@ mat-progress-spinner {
   display: block;
   margin: 50px auto;
 }
+
+.header-controls {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+button.match-input-height {
+  margin-left: 16px;
+}
+
