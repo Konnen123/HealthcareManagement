@@ -4,10 +4,12 @@ using DotNetEnv;
 using HealthcareManagement.JsonConverters;
 using Infrastructure;
 using Identity;
+using Identity.Middlewear;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
+
 
 Env.Load();
 
@@ -106,6 +108,8 @@ app.UseCors(MyAllowSpecificOrigin);
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseMiddleware<ResponseMiddlewear>();
 
 app.UseAuthorization();
 

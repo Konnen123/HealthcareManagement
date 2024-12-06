@@ -30,7 +30,7 @@ namespace HealthcareManagement.Controllers
         {
             var resultObject = await _mediator.Send(command);
             return resultObject.Match<IActionResult>(
-                onSuccess: value => Ok(value),
+                onSuccess: value => Ok(new { JwtToken = value }),
                 onFailure: error => BadRequest(error)
             );
         }

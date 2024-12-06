@@ -41,6 +41,17 @@ namespace Identity
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DOCTOR_PACIENT", policy =>
+                    policy.RequireRole("DOCTOR", "PACIENT"));
+
+                options.AddPolicy("DOCTOR", policy =>
+                    policy.RequireRole("DOCTOR"));
+
+                options.AddPolicy("PACIENT", policy =>
+                    policy.RequireRole("PACIENT"));
+            });
 
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IPasswordHashingService, PasswordHashingService>();
