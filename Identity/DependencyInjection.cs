@@ -68,8 +68,8 @@ namespace Identity
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IPasswordHashingService, PasswordHashingService>();
             services.AddScoped<ITokenService, TokenService>();
-
-           
+            services.AddScoped<IFailedLoginAttemptsRepository, FailedLoginAttemptsRepository>();
+          
             return services;
         }
     }

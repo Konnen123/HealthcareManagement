@@ -3,6 +3,7 @@ using System;
 using Identity.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    partial class UsersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241207094511_failedLoginAttempts")]
+    partial class failedLoginAttempts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,42 +26,15 @@ namespace Identity.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempts+FailedLoginAttempt", b =>
-                {
-                    b.Property<Guid>("AttemptId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("FailedAttempts")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("LastFailedAttemptTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("LockoutEndTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("MaxFailedLoginAttempts")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(5);
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("AttemptId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("failed_login_attempts", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.User.UserAuthentication", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<DateTime?>("AccountLockoutEndTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateOnly>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -73,10 +49,16 @@ namespace Identity.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("integer");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("IsAccountEnabled")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
@@ -85,6 +67,12 @@ namespace Identity.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<int>("LockoutDurationMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MaxFailedLoginAttempts")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -101,17 +89,6 @@ namespace Identity.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("users", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempts+FailedLoginAttempt", b =>
-                {
-                    b.HasOne("Domain.Entities.User.UserAuthentication", "UserAuthentication")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserAuthentication");
                 });
 #pragma warning restore 612, 618
         }

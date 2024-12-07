@@ -15,10 +15,18 @@ namespace Identity.Middlewear
         {
             await _next(context);
 
-            if (context.Response.StatusCode == StatusCodes.Status403Forbidden)
-            {
+            if (context.Response.StatusCode == StatusCodes.Status403Forbidden && 
+                context.Request.Path.StartsWithSegments("/api/v1/Auth/Login"))
+            {              
+                 
                 await WriteResponseMessage(context, MiddlewearEnum.FORBIDDEN, 
-                    "Ensure you have the correct role to access this resource.");
+                    "Account is temporarely locked due to too many failed login attempts.");
+            }
+            else if(context.Response.StatusCode == StatusCodes.Status403Forbidden &&
+                !context.Request.Path.StartsWithSegments("/api/v1/Auth/Login"))
+            {
+                await WriteResponseMessage(context, MiddlewearEnum.FORBIDDEN,
+                    "Ensure you have the rights to access this resource");
             }
             else if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
             {
