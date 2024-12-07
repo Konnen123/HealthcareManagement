@@ -4,7 +4,7 @@ using DotNetEnv;
 using HealthcareManagement.JsonConverters;
 using Infrastructure;
 using Identity;
-using Identity.Middlewear;
+using Identity.Middleware;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
@@ -38,6 +38,8 @@ builder.Configuration["CORS:ClientUrl"] = Environment.GetEnvironmentVariable("CL
 builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_SECRET");
 builder.Configuration["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER");
 builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+builder.Configuration["Jwt:AccessExpiry"] = Environment.GetEnvironmentVariable("JWT_ACCESS_EXPIRY_TIME_SECONDS");
+builder.Configuration["Jwt:RefreshExpiry"] = Environment.GetEnvironmentVariable("JWT_REFRESH_EXPIRY_TIME_DAYS");
 
 var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
 builder.Services.AddCors(options =>

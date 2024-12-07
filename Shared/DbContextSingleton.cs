@@ -26,8 +26,8 @@ namespace Shared
         public static void ConfigureUserProperties<T>(EntityTypeBuilder<T> entity) where T: User
         {
             entity.ToTable("users");
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id)
+            entity.HasKey(e => e.UserId);
+            entity.Property(e => e.UserId)
                 .HasColumnType("uuid")
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .ValueGeneratedOnAdd();

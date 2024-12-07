@@ -28,9 +28,15 @@ namespace HealthcareManagement.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginUserCommand command)
         {
+            var deviceInfo = Request.Headers.UserAgent.ToString(); 
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            command.DeviceInfo = deviceInfo;
+            command.IpAddress = ipAddress;
+            
             var resultObject = await _mediator.Send(command);
             return resultObject.Match<IActionResult>(
-                onSuccess: value => Ok(new { JwtToken = value }),
+                onSuccess: value => Ok(value),
                 onFailure: error =>
                 {
                     if(error.Code != "UserAuthentication.AccountLocked")
@@ -40,6 +46,18 @@ namespace HealthcareManagement.Controllers
 
                     return Forbid();
                 }
+            );
+        }
+        
+        [HttpPost("refresh")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
+        {
+            var resultObject = await _mediator.Send(command);
+            return resultObject.Match<IActionResult>(
+                onSuccess: value => Ok(value),
+                onFailure: error => BadRequest(error)
             );
         }
     }

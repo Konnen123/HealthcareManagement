@@ -8,5 +8,6 @@ namespace Domain.Repositories
         Task<Result<Guid>> Register(UserAuthentication user, CancellationToken cancellationToken);
         Task<Result<string>> Login(UserAuthentication user, CancellationToken cancellationToken);
         Task<Result<UserAuthentication>> GetByEmailAsync(string email, CancellationToken cancellationToken);
+        Task<Result<UserAuthentication>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Identity.Utils.MiddlewearUtils;
 using Microsoft.AspNetCore.Http;
 
-namespace Identity.Middlewear
+namespace Identity.Middleware
 {
     public abstract class AbstractMiddleware
     {

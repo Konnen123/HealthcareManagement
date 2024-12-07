@@ -37,6 +37,19 @@ namespace Identity.Repositories
             }
         }
 
+        public async Task<Result<UserAuthentication>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var account = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
+                return account == null ? Result<UserAuthentication>.Failure(EntityErrors.NotFound(nameof(UserAuthentication), id)) : Result<UserAuthentication>.Success(account);
+            }
+            catch (Exception e)
+            {
+                return Result<UserAuthentication>.Failure(EntityErrors.GetFailed(nameof(UserAuthentication), e.InnerException?.Message ?? $"An unexpected error occurred while retrieving the account with id {id}"));
+            }
+        }
+
         public async Task<Result<Guid>> Register(UserAuthentication user, CancellationToken cancellationToken)
         {
             Console.WriteLine(user.Password.Length);
@@ -44,7 +57,7 @@ namespace Identity.Repositories
             {
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync(cancellationToken);
-                return Result<Guid>.Success(user.Id);
+                return Result<Guid>.Success(user.UserId);
             }
             catch (Exception e)
             {

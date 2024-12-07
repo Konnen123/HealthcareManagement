@@ -1,9 +1,8 @@
-﻿using Domain.Entities.User;
-using Domain.Errors;
+﻿using Domain.Errors;
 using Identity.Utils.MiddlewearUtils;
 using Microsoft.AspNetCore.Http;
 
-namespace Identity.Middlewear
+namespace Identity.Middleware
 {
     public class ResponseMiddlewear : AbstractMiddleware
     {

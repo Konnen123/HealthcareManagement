@@ -10,7 +10,6 @@ using System.Text;
 using Domain.Services;
 using Identity.Persistence;
 using Identity.Services;
-using Identity.Middlewear;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
@@ -69,6 +68,7 @@ namespace Identity
             services.AddScoped<IPasswordHashingService, PasswordHashingService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFailedLoginAttemptsRepository, FailedLoginAttemptsRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
           
             return services;
         }

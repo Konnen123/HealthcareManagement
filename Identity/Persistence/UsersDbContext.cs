@@ -1,4 +1,5 @@
-﻿using Domain.Entities.User;
+﻿using Domain.Entities;
+using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Shared;
 using static Domain.Entities.User.FailedLoginAttempts;
@@ -10,6 +11,7 @@ namespace Identity.Persistence
 
         public DbSet<UserAuthentication> Users { get; set; }
         public DbSet<FailedLoginAttempt> FailedLoginAttempts { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,7 +47,18 @@ namespace Identity.Persistence
                     .HasForeignKey(f => f.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
-
+            
+            modelBuilder.Entity<RefreshToken>()
+                .ToTable("RefreshTokens")
+                .Property(t => t.RefreshTokenId)
+                .HasDefaultValueSql("uuid_generate_v4()");
+            
+            modelBuilder.Entity<RefreshToken>()
+                .HasOne(rt => rt.UserAuthentication)
+                .WithMany(sm => sm.RefreshTokens)
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
         }
     }
 }
