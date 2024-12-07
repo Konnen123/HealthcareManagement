@@ -109,6 +109,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
+
 app.UseMiddleware<ResponseMiddlewear>();
 
 app.UseAuthorization();

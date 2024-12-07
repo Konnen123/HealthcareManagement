@@ -3,43 +3,29 @@ using Microsoft.AspNetCore.Http;
 
 namespace Identity.Middlewear
 {
-    public class ResponseMiddlewear
+    public class ResponseMiddlewear : AbstractMiddleware
     {
         private readonly RequestDelegate _next;
-
         public ResponseMiddlewear(RequestDelegate next)
         {
-            _next = next;
+            _next = next;   
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async override Task InvokeAsync(HttpContext context)
         {
             await _next(context);
 
             if (context.Response.StatusCode == StatusCodes.Status403Forbidden)
             {
-                await WriteResponseMessage(context, AuthorizationEnum.ACCESS_DENIED, 
+                await WriteResponseMessage(context, MiddlewearEnum.FORBIDDEN, 
                     "Ensure you have the correct role to access this resource.");
             }
             else if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
             {
-                await WriteResponseMessage(context, AuthorizationEnum.ACCESS_DENIED, 
+                await WriteResponseMessage(context, MiddlewearEnum.UNAUTHORIZED, 
                     "Unauthorized access for requested resource.");
             }
         }
-
-        private static async Task WriteResponseMessage(HttpContext context, AuthorizationEnum error, string suggestion)
-        {
-            var message = new
-            {
-                Error = error.ToString(),
-                Suggestion = suggestion
-            };
-
-            context.Response.ContentType = "application/json";
-            await context.Response.WriteAsJsonAsync(message);
-        }
-
     }
 
 }

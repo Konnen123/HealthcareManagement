@@ -10,6 +10,10 @@ using System.Text;
 using Domain.Services;
 using Identity.Persistence;
 using Identity.Services;
+using Identity.Middlewear;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Http;
 
 namespace Identity
 {
@@ -22,6 +26,14 @@ namespace Identity
 
             string jwtSecret = configuration["Jwt:Key"] ?? "testJwt";
             var key = Encoding.ASCII.GetBytes(jwtSecret);
+            services.AddMemoryCache();
+            services.AddTransient(sp =>
+            {
+                return new RequestDelegate(context =>
+                {
+                    return Task.CompletedTask;
+                });
+            });
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,6 +68,8 @@ namespace Identity
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IPasswordHashingService, PasswordHashingService>();
             services.AddScoped<ITokenService, TokenService>();
+
+           
             return services;
         }
     }
