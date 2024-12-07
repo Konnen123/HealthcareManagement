@@ -53,6 +53,8 @@ builder.Services.AddCors(options =>
                     });
 });
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, defaultConnectionStringPrefix);
 builder.Services.AddIdentity(builder.Configuration, identityConnectionStringPrefix);
@@ -112,7 +114,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 
-app.UseMiddleware<ResponseMiddlewear>();
+app.UseMiddleware<ResponseMiddleware>();
+// app.UseMiddleware<TokenRefreshMiddleware>();
 
 app.UseAuthorization();
 

@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace Identity.Middleware
 {
-    public class ResponseMiddlewear : AbstractMiddleware
+    public class ResponseMiddleware : AbstractMiddleware
     {
         private readonly RequestDelegate _next;
-        public ResponseMiddlewear(RequestDelegate next)
+        public ResponseMiddleware(RequestDelegate next)
         {
             _next = next;   
         }
