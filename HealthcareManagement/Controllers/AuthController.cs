@@ -31,7 +31,15 @@ namespace HealthcareManagement.Controllers
             var resultObject = await _mediator.Send(command);
             return resultObject.Match<IActionResult>(
                 onSuccess: value => Ok(new { JwtToken = value }),
-                onFailure: error => BadRequest(error)
+                onFailure: error =>
+                {
+                    if(error.Code != "UserAuthentication.AccountLocked")
+                    {
+                        return BadRequest(error);
+                    }
+
+                    return Forbid();
+                }
             );
         }
     }
