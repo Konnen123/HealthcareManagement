@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AppointmentService } from '../../services/appointment/appointment.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';
+import {AppointmentService} from '../../../services/appointment/appointment.service';
 
 @Component({
   selector: 'app-appointment-update',

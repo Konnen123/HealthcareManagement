@@ -6,7 +6,8 @@ import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {CustomValidators} from '../../shared/custom-validators';
+import {CustomValidators} from '../../../shared/custom-validators';
+
 
 @Component({
   selector: 'app-appointment-form',

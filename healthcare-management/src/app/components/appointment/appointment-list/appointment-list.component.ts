@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {AppointmentService} from '../../services/appointment/appointment.service';
-import {Appointment} from '../../models/appointment.model';
 import {SlicePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -15,6 +13,8 @@ import {
 } from '@angular/material/table';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {Appointment} from '../../../models/appointment.model';
+import {AppointmentService} from '../../../services/appointment/appointment.service';
 
 @Component({
   selector: 'app-appointment-list',

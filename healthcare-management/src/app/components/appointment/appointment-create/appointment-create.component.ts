@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AppointmentService } from '../../services/appointment/appointment.service';
+import { AppointmentService } from '../../../services/appointment/appointment.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import {AppointmentFormComponent} from '../appointment-form/appointment-form.component';
