@@ -1,4 +1,6 @@
-﻿using Identity.Utils.MiddlewearUtils;
+﻿using Domain.Entities.User;
+using Domain.Errors;
+using Identity.Utils.MiddlewearUtils;
 using Microsoft.AspNetCore.Http;
 
 namespace Identity.Middlewear
@@ -20,18 +22,20 @@ namespace Identity.Middlewear
             {              
                  
                 await WriteResponseMessage(context, MiddlewearEnum.FORBIDDEN, 
-                    "Account is temporarely locked due to too many failed login attempts.");
+                    AuthErrors.UserAccountLocked("UserAuthentication",
+                    "Account temporarely locked due to too many failed login attempts").ToString());
             }
             else if(context.Response.StatusCode == StatusCodes.Status403Forbidden &&
                 !context.Request.Path.StartsWithSegments("/api/v1/Auth/Login"))
             {
                 await WriteResponseMessage(context, MiddlewearEnum.FORBIDDEN,
-                    "Ensure you have the rights to access this resource");
+                    AuthorizationErrors.Forbidden("UserAuthentication",
+                    "Ensure you have the rights to access this resource").ToString());
             }
             else if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
             {
                 await WriteResponseMessage(context, MiddlewearEnum.UNAUTHORIZED, 
-                    "Unauthorized access for requested resource.");
+                    AuthorizationErrors.Unauthorized("UserAuthentication","Unauthorized access for requested resource.").ToString());
             }
         }
     }
