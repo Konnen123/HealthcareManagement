@@ -1,5 +1,5 @@
 <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
-  <h1>Create New Appointment</h1>
+  <h1>{{ mode === 'create' ? 'Create New Appointment' : 'Update Appointment' }}</h1>
   <div class="form-row">
     <mat-form-field floatLabel="auto">
       <mat-label>PatientId</mat-label>
@@ -17,20 +17,17 @@
     </mat-form-field>
 
     <mat-form-field floatLabel="auto">
-      <mat-label>DoctorId</mat-label>
-      <input matInput formControlName="doctorId" required/>
-      <mat-icon matSuffix>person</mat-icon>
-      <!--Errors from validators-->
+      <mat-label>Select a Doctor</mat-label>
+      <mat-select formControlName="doctorId">
+        <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">
+          {{ doctor.name }}
+        </mat-option>
+      </mat-select>
       <mat-error *ngIf="appointmentForm.get('doctorId')?.hasError('required')">
-        DoctorId is required.
-      </mat-error>
-      <mat-error *ngIf="appointmentForm.get('doctorId')?.hasError('invalidGuid')">
-        DoctorId must be a valid GUID.
-      </mat-error>
-      <mat-error *ngIf="appointmentForm.get('doctorId')?.hasError('emptyGuid')">
-        DoctorId cannot be an empty GUID.
+        Doctor is required.
       </mat-error>
     </mat-form-field>
+
   </div>
 
   <div class="form-row">
