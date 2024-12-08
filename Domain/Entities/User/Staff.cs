@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities
+﻿namespace Domain.Entities.User
 {
     public abstract class Staff : User
     {

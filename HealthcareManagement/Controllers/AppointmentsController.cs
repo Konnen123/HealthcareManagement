@@ -4,6 +4,7 @@ using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Queries.AppointmentQueries;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -25,6 +26,7 @@ namespace HealthcareManagement.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Policy = "PACIENT")]
         public async Task<IActionResult> CreateAppointment([FromBody] CreateAppointmentCommand command)
         {
 
@@ -36,9 +38,12 @@ namespace HealthcareManagement.Controllers
             );
         }
 
+        [Authorize(Policy = "DOCTOR_PACIENT")]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAppointmentById(Guid id)
         {
             var resultObject = await mediator.Send(new GetAppointmentByIdQuery { Id = id });
@@ -47,23 +52,28 @@ namespace HealthcareManagement.Controllers
                 onFailure: error => NotFound(error)
             );
         }
-
+        
+        [Authorize(Policy = "DOCTOR")]
         [HttpGet]   
         [EnableQuery]
-    //     [SwaggerOperation(
-    //     Summary = "Get all appointments with OData query support",
-    //     Description = "Supports OData query options like $filter, $orderby, $top, and $skip."
-    // )]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //     [SwaggerOperation(
+        //     Summary = "Get all appointments with OData query support",
+        //     Description = "Supports OData query options like $filter, $orderby, $top, and $skip."
+        // )]
         public async Task<ActionResult<IQueryable<AppointmentDto>>> GetAllAppointments()
         {
             var res = await mediator.Send(new GetAllAppointmentsQuery());
             return Ok(res.Value);
         }
 
-
+        [Authorize(Policy = "DOCTOR_PACIENT")]
         [HttpPatch("Cancel")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CancelAppointment(CancelAppointmentCommand command)
         {
             var resultObject = await mediator.Send(command);
@@ -73,10 +83,12 @@ namespace HealthcareManagement.Controllers
             );
         }
 
-
+        [Authorize(Policy = "DOCTOR")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody] UpdateAppointmentCommand command)
         {
             if (id != command.Id)
@@ -92,9 +104,12 @@ namespace HealthcareManagement.Controllers
         }
 
 
+        [Authorize(Policy = "DOCTOR")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteAppointment(Guid id)
         {
             var resultObject = await mediator.Send(new DeleteAppointmentCommand { AppointmentId = id });
@@ -103,10 +118,13 @@ namespace HealthcareManagement.Controllers
                 onFailure: error => BadRequest(error)
             );
         }
-        
+
+        [Authorize(Policy = "PACIENT")]
         [HttpPatch("Reschedule/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [SwaggerOperation(Description = "User can ask to reschedule an appointment by changing the date and time of the appointment.")]
         public async Task<IActionResult> RescheduleAppointment(Guid id, [FromBody] RescheduleAppointmentCommand command)
         {
