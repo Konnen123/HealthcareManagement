@@ -43,4 +43,19 @@ export class CustomValidators {
     //console.log('Is valid:', isValid); // Check comparison result
     return isValid ? null : { pastDate: true };
   }
+  static passwordsMatch(passwordControlName: string): (control: AbstractControl) => ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const parent = control.parent;
+      if (!parent) {
+        return null;
+      }
+
+      const password = parent.get(passwordControlName)?.value;
+      const confirmPassword = control.value;
+
+      return password && confirmPassword && password !== confirmPassword
+        ? { passwordsMismatch: true }
+        : null;
+    };
+  }
 }

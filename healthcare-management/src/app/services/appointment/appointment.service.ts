@@ -8,6 +8,7 @@ import {AppointmentParams} from '../../models/appointmentParams.model';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AppointmentService{
   private readonly isBrowser!: boolean;
   constructor(private appointmentClient : AppointmentClient, @Inject(PLATFORM_ID) platformId: object)

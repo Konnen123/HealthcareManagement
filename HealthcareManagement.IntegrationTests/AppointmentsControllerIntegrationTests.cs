@@ -13,6 +13,9 @@ using Application.Use_Cases.Commands.AppointmentCommands;
 using DotNetEnv;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Domain.Entities.User;
+using Identity;
+using Identity.Persistence;
 
 namespace HealthcareManagement.IntegrationTests
 {
@@ -43,6 +46,10 @@ namespace HealthcareManagement.IntegrationTests
                     {
                         options.UseInMemoryDatabase("InMemoryDbForTesting");
                     });
+                    services.AddDbContext<UsersDbContext>(options =>
+                    {
+                        options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    });
                 });
                 
             });
@@ -63,7 +70,7 @@ namespace HealthcareManagement.IntegrationTests
             await dbContext.SaveChangesAsync();
 
             HttpClient client = factory.CreateClient();
-            var appointment = CreateAppointmentCommandSUT(10, patient.Id, doctor.Id);
+            var appointment = CreateAppointmentCommandSUT(10, patient.UserId, doctor.UserId);
             var serialize = JsonConvert.SerializeObject(appointment);
 
             // Act
@@ -91,7 +98,7 @@ namespace HealthcareManagement.IntegrationTests
 
             // Act
             var response = await client.PostAsync(BaseUrl, new StringContent(
-                JsonConvert.SerializeObject(CreateAppointmentCommandSUT(-10, patient.Id, doctor.Id)), Encoding.UTF8, "application/json"));
+                JsonConvert.SerializeObject(CreateAppointmentCommandSUT(-10, patient.UserId, doctor.UserId)), Encoding.UTF8, "application/json"));
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -109,7 +116,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Users.Add(patient);
             dbContext.Users.Add(doctor);
 
-            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
+            Appointment appointment = AppointmentSUT(10, patient.UserId, doctor.UserId);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -138,7 +145,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Users.Add(patient);
             dbContext.Users.Add(doctor);
 
-            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
+            Appointment appointment = AppointmentSUT(10, patient.UserId, doctor.UserId);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -169,8 +176,8 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Users.Add(doctor);
             dbContext.Users.Add(doctor2);
 
-            Appointment appointment1 = AppointmentSUT(10, patient.Id, doctor.Id);
-            Appointment appointment2 = AppointmentSUT(15, patient2.Id, doctor2.Id);
+            Appointment appointment1 = AppointmentSUT(10, patient.UserId, doctor.UserId);
+            Appointment appointment2 = AppointmentSUT(15, patient2.UserId, doctor2.UserId);
             dbContext.Appointments.Add(appointment1);
             dbContext.Appointments.Add(appointment2);
             await dbContext.SaveChangesAsync();
@@ -223,7 +230,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Users.Add(patient);
             dbContext.Users.Add(doctor);
 
-            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
+            Appointment appointment = AppointmentSUT(10, patient.UserId, doctor.UserId);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -265,7 +272,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Users.Add(patient);
             dbContext.Users.Add(doctor);
 
-            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
+            Appointment appointment = AppointmentSUT(10, patient.UserId, doctor.UserId);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -326,7 +333,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Users.Add(patient);
             dbContext.Users.Add(doctor);
 
-            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
+            Appointment appointment = AppointmentSUT(10, patient.UserId, doctor.UserId);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
@@ -366,7 +373,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Users.Add(patient);
             dbContext.Users.Add(doctor);
 
-            Appointment appointment = AppointmentSUT(10, patient.Id, doctor.Id);
+            Appointment appointment = AppointmentSUT(10, patient.UserId, doctor.UserId);
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
