@@ -9,7 +9,7 @@ import { firstValueFrom } from 'rxjs';
 
 export class AuthService {
   private readonly isBrowser!: boolean;
-  constructor(private userClient : UserClient, @Inject(PLATFORM_ID) platformId: object)
+  constructor(readonly userClient : UserClient, @Inject(PLATFORM_ID) platformId: object)
   {
     this.isBrowser = isPlatformBrowser(platformId)
   }

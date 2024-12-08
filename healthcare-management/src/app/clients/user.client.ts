@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 export class UserClient{
   private readonly baseUrl: string;
-  constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig, private http: HttpClient)
+  constructor(@Inject(APP_SERVICE_CONFIG) readonly config: AppConfig, readonly http: HttpClient)
   {
     this.baseUrl = this.config.apiEndpoint + '/v1/Auth'
   }
