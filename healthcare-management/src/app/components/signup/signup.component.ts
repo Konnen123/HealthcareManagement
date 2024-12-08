@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { MatCard } from '@angular/material/card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService} from '../../services/users/auth.service';
 import {Router} from '@angular/router';
+import { CustomValidators } from '../../shared/custom-validators';
 
 @Component({
   selector: 'app-signup',
@@ -21,12 +22,15 @@ import {Router} from '@angular/router';
     MatOption,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    MatError
   ],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
+  signupForm: FormGroup;
+
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
@@ -37,39 +41,41 @@ export class SignupComponent {
   role: string = '';
 
   constructor(
+    readonly fb: FormBuilder,
     readonly authService: AuthService,
     readonly router: Router
   ) {
+    this.signupForm = this.fb.group({
+      firstName: ['', [Validators.required, Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.maxLength(50)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      dateOfBirth: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      role: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(100)]],
+      confirmPassword: ['', [Validators.required, CustomValidators.passwordsMatch('password')]]
+    });
+    this.signupForm.addValidators(this.passwordMatchValidator);
+  }
+
+  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+
+    return password === confirmPassword ? null : { mismatch: true };
   }
 
   onSubmit(): void {
-    const requestData = {
-      email: this.email,
-      password: this.password,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      phoneNumber: this.phoneNumber,
-      dateOfBirth: this.dateOfBirth,
-      role: this.role.toUpperCase()
-    };
-    this.authService.registerAsync(requestData).then((response) => {
+    const formData = { ... this.signupForm.value };
+    //console.log(formData.dateOfBirth)
+    if (this.signupForm.valid) {
+      this.authService.registerAsync(formData).then((response) => {
         console.log('Register successful :', response);
         this.router.navigate(['login']);
-    }).catch((error) => {
+      }).catch((error) => {
         console.error('Error at register ', error);
-    });
+      });
+    }
   }
 
-  isFormValid(): boolean {
-    return (
-      !!this.firstName &&
-      !!this.lastName &&
-      !!this.phoneNumber &&
-      !!this.dateOfBirth &&
-      !!this.role &&
-      !!this.email &&
-      !!this.password &&
-      this.password === this.confirmPassword
-    );
-  }
 }

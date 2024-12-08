@@ -1,58 +1,89 @@
 <div class="signup-container">
   <mat-card class="signup-card">
+
     <h2>Sign Up</h2>
-    <form (ngSubmit)="onSubmit()" class="signup-form">
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
       <div class="row">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>First Name</mat-label>
-          <input matInput type="text" [(ngModel)]="firstName" name="firstName" required />
+          <input matInput type="text" formControlName="firstName" />
+          <mat-error *ngIf="signupForm.get('firstName')?.hasError('required')">
+            First Name is required
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Last Name</mat-label>
-          <input matInput type="text" [(ngModel)]="lastName" name="lastName" required />
+          <input matInput type="text" formControlName="lastName" />
+          <mat-error *ngIf="signupForm.get('firstName')?.hasError('required')">
+            Last Name is required
+          </mat-error>
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Phone Number</mat-label>
-          <input matInput type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" required />
+          <input matInput type="tel" formControlName="phoneNumber" />
+          <mat-error *ngIf="signupForm.get('phoneNumber')?.hasError('required')">
+            Phone Number is required
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('phoneNumber')?.hasError('pattern')">
+            Enter a valid phone number
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Date of Birth</mat-label>
-          <input matInput type="date" [(ngModel)]="dateOfBirth" name="dateOfBirth" required />
+          <input matInput type="date" formControlName="dateOfBirth" />
+          <mat-error *ngIf="signupForm.get('dateOfBirth')?.hasError('required')">
+            Date of Birth is required
+          </mat-error>
         </mat-form-field>
       </div>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email</mat-label>
-        <input matInput type="email" [(ngModel)]="email" name="email" required />
+        <input matInput type="email" formControlName="email"  />
+        <mat-error *ngIf="signupForm.get('email')?.hasError('email')">
+          Enter a valid email
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Role</mat-label>
-        <mat-select [(ngModel)]="role" name="role" required>
+        <mat-select formControlName="role" >
           <mat-option value="doctor">Doctor</mat-option>
           <mat-option value="patient">Patient</mat-option>
         </mat-select>
+        <mat-error *ngIf="signupForm.get('role')?.hasError('required')">
+          Role is required
+        </mat-error>
       </mat-form-field>
 
       <div class="row">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Password</mat-label>
-          <input matInput type="password" [(ngModel)]="password" name="password" required />
+          <input matInput type="password" formControlName="password"  />
+          <mat-error *ngIf="signupForm.get('password')?.hasError('required')">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">
+            Password must be at least 6 characters
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Confirm Password</mat-label>
-          <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required />
-          <div *ngIf="password && confirmPassword && password !== confirmPassword" class="error-message">Passwords do not match</div>
+          <input matInput type="password" formControlName="confirmPassword" />
+          <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('passwordsMismatch')">
+            Passwords do not match
+          </mat-error>
         </mat-form-field>
       </div>
 
-      <button mat-raised-button color="primary" type="submit" [disabled]="!isFormValid()">Sign Up</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!signupForm.valid">Sign Up</button>
     </form>
   </mat-card>
 </div>
