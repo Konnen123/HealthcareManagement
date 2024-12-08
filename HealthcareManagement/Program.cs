@@ -115,7 +115,6 @@ app.UseAuthentication();
 
 
 app.UseMiddleware<ResponseMiddleware>();
-// app.UseMiddleware<TokenRefreshMiddleware>();
 
 app.UseAuthorization();
 

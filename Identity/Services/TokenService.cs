@@ -24,7 +24,7 @@ public class TokenService : ITokenService
     
     public string GenerateAccessToken(UserAuthentication user)
     {
-        var jwtSecret = _configuration["Jwt:Key"] ?? throw new ApplicationException("Unable to read JWT from config in TokenService");
+        var jwtSecret = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Unable to read JWT from config in TokenService");
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
