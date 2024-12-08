@@ -7,6 +7,7 @@ import {APP_CONFIG, APP_SERVICE_CONFIG} from './app-config/app.config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: {appearance: 'outline', subscriptSizing: 'dynamic'}
-    }
+    },
+    FormsModule
   ]
 };
