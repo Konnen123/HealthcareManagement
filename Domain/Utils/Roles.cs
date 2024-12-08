@@ -3,6 +3,6 @@
     public enum Roles
     {
         DOCTOR,
-        PACIENT
+        PATIENT
     }
 }

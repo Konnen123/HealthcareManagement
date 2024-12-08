@@ -4,13 +4,13 @@ import {
 } from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {AppointmentService} from '../../services/appointment/appointment.service';
-import {Appointment} from '../../models/appointment.model';
 import {HttpErrorResponse} from '@angular/common/http';
 import {NgIf} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AbstractControl, ValidationErrors} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
+import {Appointment} from '../../../models/appointment.model';
+import {AppointmentService} from '../../../services/appointment/appointment.service';
 
 @Component({
   selector: 'app-appointment-detail',

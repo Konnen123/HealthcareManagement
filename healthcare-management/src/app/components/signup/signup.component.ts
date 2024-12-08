@@ -6,9 +6,9 @@ import { MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService} from '../../services/users/auth.service';
 import {Router} from '@angular/router';
 import { CustomValidators } from '../../shared/custom-validators';
+import {AuthenticationService} from '../../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-signup',
@@ -42,7 +42,7 @@ export class SignupComponent {
 
   constructor(
     readonly fb: FormBuilder,
-    readonly authService: AuthService,
+    readonly authenticationService: AuthenticationService,
     readonly router: Router
   ) {
     this.signupForm = this.fb.group({
@@ -67,11 +67,10 @@ export class SignupComponent {
 
   onSubmit(): void {
     const formData = { ... this.signupForm.value };
-    //console.log(formData.dateOfBirth)
     if (this.signupForm.valid) {
-      this.authService.registerAsync(formData).then((response) => {
+      this.authenticationService.registerAsync(formData).then((response) => {
         console.log('Register successful :', response);
-        this.router.navigate(['login']);
+        this.router.navigate(['/login']);
       }).catch((error) => {
         console.error('Error at register ', error);
       });

@@ -4,8 +4,8 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from '../../services/users/auth.service';
 import {Router} from '@angular/router';
+import {AuthenticationService} from '../../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -26,8 +26,8 @@ export class LoginComponent {
   password: string = '';
 
   constructor(
-    readonly authService: AuthService,
-    readonly router: Router
+    readonly router: Router,
+    readonly authenticationService: AuthenticationService
   ) { }
 
   onSubmit(): void {
@@ -36,11 +36,17 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.authService.loginAsync(requestData).then((response) => {
+    this.authenticationService.loginAsync(requestData).then((response) => {
+      const accessToken = response.accessToken;
+      this.authenticationService.setCookie('token', accessToken);
       console.log('Response from the service:', response);
       this.router.navigate(['appointments']);
     }).catch((error) => {
       console.error('Error from the service:', error);
     });
+  }
+
+  redirectToSignup(): void {
+    this.router.navigate(['/signup']);
   }
 }

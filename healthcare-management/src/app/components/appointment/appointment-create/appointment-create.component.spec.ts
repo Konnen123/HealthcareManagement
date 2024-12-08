@@ -60,7 +60,6 @@ describe('AppointmentCreateComponent', () => {
     component.onFormSubmit(mockFormData);
 
     expect(mockAppointmentService.createAsync).toHaveBeenCalledWith(mockFormData);
-    //expect(mockRouter.navigate).toHaveBeenCalledWith(['/appointments']);
   });
 
 });
