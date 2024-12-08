@@ -1,3 +1,5 @@
+using Domain.Entities.User;
+
 namespace Domain.Entities;
 
 //am numit irregularity pentru ca ScheduleException suna ca o exceptie

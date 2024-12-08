@@ -9,6 +9,7 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import {authenticationInterceptor} from './interceptor/authentication.interceptor';
 import {JWT_OPTIONS, JwtHelperService} from '@auth0/angular-jwt';
+import { FormsModule } from '@angular/forms';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,5 +26,6 @@ export const appConfig: ApplicationConfig = {
     },
     provideHttpClient(withFetch(), withInterceptors([authenticationInterceptor])),
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, JwtHelperService,
+    FormsModule
   ]
 };

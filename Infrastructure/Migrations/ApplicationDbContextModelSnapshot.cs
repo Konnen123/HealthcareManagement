@@ -17,7 +17,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
@@ -187,9 +187,9 @@ namespace Infrastructure.Migrations
                     b.ToTable("schedule_irregularities", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("Domain.Entities.User.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("uuid_generate_v4()");
@@ -229,23 +229,26 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId");
 
                     b.ToTable("users", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Patient", b =>
+            modelBuilder.Entity("Domain.Entities.User.Patient", b =>
                 {
-                    b.HasBaseType("Domain.Entities.User");
+                    b.HasBaseType("Domain.Entities.User.User");
 
                     b.ToTable("patients", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Staff", b =>
+            modelBuilder.Entity("Domain.Entities.User.Staff", b =>
                 {
-                    b.HasBaseType("Domain.Entities.User");
+                    b.HasBaseType("Domain.Entities.User.User");
 
                     b.Property<string>("MedicalRank")
                         .IsRequired()
@@ -255,36 +258,36 @@ namespace Infrastructure.Migrations
                     b.ToTable("staffs", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Admin", b =>
+            modelBuilder.Entity("Domain.Entities.User.Admin", b =>
                 {
-                    b.HasBaseType("Domain.Entities.Staff");
+                    b.HasBaseType("Domain.Entities.User.Staff");
 
                     b.ToTable("admins", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Doctor", b =>
+            modelBuilder.Entity("Domain.Entities.User.Doctor", b =>
                 {
-                    b.HasBaseType("Domain.Entities.Staff");
+                    b.HasBaseType("Domain.Entities.User.Staff");
 
                     b.ToTable("doctors", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuperAdmin", b =>
+            modelBuilder.Entity("Domain.Entities.User.SuperAdmin", b =>
                 {
-                    b.HasBaseType("Domain.Entities.Staff");
+                    b.HasBaseType("Domain.Entities.User.Staff");
 
                     b.ToTable("super_admins", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Appointment", b =>
                 {
-                    b.HasOne("Domain.Entities.Doctor", "Doctor")
+                    b.HasOne("Domain.Entities.User.Doctor", "Doctor")
                         .WithMany()
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Patient", "Patient")
+                    b.HasOne("Domain.Entities.User.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -308,7 +311,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.DailyDoctorSchedule", b =>
                 {
-                    b.HasOne("Domain.Entities.Doctor", "Doctor")
+                    b.HasOne("Domain.Entities.User.Doctor", "Doctor")
                         .WithMany("DailySchedules")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -327,7 +330,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.ScheduleIrregularity", b =>
                 {
-                    b.HasOne("Domain.Entities.Doctor", "Doctor")
+                    b.HasOne("Domain.Entities.User.Doctor", "Doctor")
                         .WithMany("ScheduleIrregularities")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -336,47 +339,47 @@ namespace Infrastructure.Migrations
                     b.Navigation("Doctor");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Patient", b =>
+            modelBuilder.Entity("Domain.Entities.User.Patient", b =>
                 {
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("Domain.Entities.User.User", null)
                         .WithOne()
-                        .HasForeignKey("Domain.Entities.Patient", "Id")
+                        .HasForeignKey("Domain.Entities.User.Patient", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Staff", b =>
+            modelBuilder.Entity("Domain.Entities.User.Staff", b =>
                 {
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("Domain.Entities.User.User", null)
                         .WithOne()
-                        .HasForeignKey("Domain.Entities.Staff", "Id")
+                        .HasForeignKey("Domain.Entities.User.Staff", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Admin", b =>
+            modelBuilder.Entity("Domain.Entities.User.Admin", b =>
                 {
-                    b.HasOne("Domain.Entities.Staff", null)
+                    b.HasOne("Domain.Entities.User.Staff", null)
                         .WithOne()
-                        .HasForeignKey("Domain.Entities.Admin", "Id")
+                        .HasForeignKey("Domain.Entities.User.Admin", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Doctor", b =>
+            modelBuilder.Entity("Domain.Entities.User.Doctor", b =>
                 {
-                    b.HasOne("Domain.Entities.Staff", null)
+                    b.HasOne("Domain.Entities.User.Staff", null)
                         .WithOne()
-                        .HasForeignKey("Domain.Entities.Doctor", "Id")
+                        .HasForeignKey("Domain.Entities.User.Doctor", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuperAdmin", b =>
+            modelBuilder.Entity("Domain.Entities.User.SuperAdmin", b =>
                 {
-                    b.HasOne("Domain.Entities.Staff", null)
+                    b.HasOne("Domain.Entities.User.Staff", null)
                         .WithOne()
-                        .HasForeignKey("Domain.Entities.SuperAdmin", "Id")
+                        .HasForeignKey("Domain.Entities.User.SuperAdmin", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -391,7 +394,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("DoctorSchedules");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Doctor", b =>
+            modelBuilder.Entity("Domain.Entities.User.Doctor", b =>
                 {
                     b.Navigation("DailySchedules");
 

@@ -3,6 +3,8 @@ import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {isPlatformBrowser} from '@angular/common';
+import {firstValueFrom} from 'rxjs';
+import {UserClient} from '../../clients/user.client';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +13,34 @@ export class AuthenticationService
 {
   private readonly isBrowser: boolean
   constructor(private http: HttpClient,
+              private readonly userClient: UserClient,
               private router: Router,
               private jwtService: JwtHelperService,
               @Inject(PLATFORM_ID) platformId: object)
   {
     this.isBrowser = isPlatformBrowser(platformId);
+  }
+
+
+  public async registerAsync(userData: any): Promise<any> {
+    try {
+      const result = await firstValueFrom(this.userClient.register(userData));
+      console.log('Server response in the service :', result);
+      return result;
+    } catch (error){
+      console.error('Error while registering in service', error);
+      throw error;
+    }
+
+  }
+
+  public async loginAsync(userData: any): Promise<any> {
+    try {
+      return await firstValueFrom(this.userClient.login(userData));
+    } catch (error){
+      console.error('Error while logging in service', error);
+      throw error;
+    }
   }
 
   logout()
@@ -58,6 +83,11 @@ export class AuthenticationService
       return true;
     }
   }
+  public getUserRole(): string
+  {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken ? decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] : "";
+  }
 
   private getDecodedToken()
   {
@@ -83,5 +113,11 @@ export class AuthenticationService
       `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
     ));
     return matches ? decodeURIComponent(matches[1]) : null;
+  }
+
+  setCookie(name: string, value: string): void {
+    if (!this.isBrowser) return;
+
+    document.cookie = `${name}=${value}; path=/`;
   }
 }

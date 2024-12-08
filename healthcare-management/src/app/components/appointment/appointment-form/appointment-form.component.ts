@@ -44,6 +44,7 @@ export class AppointmentFormComponent {
       endTime: ['', [Validators.required, CustomValidators.endTimeAfterStartTime('startTime')]],
       userNotes: ['', Validators.maxLength(500)]
     });
+
   }
 
   ngOnChanges(): void {
@@ -72,13 +73,13 @@ export class AppointmentFormComponent {
     formatDate(date: Date | string): string {
     const d = new Date(date);
     const year = d.getFullYear();
-    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-based
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
     const day = d.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 
     formatTime(time: string): string {
-    const [hours, minutes] = time.split(':'); // Assume the input is `HH:mm`
+    const [hours, minutes] = time.split(':');
     return `${hours}:${minutes}`;
   }
 }
