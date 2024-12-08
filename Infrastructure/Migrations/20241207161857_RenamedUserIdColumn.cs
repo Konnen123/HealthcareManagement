@@ -1,14 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-    "SonarQube",
-    "SXXXX", 
-    Justification = "Excluded migration file from Sonar analysis.")]
+    [ExcludeFromCodeCoverage]
     public partial class RenamedUserIdColumn : Migration
     {
         /// <inheritdoc />

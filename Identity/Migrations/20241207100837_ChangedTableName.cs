@@ -1,14 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Identity.Migrations
 {
     /// <inheritdoc />
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-    "SonarQube",
-    "SXXXX",
-    Justification = "Excluded migration file from Sonar analysis.")]
+    [ExcludeFromCodeCoverage]
     public partial class ChangedTableName : Migration
     {
         /// <inheritdoc />

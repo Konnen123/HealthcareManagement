@@ -24,9 +24,7 @@ public class TokenService : ITokenService
     
     public string GenerateAccessToken(UserAuthentication user)
     {
-        #pragma warning disable S5332
         var jwtSecret = _configuration["Jwt:Key"] ?? throw new Exception("Unable to read JWT from config in TokenService");
-        #pragma warning restore S5332
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
