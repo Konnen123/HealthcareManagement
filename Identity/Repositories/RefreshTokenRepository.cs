@@ -61,4 +61,17 @@ public class RefreshTokenRepository : IRefreshTokenRepository
             return Result<RefreshToken>.Failure(EntityErrors.UpdateFailed(nameof(RefreshToken), e.Message));
         }
     }
+
+    public async Task<Result<IEnumerable<RefreshToken>>> GetByUserIdAsync(Guid userId)
+    {
+        try
+        {
+            var refreshTokens = await _dbContext.RefreshTokens.Where(t => t.UserId == userId).ToListAsync();
+            return Result<IEnumerable<RefreshToken>>.Success(refreshTokens);
+        }
+        catch (Exception e)
+        {
+            return Result<IEnumerable<RefreshToken>>.Failure(EntityErrors.GetFailed(nameof(RefreshToken), e.InnerException?.Message ?? "An unexpected error occurred while retrieving the refresh tokens"));
+        }
+    }
 }

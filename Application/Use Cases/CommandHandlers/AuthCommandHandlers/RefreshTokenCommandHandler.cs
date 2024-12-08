@@ -38,7 +38,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
         refreshToken.RevokedAt = DateTime.UtcNow;
         
         var newAccessToken = _tokenService.GenerateAccessToken(user.Value!);
-        var newRefreshToken = _tokenService.GenerateRefreshToken(user.Value!);
+        var newRefreshToken = _tokenService.GenerateRefreshToken(user.Value!, request.DeviceInfo, request.IpAddress);
         
         await _refreshTokenRepository.AddRefreshTokenAsync(newRefreshToken);
         await _refreshTokenRepository.UpdateAsync(refreshToken);
