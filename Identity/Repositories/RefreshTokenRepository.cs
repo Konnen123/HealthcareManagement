@@ -47,4 +47,18 @@ public class RefreshTokenRepository : IRefreshTokenRepository
             return Result<RefreshToken>.Failure(EntityErrors.GetFailed(nameof(RefreshToken), e.InnerException?.Message ?? "An unexpected error occurred while retrieving the refresh token"));
         }
     }
+
+    public async Task<Result<RefreshToken>> UpdateAsync(RefreshToken token)
+    {
+        try
+        {
+            _dbContext.Entry(token).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+            return Result<RefreshToken>.Success(token);
+        }
+        catch (Exception e)
+        {
+            return Result<RefreshToken>.Failure(EntityErrors.UpdateFailed(nameof(RefreshToken), e.Message));
+        }
+    }
 }
