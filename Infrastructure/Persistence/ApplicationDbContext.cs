@@ -1,9 +1,11 @@
 ﻿using Domain.Entities;
+using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Shared;
 
 namespace Infrastructure.Persistence
-{ 
+{
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> option) : DbContext(option)
     {
         public DbSet<Appointment> Appointments { get; set; }
@@ -22,25 +24,8 @@ namespace Infrastructure.Persistence
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
-            modelBuilder.Entity<User>(
-                entity =>
-                {
-                    entity.ToTable("users");
-                    entity.HasKey(e => e.Id);
-                    entity.Property(e => e.Id)
-                    .HasColumnType("uuid")
-                    .HasDefaultValueSql("uuid_generate_v4()")
-                    .ValueGeneratedOnAdd();
+            modelBuilder.Entity<User>(entity => DbContextSingleton.ConfigureUserProperties<User>(entity));
 
-                    entity.Property(entity => entity.FirstName).IsRequired().HasMaxLength(50);
-                    entity.Property(entity => entity.LastName).IsRequired().HasMaxLength(50);
-                    entity.Property(entity => entity.Email).IsRequired().HasMaxLength(100);
-                    entity.Property(entity => entity.Password).IsRequired().HasMaxLength(50);
-                    entity.Property(entity => entity.DateOfBirth).IsRequired();
-                    entity.Property(entity => entity.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                    entity.Property(entity => entity.CreatedAt).IsRequired();
-                }
-            );
             modelBuilder.Entity<Patient>(
                  entity =>
                  {
