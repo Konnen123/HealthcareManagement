@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {SlicePipe} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
+import { AppointmentService } from '../../../services/appointment/appointment.service';
+import {Appointment} from '../../../models/appointment.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {formatDate, formatTime } from '../../../shared/date-time.utils';
 
 import {
   MatCell,
@@ -13,8 +15,11 @@ import {
 } from '@angular/material/table';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {Appointment} from '../../../models/appointment.model';
-import {AppointmentService} from '../../../services/appointment/appointment.service';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {FilterDialogComponent} from '../../filter-dialog/filter-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {AppointmentParams} from '../../../models/appointmentParams.model';
 
 @Component({
   selector: 'app-appointment-list',
@@ -30,8 +35,9 @@ import {AppointmentService} from '../../../services/appointment/appointment.serv
     MatRow,
     MatRowDef,
     MatTooltip,
-    SlicePipe,
-    MatPaginator
+    MatPaginator,
+    MatButton,
+    MatIcon
   ],
   templateUrl: './appointment-list.component.html',
   standalone: true,
@@ -45,11 +51,16 @@ export class AppointmentListComponent implements OnInit
   currentPage: number = 0;
   pageSizeOptions: number[] = [5, 10, 20];
   displayedColumns: string[] = ['patientId', 'doctorId', 'date', 'time'];
+  filterDate: string = '';
+  filterHour: string = '';
+  private dialogService = inject(MatDialog);
+  appointmentParams = new AppointmentParams();
+
 
   constructor(
     readonly appointmentService: AppointmentService,
     readonly snackBar: MatSnackBar
-    ) {
+  ) {
   }
 
   ngOnInit(): void {
@@ -58,12 +69,12 @@ export class AppointmentListComponent implements OnInit
   }
 
   initializePage(): void {
-    this.loadAppointments(this.pageSize, this.currentPage * this.pageSize);
-
+    //this.loadAppointments(this.pageSize, this.currentPage * this.pageSize);
+    this.loadAppointments();
   }
 
-  loadAppointments(top: number, skip: number): void {
-    this.appointmentService.getAppointmentsPaginatedAsync(top, skip).then(appointments => {
+  loadAppointments(): void {
+    this.appointmentService.getAppointmentsPaginatedAsync(this.appointmentParams).then(appointments => {
       this.appointments = appointments;
       console.log('Appointments:', this.appointments);
     }).catch(error => {
@@ -73,18 +84,15 @@ export class AppointmentListComponent implements OnInit
   }
 
   handlePageEvent(event: PageEvent): void {
-    console.log('Page Index:', event.pageIndex);
-    console.log('Page Size:', event.pageSize);
-    console.log('Total Items:', this.totalCountAppointments);
-
-    this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
-    const skip = this.currentPage * this.pageSize;
-    this.loadAppointments(this.pageSize, skip);
+
+    this.appointmentParams.top = event.pageSize;
+    this.appointmentParams.skip = this.currentPage * this.appointmentParams.top;
+    this.loadAppointments();
   }
 
   fetchAppointments(): void{
-    this.appointmentService.getAllAsync().then(app => {
+    this.appointmentService.getAllAsync(this.appointmentParams.startTime, this.appointmentParams.date).then(app => {
       this.totalCountAppointments = app.length;
     }).catch(error => {
       console.error('Error while fetching appointments:', error);
@@ -101,4 +109,22 @@ export class AppointmentListComponent implements OnInit
     });
   }
 
+  openFiltersDialog() {
+    const dialogRef = this.dialogService.open(FilterDialogComponent, {
+      width: '500px'
+    });
+    dialogRef.afterClosed().subscribe({
+      next: result => {
+        if (result) {
+          //console.log(result);
+          this.appointmentParams.date = formatDate(result.date);
+          this.appointmentParams.startTime = formatTime(result.startTime);
+          this.currentPage = 0;
+          this.appointmentParams.skip = 0;
+          this.fetchAppointments()
+          this.loadAppointments();
+        }
+      }
+    })
+  }
 }

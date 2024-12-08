@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppointmentDetailComponent } from './appointment-detail.component';
-import { AppointmentService } from '../../services/appointment/appointment.service';
+import { AppointmentService } from '../../../services/appointment/appointment.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {Appointment} from '../../models/appointment.model';
+import {Appointment} from '../../../models/appointment.model';
 import {of} from 'rxjs';
 
 const APP_CONFIG = new InjectionToken<any>('app.config');

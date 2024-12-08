@@ -4,34 +4,44 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
 import {MatError, MatFormField, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CustomValidators} from '../../../shared/custom-validators';
+import {MatOption, MatSelect} from '@angular/material/select';
 
 
 @Component({
   selector: 'app-appointment-form',
-    imports: [
-        MatButton,
-        MatDatepicker,
-        MatDatepickerInput,
-        MatDatepickerToggle,
-        MatError,
-        MatFormField,
-        MatHint,
-        MatIcon,
-        MatInput,
-        MatLabel,
-        MatSuffix,
-        NgIf,
-        ReactiveFormsModule
-    ],
+  imports: [
+    MatButton,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatError,
+    MatFormField,
+    MatHint,
+    MatIcon,
+    MatInput,
+    MatLabel,
+    MatSuffix,
+    NgIf,
+    ReactiveFormsModule,
+    MatSelect,
+    MatOption,
+    NgForOf
+  ],
   templateUrl: './appointment-form.component.html',
   styleUrl: './appointment-form.component.scss'
 })
 export class AppointmentFormComponent {
   @Input() initialData: any = {};
   @Output() formSubmit = new EventEmitter<any>();
+  @Input() mode: string = 'Create';
+  doctors = [
+    { id: 'ac5fe411-9b82-40de-8963-27b9a3074bae', name: 'Dr. Alice Smith' },
+    { id: 'ac5fe411-9b82-40de-8963-27b9a3074bae', name: 'Dr. John Doe' },
+    { id: 'ac5fe411-9b82-40de-8963-27b9a3074bae', name: 'Dr. Emily White' }
+  ];
 
   appointmentForm: FormGroup;
 
