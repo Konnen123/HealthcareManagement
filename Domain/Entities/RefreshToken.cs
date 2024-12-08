@@ -12,4 +12,6 @@ public class RefreshToken
     public DateTime ExpiresAt { get; set; }
     public string? DeviceInfo { get; set; }
     public string? IpAddress { get; set; }
+    public bool IsRevoked { get; set; }
+    public DateTime? RevokedAt { get; set; }
 }

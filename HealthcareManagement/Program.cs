@@ -54,10 +54,12 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, defaultConnectionStringPrefix);
 builder.Services.AddIdentity(builder.Configuration, identityConnectionStringPrefix);
+
 
 builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count().AddRouteComponents("odata", GetEdmModel()))
     .AddJsonOptions(options =>
