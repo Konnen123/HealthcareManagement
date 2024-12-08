@@ -20,6 +20,6 @@ namespace Domain.Entities.User
 
         public bool IsEnabled { get; set; }
 
-        public RolesEnum Role { get; set; }
+        public Roles Role { get; set; }
     }
 }

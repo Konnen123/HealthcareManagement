@@ -1,4 +1,4 @@
-﻿using Identity.Utils.MiddlewearUtils;
+﻿using Identity.Utils.MiddlewareUtils;
 using Microsoft.AspNetCore.Http;
 
 namespace Identity.Middleware
@@ -7,7 +7,7 @@ namespace Identity.Middleware
     {
         public abstract Task InvokeAsync(HttpContext context);
 
-        protected async Task WriteResponseMessage(HttpContext context, MiddlewearEnum error, string suggestion)
+        protected async Task WriteResponseMessage(HttpContext context, MiddlewareStatuses error, string suggestion)
         {
             var message = new
             {

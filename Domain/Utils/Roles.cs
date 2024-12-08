@@ -1,6 +1,6 @@
 ﻿namespace Domain.Utils
 {
-    public enum RolesEnum
+    public enum Roles
     {
         DOCTOR,
         PACIENT

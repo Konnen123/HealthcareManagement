@@ -14,7 +14,7 @@ namespace Application.Use_Cases.Commands.AuthCommands
 
         public required string PhoneNumber { get; set; }
         public DateOnly DateOfBirth { get; set; }
-        public RolesEnum Role { get; set; }
+        public Roles Role { get; set; }
     }
 }
 

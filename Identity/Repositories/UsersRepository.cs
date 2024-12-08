@@ -4,18 +4,15 @@ using Domain.Repositories;
 using Domain.Utils;
 using Identity.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Identity.Repositories
 {
     public class UsersRepository : IUsersRepository
     {
-        private readonly IConfiguration configuration;
         private readonly UsersDbContext _context;
 
-        public UsersRepository(IConfiguration configuration, UsersDbContext context)
+        public UsersRepository(UsersDbContext context)
         {
-            this.configuration = configuration;
             _context = context;
         }
 
