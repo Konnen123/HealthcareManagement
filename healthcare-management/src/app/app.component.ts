@@ -20,8 +20,7 @@ export class AppComponent implements OnInit{
 
   protected isNavbarHidden : boolean = false;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute,
-              private authenticationService: AuthenticationService) {
+  constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {

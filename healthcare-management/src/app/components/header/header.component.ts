@@ -13,8 +13,8 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  constructor(private router: Router,
-              private authenticationService: AuthenticationService) {}
+  constructor(private readonly router: Router,
+              private readonly authenticationService: AuthenticationService) {}
 
   logout() {
     this.authenticationService.logout();

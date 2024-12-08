@@ -1,8 +1,6 @@
 import {
   ActivatedRouteSnapshot,
   CanActivate,
-  CanActivateChild,
-  CanActivateFn, GuardResult, MaybeAsync,
   Router,
   RouterStateSnapshot
 } from '@angular/router';
@@ -14,7 +12,7 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 })
 export class RoleGuard implements CanActivate
 {
-  constructor(private authenticationService: AuthenticationService, private router: Router) {}
+  constructor(private readonly authenticationService: AuthenticationService, private readonly router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean
   {

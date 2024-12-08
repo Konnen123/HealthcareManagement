@@ -24,7 +24,6 @@ export class AppointmentCreateComponent {
       this.snackBar.open('Appointment created successfully.', 'Close', {
         duration: 5000,
       });
-      //this.router.navigate(['/appointments']);
     }).catch(() => {
       this.snackBar.open('Failed to create appointment. Please try again.', 'Close', {
         duration: 5000,

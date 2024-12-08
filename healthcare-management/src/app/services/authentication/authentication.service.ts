@@ -12,10 +12,9 @@ import {UserClient} from '../../clients/user.client';
 export class AuthenticationService
 {
   private readonly isBrowser: boolean
-  constructor(private http: HttpClient,
-              private readonly userClient: UserClient,
-              private router: Router,
-              private jwtService: JwtHelperService,
+  constructor(private readonly userClient: UserClient,
+              private readonly router: Router,
+              private readonly jwtService: JwtHelperService,
               @Inject(PLATFORM_ID) platformId: object)
   {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -110,7 +109,7 @@ export class AuthenticationService
       return null;
 
     const matches = document.cookie.match(new RegExp(
-      `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
+      `(?:^|; )${name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1')}=([^;]*)`
     ));
     return matches ? decodeURIComponent(matches[1]) : null;
   }

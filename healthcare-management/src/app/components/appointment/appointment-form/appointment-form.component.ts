@@ -65,7 +65,6 @@ export class AppointmentFormComponent {
         startTime: this.formatTime(rawData.startTime),
         endTime: this.formatTime(rawData.endTime),
       };
-      //console.log(appointmentData);
       this.formSubmit.emit(appointmentData);
     }
   }

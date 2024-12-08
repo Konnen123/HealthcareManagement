@@ -13,7 +13,7 @@ import {Injectable} from '@angular/core';
   providedIn: 'root',
 })
 export class AuthenticationGuard implements CanActivate, CanActivateChild {
-  constructor(private authenticationService: AuthenticationService, private router: Router) {
+  constructor(private readonly authenticationService: AuthenticationService, private readonly router: Router) {
   }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult>
