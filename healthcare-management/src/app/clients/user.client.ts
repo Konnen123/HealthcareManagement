@@ -12,11 +12,14 @@ export class UserClient{
   private readonly baseUrl: string;
   constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig, private http: HttpClient)
   {
-    this.baseUrl = this.config.apiEndpoint + '/v1/'
+    this.baseUrl = this.config.apiEndpoint + '/v1/Auth'
   }
 
-  public register() : Observable<any> {
-    return this.http.post(this.baseUrl);
+  public register(userData: any) : Observable<any> {
+    return this.http.post(`${this.baseUrl}/Register`, userData);
   }
 
+  public login(userData: any) : Observable<any> {
+    return this.http.post(`${this.baseUrl}/Login`, userData);
+  }
 }

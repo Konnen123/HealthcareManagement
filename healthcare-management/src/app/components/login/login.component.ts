@@ -4,6 +4,8 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AuthService} from '../../services/users/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +25,22 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
+  constructor(
+    readonly authService: AuthService,
+    readonly router: Router
+  ) { }
+
   onSubmit(): void {
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
+    const requestData ={
+      email: this.email,
+      password: this.password
+    };
+
+    this.authService.loginAsync(requestData).then((response) => {
+      console.log('Response from the service:', response);
+      this.router.navigate(['appointments']);
+    }).catch((error) => {
+      console.error('Error from the service:', error);
+    });
   }
 }

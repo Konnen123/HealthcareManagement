@@ -14,13 +14,25 @@ export class AuthService {
     this.isBrowser = isPlatformBrowser(platformId)
   }
 
-  public async registerAsync(){
+  public async registerAsync(userData: any): Promise<any> {
     try {
-      const result = await firstValueFrom(this.userClient.register());
+      const result = await firstValueFrom(this.userClient.register(userData));
       console.log('Server response in the service :', result);
       return result;
     } catch (error){
       console.error('Error while registering in service', error);
+      throw error;
+    }
+
+  }
+
+  public async loginAsync(userData: any): Promise<any> {
+    try {
+      const result = await firstValueFrom(this.userClient.login(userData));
+      console.log('Server response in the service :', result);
+      return result;
+    } catch (error){
+      console.error('Error while logging in service', error);
       throw error;
     }
 

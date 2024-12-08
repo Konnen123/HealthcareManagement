@@ -7,6 +7,7 @@ import { MatSelect, MatOption } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService} from '../../services/users/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -36,22 +37,27 @@ export class SignupComponent {
   role: string = '';
 
   constructor(
-    readonly authService: AuthService
+    readonly authService: AuthService,
+    readonly router: Router
   ) {
   }
 
   onSubmit(): void {
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
-    console.log('Confirm Password:', this.confirmPassword);
-    console.log('First Name:', this.firstName);
-    console.log('Last Name:', this.lastName);
-    console.log('Phone Number:', this.phoneNumber);
-    console.log('Date of Birth:', this.dateOfBirth);
-    console.log('Role:', this.role);
-
-
-
+    const requestData = {
+      email: this.email,
+      password: this.password,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      phoneNumber: this.phoneNumber,
+      dateOfBirth: this.dateOfBirth,
+      role: this.role.toUpperCase()
+    };
+    this.authService.registerAsync(requestData).then((response) => {
+        console.log('Register successful :', response);
+        this.router.navigate(['login']);
+    }).catch((error) => {
+        console.error('Error at register ', error);
+    });
   }
 
   isFormValid(): boolean {
