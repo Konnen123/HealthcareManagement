@@ -5,6 +5,10 @@
 namespace Identity.Migrations
 {
     /// <inheritdoc />
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "SonarQube",
+    "SXXXX",
+    Justification = "Excluded migration file from Sonar analysis.")]
     public partial class ChangedTableName : Migration
     {
         /// <inheritdoc />

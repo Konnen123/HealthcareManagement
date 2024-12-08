@@ -27,7 +27,7 @@ namespace Identity.Repositories
                     LastFailedAttemptTime = DateTime.UtcNow,
                     LockoutEndTime = null
                 };
-                _context.FailedLoginAttempts.Add(failedAttempt);
+                _context.FailedLoginAttempts.AddAsync(failedAttempt);
             }
             else
             {
@@ -44,7 +44,7 @@ namespace Identity.Repositories
                 _context.FailedLoginAttempts.Update(failedAttempt);
             }
 
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
 
         public bool IsUserLockedOut(Guid userId)
@@ -65,7 +65,7 @@ namespace Identity.Repositories
             failedAttempt.LockoutEndTime = null;
             failedAttempt.FailedAttempts = 0;
             _context.FailedLoginAttempts.Update(failedAttempt);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
 
             return false;
         }
@@ -78,7 +78,7 @@ namespace Identity.Repositories
             if (failedAttempt != null)
             {
                 _context.FailedLoginAttempts.Remove(failedAttempt);
-                _context.SaveChanges();
+                _context.SaveChangesAsync();
             }
         }
     }
