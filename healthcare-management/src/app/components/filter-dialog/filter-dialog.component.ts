@@ -33,8 +33,8 @@ export class FilterDialogComponent {
   filterForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<FilterDialogComponent>
+    readonly fb: FormBuilder,
+    readonly dialogRef: MatDialogRef<FilterDialogComponent>
   ) {
     this.filterForm = this.fb.group({
       startTime: [''],
@@ -44,7 +44,6 @@ export class FilterDialogComponent {
 
   applyFilters() {
     if (this.filterForm.valid) {
-      //console.log(this.filterForm.value);
       this.dialogRef.close(this.filterForm.value);
     }
   }

@@ -51,9 +51,7 @@ export class AppointmentListComponent implements OnInit
   currentPage: number = 0;
   pageSizeOptions: number[] = [5, 10, 20];
   displayedColumns: string[] = ['patientId', 'doctorId', 'date', 'time'];
-  filterDate: string = '';
-  filterHour: string = '';
-  private dialogService = inject(MatDialog);
+  readonly dialogService = inject(MatDialog);
   appointmentParams = new AppointmentParams();
 
 
@@ -69,7 +67,6 @@ export class AppointmentListComponent implements OnInit
   }
 
   initializePage(): void {
-    //this.loadAppointments(this.pageSize, this.currentPage * this.pageSize);
     this.loadAppointments();
   }
 
@@ -116,7 +113,6 @@ export class AppointmentListComponent implements OnInit
     dialogRef.afterClosed().subscribe({
       next: result => {
         if (result) {
-          //console.log(result);
           this.appointmentParams.date = formatDate(result.date);
           this.appointmentParams.startTime = formatTime(result.startTime);
           this.currentPage = 0;
