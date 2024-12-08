@@ -5,6 +5,10 @@
 namespace Identity.Migrations
 {
     /// <inheritdoc />
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "SonarQube", 
+    "SXXXX", // Replace with specific rule ID if needed
+    Justification = "Excluded migration file from Sonar analysis.")]
     public partial class FixCommit : Migration
     {
         /// <inheritdoc />

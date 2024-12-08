@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Identity.Migrations
 {
     /// <inheritdoc />
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "SonarQube", 
+    "SXXXX", 
+    Justification = "Excluded migration file from Sonar analysis.")]
     public partial class InitialCommit : Migration
     {
         /// <inheritdoc />
