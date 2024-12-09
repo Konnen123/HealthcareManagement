@@ -54,14 +54,14 @@ namespace Identity
             });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("DOCTOR_PACIENT", policy =>
-                    policy.RequireRole("DOCTOR", "PACIENT"));
+                options.AddPolicy("DOCTOR_PATIENT", policy =>
+                    policy.RequireRole("DOCTOR", "PATIENT"));
 
                 options.AddPolicy("DOCTOR", policy =>
                     policy.RequireRole("DOCTOR"));
 
-                options.AddPolicy("PACIENT", policy =>
-                    policy.RequireRole("PACIENT"));
+                options.AddPolicy("PATIENT", policy =>
+                    policy.RequireRole("PATIENT"));
             });
 
             services.AddScoped<IUsersRepository, UsersRepository>();

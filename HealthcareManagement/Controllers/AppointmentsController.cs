@@ -27,7 +27,7 @@ namespace HealthcareManagement.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(Policy = "PACIENT")]
+        [Authorize(Policy = "PATIENT")]
         public async Task<IActionResult> CreateAppointment([FromBody] CreateAppointmentCommand command)
         {
 
@@ -39,7 +39,7 @@ namespace HealthcareManagement.Controllers
             );
         }
 
-        [Authorize(Policy = "DOCTOR_PACIENT")]
+        [Authorize(Policy = "DOCTOR_PATIENT")]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -72,7 +72,7 @@ namespace HealthcareManagement.Controllers
             );
         }
 
-        [Authorize(Policy = "DOCTOR_PACIENT")]
+        [Authorize(Policy = "DOCTOR_PATIENT")]
         [HttpPatch("Cancel")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -123,7 +123,7 @@ namespace HealthcareManagement.Controllers
             );
         }
 
-        [Authorize(Policy = "PACIENT")]
+        [Authorize(Policy = "PATIENT")]
         [HttpPatch("Reschedule/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

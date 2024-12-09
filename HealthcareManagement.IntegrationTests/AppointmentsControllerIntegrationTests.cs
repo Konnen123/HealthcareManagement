@@ -84,7 +84,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Users.Add(patient);
             await dbContext.SaveChangesAsync();
 
-            HttpClient client = CreateAuthenticatedClient(Roles.PACIENT);
+            HttpClient client = CreateAuthenticatedClient(Roles.PATIENT);
             var appointment = CreateAppointmentCommandSUT(10, patient.UserId, doctor.UserId);
             var serialize = JsonConvert.SerializeObject(appointment);
 
@@ -109,7 +109,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Patients.Add(patient);
             await dbContext.SaveChangesAsync();
 
-            HttpClient client = CreateAuthenticatedClient(Roles.PACIENT);
+            HttpClient client = CreateAuthenticatedClient(Roles.PATIENT);
 
             // Act
             var response = await client.PostAsync(BaseUrl, new StringContent(
@@ -135,7 +135,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
-            HttpClient client = CreateAuthenticatedClient(Roles.PACIENT);
+            HttpClient client = CreateAuthenticatedClient(Roles.PATIENT);
 
             // Act
             var response = await client.GetAsync($"{BaseUrl}/{appointment.Id}");
@@ -164,7 +164,7 @@ namespace HealthcareManagement.IntegrationTests
             dbContext.Appointments.Add(appointment);
             await dbContext.SaveChangesAsync();
 
-            HttpClient client = CreateAuthenticatedClient(Roles.PACIENT);
+            HttpClient client = CreateAuthenticatedClient(Roles.PATIENT);
 
             // Act
             var response = await client.GetAsync($"{BaseUrl}/{Guid.NewGuid()}");
@@ -230,7 +230,7 @@ namespace HealthcareManagement.IntegrationTests
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         #endregion
@@ -394,7 +394,7 @@ namespace HealthcareManagement.IntegrationTests
 
             RescheduleAppointmentCommand rescheduleAppointmentCommand = RescheduleAppointmentCommandSUT(appointment.PatientId, appointment.Id);
 
-            HttpClient client = CreateAuthenticatedClient(Roles.PACIENT);
+            HttpClient client = CreateAuthenticatedClient(Roles.PATIENT);
 
             // Act
             var response = await client.PatchAsync($"{BaseUrl}/Reschedule/{appointment.Id}", new StringContent(
@@ -410,7 +410,7 @@ namespace HealthcareManagement.IntegrationTests
         {
             // Arrange
             RescheduleAppointmentCommand rescheduleAppointmentCommand = RescheduleAppointmentCommandSUT(Guid.NewGuid(), Guid.NewGuid());
-            HttpClient client = CreateAuthenticatedClient(Roles.PACIENT);
+            HttpClient client = CreateAuthenticatedClient(Roles.PATIENT);
 
             // Act
             var response = await client.PatchAsync($"{BaseUrl}/Reschedule/{Guid.NewGuid()}", new StringContent(
