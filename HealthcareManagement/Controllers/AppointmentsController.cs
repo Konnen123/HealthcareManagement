@@ -5,6 +5,7 @@ using Application.Use_Cases.Queries.AppointmentQueries;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -26,7 +27,7 @@ namespace HealthcareManagement.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(Policy = "PACIENT")]
+        [Authorize(Policy = "PATIENT")]
         public async Task<IActionResult> CreateAppointment([FromBody] CreateAppointmentCommand command)
         {
 
@@ -38,7 +39,7 @@ namespace HealthcareManagement.Controllers
             );
         }
 
-        [Authorize(Policy = "DOCTOR_PACIENT")]
+        [Authorize(Policy = "DOCTOR_PATIENT")]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -64,11 +65,14 @@ namespace HealthcareManagement.Controllers
         // )]
         public async Task<ActionResult<IQueryable<AppointmentDto>>> GetAllAppointments()
         {
-            var res = await mediator.Send(new GetAllAppointmentsQuery());
-            return Ok(res.Value);
+            var resultObject = await mediator.Send(new GetAllAppointmentsQuery());
+            return resultObject.Match<ActionResult>(
+                onSuccess: value => Ok(value),
+                onFailure: NotFound
+            );
         }
 
-        [Authorize(Policy = "DOCTOR_PACIENT")]
+        [Authorize(Policy = "DOCTOR_PATIENT")]
         [HttpPatch("Cancel")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -119,7 +123,7 @@ namespace HealthcareManagement.Controllers
             );
         }
 
-        [Authorize(Policy = "PACIENT")]
+        [Authorize(Policy = "PATIENT")]
         [HttpPatch("Reschedule/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
