@@ -5,6 +5,7 @@ using Application.Use_Cases.Queries.AppointmentQueries;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -64,8 +65,11 @@ namespace HealthcareManagement.Controllers
         // )]
         public async Task<ActionResult<IQueryable<AppointmentDto>>> GetAllAppointments()
         {
-            var res = await mediator.Send(new GetAllAppointmentsQuery());
-            return Ok(res.Value);
+            var resultObject = await mediator.Send(new GetAllAppointmentsQuery());
+            return resultObject.Match<ActionResult>(
+                onSuccess: value => Ok(value),
+                onFailure: NotFound
+            );
         }
 
         [Authorize(Policy = "DOCTOR_PACIENT")]
