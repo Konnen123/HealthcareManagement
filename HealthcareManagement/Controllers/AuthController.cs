@@ -1,4 +1,5 @@
 ﻿using Application.Use_Cases.Commands.AuthCommands;
+using Domain.Errors;
 using Domain.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -54,10 +55,36 @@ namespace HealthcareManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
         {
+            var deviceInfo = Request.Headers.UserAgent.ToString(); 
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            
+            command.DeviceInfo = deviceInfo;
+            command.IpAddress = ipAddress;
+            
             var resultObject = await _mediator.Send(command);
             return resultObject.Match<IActionResult>(
                 onSuccess: value => Ok(value),
                 onFailure: error => BadRequest(error)
+            );
+        }
+        
+        [HttpPost("logout")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> Logout()
+        {
+            var resultObject = await _mediator.Send(new LogoutCommand());
+            return resultObject.Match<IActionResult>(
+                onSuccess: value => NoContent(),
+                onFailure: error => 
+                {
+                    if (error.GetType() == AuthorizationErrors.Unauthorized("","").GetType())
+                    {
+                        return Unauthorized(error);
+                    }
+                    return BadRequest(error);
+                }
             );
         }
     }

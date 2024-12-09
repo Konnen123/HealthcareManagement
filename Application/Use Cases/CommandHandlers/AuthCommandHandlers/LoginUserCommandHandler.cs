@@ -1,5 +1,6 @@
 ﻿using Application.Use_Cases.Commands.AuthCommands;
 using Application.Use_Cases.Responses;
+using Domain.Entities;
 using Domain.Entities.User;
 using Domain.Errors;
 using Domain.Repositories;
@@ -44,6 +45,20 @@ namespace Application.Use_Cases.CommandHandlers.AuthCommandHandlers
                 _failedLoginAttemptsRepository.AddFailedAttempt(user.UserId);
                 return Result<TokenResponse>.Failure(AuthErrors.LoginFailed(nameof(UserAuthentication), "Invalid password"));
             }
+
+            var existingTokensResult = await _refreshTokenRepository.GetByUserIdAsync(user.UserId);
+            if (!existingTokensResult.IsSuccess)
+            {
+                return Result<TokenResponse>.Failure(EntityErrors.GetFailed(nameof(RefreshToken), "An unexpected error occurred while retrieving refresh tokens for user."));
+            }
+            
+            foreach (var refreshTokenEntry in existingTokensResult.Value!)
+            {
+                refreshTokenEntry.IsRevoked = true;
+                refreshTokenEntry.RevokedAt = DateTime.UtcNow;
+                await _refreshTokenRepository.UpdateAsync(refreshTokenEntry);
+            }
+            
             var token = _tokenService.GenerateAccessToken(user);
             _failedLoginAttemptsRepository.ResetFailedAttempts(user.UserId);
             
