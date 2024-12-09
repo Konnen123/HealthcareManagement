@@ -4,6 +4,7 @@ import {AppConfig} from '../app-config/app.config.interface';
 import {APP_SERVICE_CONFIG} from '../app-config/app.config';
 import {Observable} from 'rxjs';
 import {Appointment} from '../models/appointment.model';
+import {AppointmentParams} from '../models/appointmentParams.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,10 @@ export class AppointmentClient
     this.baseUrl = this.config.apiEndpoint + '/v1/Appointments';
   }
 
-  public getAllAppointments(): Observable<Appointment[]>
+  public getAllAppointments(startTime:string, date:string): Observable<Appointment[]>
   {
-    return this.http.get<Appointment[]>(this.baseUrl);
+    const filters = this.constructFilters(startTime, date);
+    return this.http.get<Appointment[]>(`${this.baseUrl}?${filters}`);
   }
 
   public createAppointment(appointment: Appointment): Observable<any>
@@ -41,8 +43,58 @@ export class AppointmentClient
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 
-  public getAppointmentsPaginated(top: number, skip:number) {
-    return this.http.get<Appointment[]>(`${this.baseUrl}?$top=${top}&$skip=${skip}`);
+  public getAppointmentsPaginated(appointmentParams: AppointmentParams): Observable<Appointment[]>{
+    const filters = this.constructFilters(appointmentParams.startTime, appointmentParams.date);
+    const pagination = this.constructPagination(appointmentParams);
+
+    const queryParams = [...filters, ...pagination].join('&');
+
+    return this.http.get<Appointment[]>(`${this.baseUrl}?${queryParams}`);
+
+
+    // let queryParts: string[] = [];
+    //
+    // if (appointmentParams.startTime) {
+    //   queryParts.push(`$filter=startTime eq ${appointmentParams.startTime}`);
+    // }
+    //
+    // if (appointmentParams.date) {
+    //   const dateFilter = `date eq ${appointmentParams.date}`;
+    //   if (appointmentParams.startTime) {
+    //     queryParts[0] = `${queryParts[0]} and ${dateFilter}`;
+    //   } else {
+    //     queryParts.push(`$filter=${dateFilter}`);
+    //   }
+    // }
+    //
+    // queryParts.push(`$top=${appointmentParams.top}`);
+    // queryParts.push(`$skip=${appointmentParams.skip}`);
+    //
+    // const queryParams = queryParts.join('&');
+    //
+    // return this.http.get<Appointment[]>(`${this.baseUrl}?${queryParams}`);
+  }
+
+  private constructFilters(startTime:string, date: string): string[] {
+    const filters: string[] = [];
+
+    if (startTime) {
+      filters.push(`$filter=startTime eq ${startTime}`);
+    }
+
+    if (date) {
+      const dateFilter = `date eq ${date}`;
+      if (startTime) {
+        filters[0] = `${filters[0]} and ${dateFilter}`;
+      } else {
+        filters.push(`$filter=${dateFilter}`);
+      }
+    }
+
+    return filters;
+  }
+  private constructPagination(params: AppointmentParams): string[] {
+    return [`$top=${params.top}`, `$skip=${params.skip}`];
   }
 
 }

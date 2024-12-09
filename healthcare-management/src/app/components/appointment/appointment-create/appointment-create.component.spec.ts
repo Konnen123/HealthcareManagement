@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppointmentCreateComponent } from './appointment-create.component';
-import { AppointmentService } from '../../services/appointment/appointment.service';
+import { AppointmentService } from '../../../services/appointment/appointment.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';

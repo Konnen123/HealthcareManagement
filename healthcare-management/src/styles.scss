@@ -22,6 +22,13 @@ $compact-theme: mat.define-theme((
   )
 ));
 
+.paginator-custom {
+  @include mat.paginator-overrides((
+    container-text-color: #000000,
+    container-background-color: #ffffff
+  ));
+}
+
 form {
   @include mat.all-component-themes($default-theme);
   @include mat.form-field-density($compact-theme);

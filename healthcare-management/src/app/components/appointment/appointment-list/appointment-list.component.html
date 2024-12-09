@@ -1,24 +1,44 @@
 <div class="appointment-list">
   <h1>All Appointments</h1>
 
+  <!-- Filter and Paginator Container -->
+  <div class="header-controls">
+    <mat-paginator class="paginator-custom"
+                   (page)="handlePageEvent($event)"
+                   [length]="totalCountAppointments"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   [showFirstLastButtons]="true"
+                   [pageIndex]="currentPage"
+                   aria-label="Select page">
+    </mat-paginator>
+
+    <button class="match-input-height" mat-stroked-button (click)="openFiltersDialog()">
+      <mat-icon>filter_list</mat-icon>
+      Filters
+    </button>
+  </div>
+
   <table mat-table [dataSource]="appointments" class="mat-elevation-z8">
 
     <!-- Patient ID Column -->
     <ng-container matColumnDef="patientId">
-      <th mat-header-cell *matHeaderCellDef> Patient ID </th>
+      <th mat-header-cell *matHeaderCellDef> Patient Name </th>
       <td mat-cell *matCellDef="let appointment">
         <span matTooltip="{{ appointment.patientId }}">
-        {{ appointment.patientId | slice:0:4 }}...{{ appointment.patientId | slice:-4 }}
+<!--        {{ appointment.patientId | slice:0:4 }}...{{ appointment.patientId | slice:-4 }}-->
+          John Doe
       </span>
       </td>
     </ng-container>
 
     <!-- Doctor ID Column -->
     <ng-container matColumnDef="doctorId">
-      <th mat-header-cell *matHeaderCellDef> Doctor ID </th>
+      <th mat-header-cell *matHeaderCellDef> Doctor Name </th>
       <td mat-cell *matCellDef="let appointment">
         <span matTooltip="{{ appointment.doctorId }}">
-        {{ appointment.doctorId | slice:0:4 }}...{{ appointment.doctorId | slice:-4 }}
+<!--        {{ appointment.doctorId | slice:0:4 }}...{{ appointment.doctorId | slice:-4 }}-->
+          Patient Name
       </span>
       </td>
     </ng-container>
@@ -43,14 +63,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator
-    (page)="handlePageEvent($event)"
-    [length]="totalCountAppointments"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions"
-    [showFirstLastButtons]="true"
-    [pageIndex]="currentPage"
-    aria-label="Select page">
-      >
-  </mat-paginator>
 </div>

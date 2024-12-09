@@ -3,6 +3,7 @@ import {AppointmentClient} from '../../clients/appointment.client';
 import {isPlatformBrowser} from '@angular/common';
 import {Appointment} from '../../models/appointment.model';
 import {firstValueFrom} from 'rxjs';
+import {AppointmentParams} from '../../models/appointmentParams.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,12 @@ export class AppointmentService{
     this.isBrowser = isPlatformBrowser(platformId)
   }
 
-  public async getAllAsync(): Promise<Appointment[]>
+  public async getAllAsync(startTime: string, date:string): Promise<Appointment[]>
   {
     if(!this.isBrowser)
       return new Promise<Appointment[]>((resolve, reject) => {});
 
-    return await firstValueFrom(this.appointmentClient.getAllAppointments());
+    return await firstValueFrom(this.appointmentClient.getAllAppointments(startTime, date));
   }
 
   public async createAsync(appointment: Appointment): Promise<any> {
@@ -68,9 +69,9 @@ export class AppointmentService{
     }
   }
 
-  public async getAppointmentsPaginatedAsync(pageSize: number, pageIndex: number): Promise<Appointment[]> {
+  public async getAppointmentsPaginatedAsync(appointmentParams: AppointmentParams): Promise<Appointment[]> {
     try {
-      return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(pageSize, pageIndex));
+      return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(appointmentParams));
     } catch (error) {
       console.error('Error while getting appointments paginated in service:', error);
       throw error;
