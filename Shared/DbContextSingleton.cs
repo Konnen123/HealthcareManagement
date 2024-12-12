@@ -23,24 +23,6 @@ namespace Shared
                     b => b.MigrationsAssembly(typeof(T).Assembly.FullName)));
         }
 
-        public static void ConfigureUserProperties<T>(EntityTypeBuilder<T> entity) where T: User
-        {
-            entity.ToTable("users");
-            entity.HasKey(e => e.UserId);
-            entity.Property(e => e.UserId)
-                .HasColumnType("uuid")
-                .HasDefaultValueSql("uuid_generate_v4()")
-                .ValueGeneratedOnAdd();
-
-            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.Password).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.DateOfBirth).IsRequired();
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            entity.Property(e => e.CreatedAt).IsRequired();
-        }
-
         private static string GetConnectionString(IConfiguration configuration, string connectionPrefix)
         {
             var host = configuration[$"{connectionPrefix}Host"];

@@ -23,6 +23,7 @@ public class MappingProfile : Profile
         CreateMap<DailyDoctorSchedule, DailyDoctorScheduleDto>().ReverseMap();
         CreateMap<CreateDailyDoctorScheduleCommand, DailyDoctorSchedule>().ReverseMap();
         CreateMap<UpdateDailyDoctorScheduleCommand, DailyDoctorSchedule>().ReverseMap();
-        CreateMap<RegisterUserCommand, UserAuthentication>().ReverseMap();
+        CreateMap<RegisterUserCommand, Patient>().ReverseMap();
+        CreateMap<RegisterUserCommand, Doctor>().ReverseMap();
     }
 }

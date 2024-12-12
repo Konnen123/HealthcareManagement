@@ -1,12 +1,10 @@
 using Domain.Entities.User;
 
-namespace Domain.Entities;
-
 public class RefreshToken
 {
     public Guid RefreshTokenId { get; set; }
     public string Token { get; set; }
-    public UserAuthentication UserAuthentication { get; set; }
+    public User User { get; set; }
     public Guid UserId { get; set; }
     public DateTime IssuedAt { get; set; }
     public DateTime ExpiresAt { get; set; }

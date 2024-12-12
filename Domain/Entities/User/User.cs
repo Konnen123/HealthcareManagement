@@ -21,5 +21,7 @@ namespace Domain.Entities.User
         public bool IsEnabled { get; set; }
 
         public Roles Role { get; set; }
+
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 }
