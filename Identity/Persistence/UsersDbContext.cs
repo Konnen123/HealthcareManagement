@@ -8,8 +8,13 @@ namespace Identity.Persistence
 {
     public class UsersDbContext(DbContextOptions<UsersDbContext> option) : DbContext(option)
     {
-
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }
+
+        public DbSet<Staff> Staffs { get; set; }
+
+        public DbSet<Doctor> Doctors { get; set; }
         public DbSet<FailedLoginAttempt> FailedLoginAttempts { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
