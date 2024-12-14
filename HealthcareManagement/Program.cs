@@ -41,6 +41,9 @@ builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_
 builder.Configuration["Jwt:AccessExpiry"] = Environment.GetEnvironmentVariable("JWT_ACCESS_EXPIRY_TIME_SECONDS");
 builder.Configuration["Jwt:RefreshExpiry"] = Environment.GetEnvironmentVariable("JWT_REFRESH_EXPIRY_TIME_DAYS");
 
+builder.Configuration["ML:DiagnosisModelPath"] = Environment.GetEnvironmentVariable("DIAGNOSIS_MODEL_PATH");
+builder.Configuration["ML:OutputFilePath"] = Environment.GetEnvironmentVariable("OUTPUT_DIAGNOSIS_PATH");
+
 var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
 builder.Services.AddCors(options =>
 {

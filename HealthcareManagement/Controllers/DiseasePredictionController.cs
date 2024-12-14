@@ -9,13 +9,18 @@ public class DiseasePredictionController : ControllerBase
 {
     private readonly DiagnosisPredictionModel _diagnosisPredictionModel;
 
-    private const string CsvPath = "/home/user-razvan/HealthcareManagement/HealthcareManagement/Controllers/output.csv";
+    readonly IConfiguration _configuration;
 
-    private const string ModelPath = "/home/user-razvan/HealthcareManagement/HealthcareManagement/Controllers/diagnosisModel.zip";
+    private string CsvPath;
 
-    public DiseasePredictionController()
+    private string ModelPath;
+    public DiseasePredictionController(IConfiguration configuration)
     {
-        _diagnosisPredictionModel = new DiagnosisPredictionModel();
+        _configuration = configuration;
+        CsvPath = _configuration["ML:OutputFilePath"]!;
+        ModelPath = _configuration["ML:DiagnosisModelPath"]!;
+        _diagnosisPredictionModel = new DiagnosisPredictionModel(ModelPath);
+       
     }
 
     [HttpPost("train")]

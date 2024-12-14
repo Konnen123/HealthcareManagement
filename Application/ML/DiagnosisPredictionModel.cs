@@ -6,9 +6,11 @@ public class DiagnosisPredictionModel
 {
     private readonly MLContext _mlContext;
     private ITransformer _model;
-    public DiagnosisPredictionModel()
+    private readonly string _modelPath;
+    public DiagnosisPredictionModel(string modelPath)
     {
         _mlContext = new MLContext();
+        _modelPath = modelPath;
     }
 
     public void Train(string csvFilePath)
@@ -50,30 +52,37 @@ public class DiagnosisPredictionModel
     
     public string Predict(List<string> symptoms, string csvPath)
     {
-        var featureVector = CreateFeatureVector(symptoms, csvPath);
-        if (featureVector.Length != 377)
+        try
         {
-            foreach (var elem in featureVector)
+            var featureVector = CreateFeatureVector(symptoms, csvPath);
+            if (featureVector.Length != 382)
             {
-                Console.Write(elem + " ");
+                foreach (var elem in featureVector)
+                {
+                    Console.Write(elem + " ");
+                }
+                throw new InvalidOperationException($"Feature vector size mismatch. Expected 377, but got {featureVector.Length}.");
             }
-            throw new InvalidOperationException($"Feature vector size mismatch. Expected 377, but got {featureVector.Length}.");
+            else
+            {
+                Console.WriteLine("All good");
+            }
+
+            var diagnosisInput = new DiagnosisData
+            {
+                Features = featureVector
+            };
+            // _model = LoadModel(_modelPath);
+            var predictionEngine = _mlContext.Model.CreatePredictionEngine<DiagnosisData, DiagnosisPrediction>(LoadModel(_modelPath));
+
+            var prediction = predictionEngine.Predict(diagnosisInput);
+            Console.WriteLine($"Predicted disease: {prediction.Diseases}");
+            return prediction.Diseases;
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("All good");
+            throw;
         }
-        
-        var diagnosisInput = new DiagnosisData
-        {
-            Features = featureVector
-        };
-        _model = LoadModel(
-            "/home/user-razvan/HealthcareManagement/HealthcareManagement/Controllers/diagnosisModel.zip");
-        var predictionEngine = _mlContext.Model.CreatePredictionEngine<DiagnosisData, DiagnosisPrediction>(_model);
-        var prediction = predictionEngine.Predict(diagnosisInput);
-        Console.WriteLine($"Predicted disease: {prediction.Diseases}");
-        return prediction.Diseases;
     }
     public float[] CreateFeatureVector(List<string> symptoms, string csvPath)
     {
