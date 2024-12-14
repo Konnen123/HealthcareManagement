@@ -21,7 +21,7 @@ public class DiagnosisPredictionModel
 
         var pipeline = _mlContext.Transforms.Conversion.MapValueToKey("Label", nameof(DiagnosisData.Diseases)) // Map target to key
             .Append(_mlContext.Transforms.Concatenate("Features", nameof(DiagnosisData.Features))) // Combine features
-            .Append(_mlContext.MulticlassClassification.Trainers.SdcaMaximumEntropy( // Train with SDCA
+            .Append(_mlContext.MulticlassClassification.Trainers.LbfgsMaximumEntropy( // Train with SDCA
                 labelColumnName: "Label",
                 featureColumnName: "Features"))
             .Append(_mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel")); // Decode the predicted label
