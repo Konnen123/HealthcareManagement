@@ -1,5 +1,4 @@
-using Domain.Entities.User;
-
+namespace Domain.Entities.User;
 public class RefreshToken
 {
     public Guid RefreshTokenId { get; set; }

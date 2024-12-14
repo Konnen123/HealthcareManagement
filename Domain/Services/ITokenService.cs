@@ -1,3 +1,4 @@
+using Domain.Entities;
 using Domain.Entities.User;
 
 namespace Domain.Services;
