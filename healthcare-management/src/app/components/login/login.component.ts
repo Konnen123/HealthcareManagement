@@ -38,7 +38,10 @@ export class LoginComponent {
 
     this.authenticationService.loginAsync(requestData).then((response) => {
       const accessToken = response.accessToken;
+      const refreshToken = response.refreshToken;
+
       this.authenticationService.setCookie('token', accessToken);
+      this.authenticationService.setRefreshCookie(refreshToken);
       console.log('Response from the service:', response);
       this.router.navigate(['/']);
     }).catch((error) => {

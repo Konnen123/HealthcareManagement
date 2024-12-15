@@ -12,7 +12,7 @@ import {AuthenticationClient} from '../../clients/authentication.client';
 export class AuthenticationService
 {
   private readonly isBrowser: boolean
-  constructor(private readonly userClient: AuthenticationClient,
+  constructor(private readonly authenticationClient: AuthenticationClient,
               private readonly router: Router,
               private readonly jwtService: JwtHelperService,
               @Inject(PLATFORM_ID) platformId: object)
@@ -23,7 +23,7 @@ export class AuthenticationService
 
   public async registerAsync(userData: any): Promise<any> {
     try {
-      const result = await firstValueFrom(this.userClient.register(userData));
+      const result = await firstValueFrom(this.authenticationClient.register(userData));
       console.log('Server response in the service :', result);
       return result;
     } catch (error){
@@ -35,11 +35,15 @@ export class AuthenticationService
 
   public async loginAsync(userData: any): Promise<any> {
     try {
-      return await firstValueFrom(this.userClient.login(userData));
+      return await firstValueFrom(this.authenticationClient.login(userData));
     } catch (error){
       console.error('Error while logging in service', error);
       throw error;
     }
+  }
+
+  public async refreshTokenAsync(refreshToken: string): Promise<any> {
+    return await firstValueFrom(this.authenticationClient.refreshToken(refreshToken));
   }
 
   logout()
@@ -48,6 +52,7 @@ export class AuthenticationService
       return;
 
     document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     this.router.navigate(['/login']);
   }
 
@@ -56,7 +61,7 @@ export class AuthenticationService
     if(!this.isBrowser)
       return false;
 
-    return this.isAuthenticated() && this.getDecodedToken() && !this.isTokenExpired();
+    return this.isAuthenticated() && this.getDecodedToken() && !this.isTokenExpired() && !this.isRefreshTokenExpired();
   }
 
   isAuthenticated(): boolean
@@ -82,6 +87,19 @@ export class AuthenticationService
       return true;
     }
   }
+  public isRefreshTokenExpired(): boolean
+  {
+    if (!this.isBrowser)
+      return false;
+
+    const refreshToken = this.getCookie('refreshToken');
+    try {
+      return refreshToken == null;
+    } catch (exception) {
+      return true;
+    }
+  }
+
   public getUserRole(): string
   {
     const decodedToken = this.getDecodedToken();
@@ -118,5 +136,12 @@ export class AuthenticationService
     if (!this.isBrowser) return;
 
     document.cookie = `${name}=${value}; path=/`;
+  }
+  setRefreshCookie(value: string): void {
+    if (!this.isBrowser) return;
+
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    document.cookie = `refreshToken=${value}; Path=/; Expires=${date.toUTCString()}`;
   }
 }

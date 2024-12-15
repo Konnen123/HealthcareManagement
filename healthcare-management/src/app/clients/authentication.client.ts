@@ -22,4 +22,8 @@ export class AuthenticationClient {
   public login(userData: any) : Observable<any> {
     return this.http.post(`${this.baseUrl}/Login`, userData);
   }
+
+  public refreshToken(refreshToken: string) : Observable<any> {
+    return this.http.post(`${this.baseUrl}/refresh`, {refreshToken});
+  }
 }
