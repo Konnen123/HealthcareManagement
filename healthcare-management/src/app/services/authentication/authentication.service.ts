@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {isPlatformBrowser} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
-import {UserClient} from '../../clients/user.client';
+import {AuthenticationClient} from '../../clients/authentication.client';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ import {UserClient} from '../../clients/user.client';
 export class AuthenticationService
 {
   private readonly isBrowser: boolean
-  constructor(private readonly userClient: UserClient,
+  constructor(private readonly userClient: AuthenticationClient,
               private readonly router: Router,
               private readonly jwtService: JwtHelperService,
               @Inject(PLATFORM_ID) platformId: object)

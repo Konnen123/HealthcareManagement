@@ -32,5 +32,5 @@ namespace HealthcareManagement.Controllers
                 onFailure: error => BadRequest(error)
             );
         }
-    }
+    }   
 }

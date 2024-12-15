@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatError, MatFormField, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
@@ -7,7 +7,9 @@ import {MatInput} from "@angular/material/input";
 import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CustomValidators} from '../../../shared/custom-validators';
-import {MatOption, MatSelect} from '@angular/material/select';
+import {MatOption, MatSelect, MatSelectChange} from '@angular/material/select';
+import {DoctorDto} from '../../../shared/dtos/doctor.dto';
+import {UserService} from '../../../services/user/user.service';
 
 
 @Component({
@@ -31,23 +33,24 @@ import {MatOption, MatSelect} from '@angular/material/select';
     NgForOf
   ],
   templateUrl: './appointment-form.component.html',
+  standalone: true,
   styleUrl: './appointment-form.component.scss'
 })
-export class AppointmentFormComponent {
+export class AppointmentFormComponent implements OnInit, OnChanges{
   @Input() initialData: any = {};
   @Output() formSubmit = new EventEmitter<any>();
   @Input() mode: string = 'Create';
-  doctors = [
-    { id: 'ac5fe411-9b82-40de-8963-27b9a3074bae', name: 'Dr. Alice Smith' },
-    { id: 'ac5fe411-9b82-40de-8963-27b9a3074bae', name: 'Dr. John Doe' },
-    { id: 'ac5fe411-9b82-40de-8963-27b9a3074bae', name: 'Dr. Emily White' }
-  ];
+  doctors!: DoctorDto[];
+  selectedDoctor!: DoctorDto;
 
-  appointmentForm: FormGroup;
+  appointmentForm!: FormGroup;
 
-  constructor(readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder,
+              private readonly userService: UserService) {}
+
+  async ngOnInit(): Promise<void>
+  {
     this.appointmentForm = this.fb.group({
-      patientId: ['', [Validators.required, CustomValidators.isValidGuid, CustomValidators.isNotEmptyGuid]],
       doctorId: ['', [Validators.required, CustomValidators.isValidGuid, CustomValidators.isNotEmptyGuid]],
       date: ['', [Validators.required, CustomValidators.isValidDate, CustomValidators.isNotPastDate]],
       startTime: ['', Validators.required],
@@ -55,11 +58,19 @@ export class AppointmentFormComponent {
       userNotes: ['', Validators.maxLength(500)]
     });
 
+    this.doctors = await this.userService.getAllDoctorsAsync();
   }
 
-  ngOnChanges(): void {
-    if (this.initialData) {
-      this.appointmentForm.patchValue(this.initialData);
+  ngOnChanges(): void
+  {
+    if (this.initialData)
+    {
+      this.appointmentForm.patchValue({
+        doctorId: this.initialData.doctor.userId,
+        ...this.initialData
+      });
+
+      this.selectedDoctor = this.initialData.doctor;
     }
   }
 
@@ -90,5 +101,13 @@ export class AppointmentFormComponent {
     formatTime(time: string): string {
     const [hours, minutes] = time.split(':');
     return `${hours}:${minutes}`;
+  }
+
+  onDoctorSelectionChange($event: MatSelectChange)
+  {
+    if(!$event.value?.userId)
+      return;
+
+    this.appointmentForm.controls['doctorId'].setValue($event.value.userId);
   }
 }
