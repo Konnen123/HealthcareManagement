@@ -57,7 +57,7 @@ public class DiseasePredictionController : ControllerBase
     {
         try
         {
-            var vector = _diagnosisPredictionModel.CreateFeatureVector(symptoms, CsvPath);
+            var vector = DiagnosisPredictionModel.CreateFeatureVector(symptoms, CsvPath);
             return Ok(vector);
         }
         catch (Exception e)

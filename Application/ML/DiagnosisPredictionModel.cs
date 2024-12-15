@@ -52,39 +52,27 @@ public class DiagnosisPredictionModel
     
     public string Predict(List<string> symptoms, string csvPath)
     {
-        try
+        var featureVector = CreateFeatureVector(symptoms, csvPath);
+        if (featureVector.Length != 382)
         {
-            var featureVector = CreateFeatureVector(symptoms, csvPath);
-            if (featureVector.Length != 382)
+            foreach (var elem in featureVector)
             {
-                foreach (var elem in featureVector)
-                {
-                    Console.Write(elem + " ");
-                }
-                throw new InvalidOperationException($"Feature vector size mismatch. Expected 377, but got {featureVector.Length}.");
+                Console.Write(elem + " ");
             }
-            else
-            {
-                Console.WriteLine("All good");
-            }
-
-            var diagnosisInput = new DiagnosisData
-            {
-                Features = featureVector
-            };
-            // _model = LoadModel(_modelPath);
-            var predictionEngine = _mlContext.Model.CreatePredictionEngine<DiagnosisData, DiagnosisPrediction>(LoadModel(_modelPath));
-
-            var prediction = predictionEngine.Predict(diagnosisInput);
-            Console.WriteLine($"Predicted disease: {prediction.Diseases}");
-            return prediction.Diseases;
+            throw new InvalidOperationException($"Feature vector size mismatch. Expected 377, but got {featureVector.Length}.");
         }
-        catch (Exception ex)
+
+        var diagnosisInput = new DiagnosisData
         {
-            throw;
-        }
+            Features = featureVector
+        };
+        var predictionEngine = _mlContext.Model.CreatePredictionEngine<DiagnosisData, DiagnosisPrediction>(LoadModel(_modelPath));
+
+        var prediction = predictionEngine.Predict(diagnosisInput);
+        Console.WriteLine($"Predicted disease: {prediction.Diseases}");
+        return prediction.Diseases;
     }
-    public float[] CreateFeatureVector(List<string> symptoms, string csvPath)
+    public static float[] CreateFeatureVector(List<string> symptoms, string csvPath)
     {
         try
         {
