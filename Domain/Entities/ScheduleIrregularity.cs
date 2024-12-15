@@ -11,5 +11,4 @@ public class ScheduleIrregularity
     public TimeOnly EndTime { get; set; }
     public string? Reason { get; set; }
     public Guid DoctorId { get; set; }
-    public Doctor? Doctor { get; set; }
 }

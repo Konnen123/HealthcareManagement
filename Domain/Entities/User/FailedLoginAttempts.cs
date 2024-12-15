@@ -11,7 +11,7 @@
             public DateTime? LockoutEndTime { get; set; }
             public int MaxFailedLoginAttempts { get; set; } = 5;
 
-            public UserAuthentication UserAuthentication { get; set; } = null!;
+            public User UserAuthentication { get; set; } = null!;
         }
     }
 }

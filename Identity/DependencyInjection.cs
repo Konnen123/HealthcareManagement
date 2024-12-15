@@ -65,6 +65,8 @@ namespace Identity
             });
 
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IPatientsRepository, PatientsRepository>();
+            services.AddScoped<IDoctorsRepository, DoctorsRepository>();
             services.AddScoped<IPasswordHashingService, PasswordHashingService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFailedLoginAttemptsRepository, FailedLoginAttemptsRepository>();

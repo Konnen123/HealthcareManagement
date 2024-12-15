@@ -23,7 +23,18 @@ namespace Application.Use_Cases.CommandHandlers.AuthCommandHandlers
         public async Task<Result<Guid>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var hashedPassword = _passwordHashingService.HashPassword(request.Password);
-            var user = _mapper.Map<UserAuthentication>(request);
+
+            User user;
+            if (request.Role == Roles.PATIENT)
+                user = _mapper.Map<Patient>(request);
+            else if (request.Role == Roles.DOCTOR)
+            {
+                user = _mapper.Map<Doctor>(request);
+                ((Doctor)user).MedicalRank = "Doctor";
+            }
+            else
+                return Result<Guid>.Failure(new Error("Role", "Invalid role"));
+
             user.Password = hashedPassword;
             
             var resultObject = await _usersRepository.Register(user, cancellationToken);

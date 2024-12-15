@@ -33,17 +33,17 @@ namespace Application.Use_Cases.CommandHandlers.AuthCommandHandlers
           
             if (!userResult.IsSuccess)
             {
-                return Result<TokenResponse>.Failure(AuthErrors.LoginFailed(nameof(UserAuthentication), "User not found"));
+                return Result<TokenResponse>.Failure(AuthErrors.LoginFailed(nameof(User), "User not found"));
             }
             var user = userResult.Value!;
             if (_failedLoginAttemptsRepository.IsUserLockedOut(user.UserId))
             {
-                return Result<TokenResponse>.Failure(AuthErrors.UserAccountLocked(nameof(UserAuthentication), "User account temporarely locked due to too many failed login attempts"));
+                return Result<TokenResponse>.Failure(AuthErrors.UserAccountLocked(nameof(User), "User account temporarely locked due to too many failed login attempts"));
             }
             if (!_passwordHashingService.VerifyPassword(request.Password, user.Password))
             {
                 _failedLoginAttemptsRepository.AddFailedAttempt(user.UserId);
-                return Result<TokenResponse>.Failure(AuthErrors.LoginFailed(nameof(UserAuthentication), "Invalid password"));
+                return Result<TokenResponse>.Failure(AuthErrors.LoginFailed(nameof(User), "Invalid password"));
             }
 
             var existingTokensResult = await _refreshTokenRepository.GetByUserIdAsync(user.UserId);
@@ -63,7 +63,7 @@ namespace Application.Use_Cases.CommandHandlers.AuthCommandHandlers
             _failedLoginAttemptsRepository.ResetFailedAttempts(user.UserId);
             
             var refreshToken = _tokenService.GenerateRefreshToken(user, request.DeviceInfo, request.IpAddress);
-            refreshToken.UserAuthentication = user; 
+            refreshToken.User = user; 
         
             await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
             

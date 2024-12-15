@@ -25,7 +25,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<Unit>>
         Console.WriteLine(userIdClaim);
         if (userIdClaim == null)
         {
-            return Result<Unit>.Failure(AuthorizationErrors.Unauthorized(nameof(UserAuthentication), "User is not logged in"));
+            return Result<Unit>.Failure(AuthorizationErrors.Unauthorized(nameof(User), "User is not logged in"));
         }
         
         var userId = Guid.Parse(userIdClaim.Value);

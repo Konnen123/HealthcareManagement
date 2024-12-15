@@ -25,9 +25,13 @@ namespace HealthcareManagement.IntegrationTests
         {
             var claims = new List<Claim>();
 
-            if(Context.Request.Headers.TryGetValue("role", out var roles))
+            if (Context.Request.Headers.TryGetValue("role", out var roles))
             {
                 claims.Add(new Claim(ClaimTypes.Role, roles[0]));
+            }
+            if(Context.Request.Headers.TryGetValue("nameidentifier", out var nameIdentifiers))
+            {
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, nameIdentifiers[0]));
             }
             var identity = new ClaimsIdentity(claims, TestAuthenticationSchemeProvider.Name);
             var principal = new ClaimsPrincipal(identity);

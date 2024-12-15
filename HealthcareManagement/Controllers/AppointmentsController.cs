@@ -2,10 +2,10 @@
 using Application.Use_Cases.Commands;
 using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Queries.AppointmentQueries;
-using Domain.Entities;
+using Domain.Utils;
+using HealthcareManagement.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -30,7 +30,13 @@ namespace HealthcareManagement.Controllers
         [Authorize(Policy = "PATIENT")]
         public async Task<IActionResult> CreateAppointment([FromBody] CreateAppointmentCommand command)
         {
+            Result<Guid> resultId = JwtSingleton.GetUserIdFromJwt(User);
+            if (!resultId.IsSuccess)
+            {
+                return BadRequest(resultId.Error);
+            }
 
+            command.PatientId = resultId.Value;
             var resultObject = await mediator.Send(command);
 
             return resultObject.Match<IActionResult>(

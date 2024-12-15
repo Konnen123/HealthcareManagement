@@ -9,11 +9,6 @@ namespace Application.Validators.AppointmentValidators
     {
         public BaseAppointmentCommandValidator()
         {
-            RuleFor(x => x.PatientId)
-                .NotEmpty().WithMessage("Patient ID is required.")
-                .Must(GuidChecker.BeAValidGuid).WithMessage("Patiend ID must be a valid GUID")
-                .NotEqual(Guid.Empty).WithMessage("Patient ID cannot be an empty GUID.");
-
             RuleFor(x => x.DoctorId)
                 .NotEmpty().WithMessage("Doctor ID is required.")
                 .Must(GuidChecker.BeAValidGuid).WithMessage("Doctor ID must be a valid GUID")
