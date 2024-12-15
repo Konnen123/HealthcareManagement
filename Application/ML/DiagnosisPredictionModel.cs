@@ -50,9 +50,9 @@ public class DiagnosisPredictionModel
         return _model;
     }
     
-    public string Predict(List<string> symptoms, string csvPath)
+    public DiagnosisResponse Predict(List<string> symptoms, string csvPath)
     {
-        var featureVector = CreateFeatureVector(symptoms, csvPath);
+        var (featureVector, warnings) = CreateFeatureVector(symptoms, csvPath);
         if (featureVector.Length != 382)
         {
             foreach (var elem in featureVector)
@@ -70,40 +70,72 @@ public class DiagnosisPredictionModel
 
         var prediction = predictionEngine.Predict(diagnosisInput);
         Console.WriteLine($"Predicted disease: {prediction.Diseases}");
-        return prediction.Diseases;
+        
+        return new DiagnosisResponse
+        {
+            Disease = prediction.Diseases,
+            Warnings = warnings
+        };
     }
-    public static float[] CreateFeatureVector(List<string> symptoms, string csvPath)
+    
+    public static (float[] FeatureVector, string Warnings) CreateFeatureVector(List<string> symptoms, string csvPath)
     {
         try
         {
+            // Read and normalize the column names from the CSV file
             var columnNames = File.ReadLines(csvPath)
                 .First()
                 .Split(',')
                 .Skip(1)
+                .Select(c => c.Trim().ToLower())
                 .ToArray();
 
-            var featureVector = new float[columnNames.Length];
-
+            // Normalize the symptoms for comparison
             var normalizedSymptoms = symptoms
                 .Select(s => s.Trim().ToLower())
                 .ToList();
 
-            for (var i = 0; i < columnNames.Length; i++)
-            {
-                var normalizedColumnName = columnNames[i].Trim().ToLower();
+            // Initialize the feature vector
+            var featureVector = new float[columnNames.Length];
 
-                if (normalizedSymptoms.Any(s => normalizedColumnName.Contains(s)))
+            // Track unmatched symptoms
+            var unmatchedSymptoms = new List<string>();
+
+            // Map symptoms to the feature vector
+            foreach (var symptom in normalizedSymptoms)
+            {
+                // Check if the symptom matches any column name
+                bool isMatched = false;
+                for (var i = 0; i < columnNames.Length; i++)
                 {
-                    featureVector[i] = 1;
+                    if (columnNames[i].Contains(symptom))
+                    {
+                        featureVector[i] = 1;
+                        isMatched = true;
+                    }
+                }
+
+                // If no match found, add to unmatched symptoms
+                if (!isMatched)
+                {
+                    unmatchedSymptoms.Add(symptom);
                 }
             }
 
-            return featureVector;
+            // Construct the warning message
+            var warningMessage = unmatchedSymptoms.Any()
+                ? string.Join(" ", unmatchedSymptoms.Select(s => $"Given symptom '{s}' doesn't exist in the features table."))
+                : string.Empty;
+
+            // Return the feature vector and warning message
+            return (featureVector, warningMessage);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine($"Error: {e.Message}");
             throw;
         }
     }
+
+
 }

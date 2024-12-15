@@ -36,26 +36,12 @@ public class DiseasePredictionController : ControllerBase
     }
 
     [HttpPost("predict")]
-    public ActionResult<string> PredictDiagnosis([FromBody] List<string> symptoms)
+    public ActionResult<DiagnosisResponse> PredictDiagnosis([FromBody] List<string> symptoms)
     {
         try
         {
-            var model = _diagnosisPredictionModel.Predict(symptoms, _csvPath);
-            return Ok(model);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
-
-    [HttpPost("create-feature-vector")]
-    public ActionResult<float[]> CreateFeatures([FromBody] List<string> symptoms)
-    {
-        try
-        {
-            var vector = DiagnosisPredictionModel.CreateFeatureVector(symptoms, _csvPath);
-            return Ok(vector);
+            var diagnosis = _diagnosisPredictionModel.Predict(symptoms, _csvPath);
+            return Ok(diagnosis);
         }
         catch (Exception e)
         {
