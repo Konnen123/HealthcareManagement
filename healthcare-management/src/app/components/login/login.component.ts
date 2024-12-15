@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import {MatCard} from '@angular/material/card';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -15,25 +16,32 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
     MatButton,
     MatInput,
     MatLabel,
+    MatError,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+  loginForm: FormGroup;
 
   constructor(
     readonly router: Router,
-    readonly authenticationService: AuthenticationService
-  ) { }
+    readonly authenticationService: AuthenticationService,
+    readonly fb: FormBuilder
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.email, Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+  }
 
   onSubmit(): void {
     const requestData ={
-      email: this.email,
-      password: this.password
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
     };
 
     this.authenticationService.loginAsync(requestData).then((response) => {
