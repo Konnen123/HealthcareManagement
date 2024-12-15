@@ -51,13 +51,22 @@ namespace Identity.Repositories
         {
             try
             {
-                await _context.Users.AddAsync(user);
+                await _context.Users.AddAsync(user, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
                 return Result<Guid>.Success(user.UserId);
             }
+            catch (DbUpdateException dbEx)
+            {
+                if (dbEx.InnerException?.Message.Contains("IX_users_Email", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    return Result<Guid>.Failure(AuthErrors.EmailAlreadyExists(nameof(User), $"{user.Email}"));
+                }
+
+                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User), dbEx.InnerException?.Message ?? "An unexpected error occurred while creating the user account"));
+            }
             catch (Exception e)
             {
-                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User),e.InnerException?.Message ?? "An unexpected error occurred while creating the user account"));
+                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User), e.Message));
             }
         }
     }
