@@ -1,5 +1,4 @@
 <div class="form-container">
-
   <header class="header-section">
     <h1>Medical Symptom Checker</h1>
     <p>
@@ -35,7 +34,14 @@
 
   <!-- Button directly under the form field -->
   <div class="submit-button-container">
-    <button mat-raised-button color="primary" (click)="submitSymptoms()">Submit Symptoms</button>
+    <button
+      mat-raised-button
+      [disabled]="!selectedOptions || selectedOptions.length === 0"
+      color="primary"
+      (click)="submitSymptoms()"
+    >
+      Submit Symptoms
+    </button>
   </div>
 
   <!-- Result Section -->
