@@ -58,4 +58,26 @@ export class CustomValidators {
         : null;
     };
   }
+
+  static dateOfBirthValidator(control: AbstractControl): ValidationErrors | null {
+    const dateOfBirth = control.value;
+  
+    if (!dateOfBirth) {
+      return null;
+    }
+  
+    const inputDate = new Date(dateOfBirth);
+    const today = new Date();
+    const hundredYearsAgo = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+  
+    if (inputDate < hundredYearsAgo) {
+      return { tooOld: true }; 
+    }
+  
+    if (inputDate > today) {
+      return { futureDate: true };
+    }
+  
+    return null;
+  }
 }
