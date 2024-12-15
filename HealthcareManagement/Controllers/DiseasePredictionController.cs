@@ -9,17 +9,14 @@ public class DiseasePredictionController : ControllerBase
 {
     private readonly DiagnosisPredictionModel _diagnosisPredictionModel;
 
-    readonly IConfiguration _configuration;
+    private readonly string _csvPath;
 
-    private string CsvPath;
-
-    private string ModelPath;
+    private readonly string _modelPath;
     public DiseasePredictionController(IConfiguration configuration)
     {
-        _configuration = configuration;
-        CsvPath = _configuration["ML:OutputFilePath"]!;
-        ModelPath = _configuration["ML:DiagnosisModelPath"]!;
-        _diagnosisPredictionModel = new DiagnosisPredictionModel(ModelPath);
+        _csvPath = configuration["ML:OutputFilePath"]!;
+        _modelPath = configuration["ML:DiagnosisModelPath"]!;
+        _diagnosisPredictionModel = new DiagnosisPredictionModel(_modelPath);
        
     }
 
@@ -28,8 +25,8 @@ public class DiseasePredictionController : ControllerBase
     {
         try
         {
-            _diagnosisPredictionModel.Train(CsvPath);
-            _diagnosisPredictionModel.SaveModel(ModelPath);
+            _diagnosisPredictionModel.Train(_csvPath);
+            _diagnosisPredictionModel.SaveModel(_modelPath);
             return Ok("Trained model and saved it to disk");
         }
         catch (Exception e)
@@ -43,7 +40,7 @@ public class DiseasePredictionController : ControllerBase
     {
         try
         {
-            var model = _diagnosisPredictionModel.Predict(symptoms, CsvPath);
+            var model = _diagnosisPredictionModel.Predict(symptoms, _csvPath);
             return Ok(model);
         }
         catch (Exception e)
@@ -57,7 +54,7 @@ public class DiseasePredictionController : ControllerBase
     {
         try
         {
-            var vector = DiagnosisPredictionModel.CreateFeatureVector(symptoms, CsvPath);
+            var vector = DiagnosisPredictionModel.CreateFeatureVector(symptoms, _csvPath);
             return Ok(vector);
         }
         catch (Exception e)
