@@ -34,7 +34,7 @@ export const routes: Routes = [
   {
     path: 'symptom-checker',
     loadComponent: () => import('./components/symptom-checker/symptom-checker.component').then(m => m.SymptomCheckerComponent),
-    canActivate: [AuthenticationGuard],
+    canActivate: [AuthenticationGuard, RoleGuard],
     data: {expectedRole: ['PATIENT', "DOCTOR"]}
   },
 
