@@ -17,8 +17,8 @@ import {Router} from '@angular/router';
 })
 export class HomePageComponent
 {
-  constructor(private roleService: RoleService,
-              private router: Router) {}
+  constructor(private readonly roleService: RoleService,
+              private readonly router: Router) {}
 
   isUserDoctor(): boolean
   {

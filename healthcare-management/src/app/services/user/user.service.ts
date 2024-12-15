@@ -10,7 +10,7 @@ import {DoctorDto} from '../../shared/dtos/doctor.dto';
 export class UserService {
 
   private readonly isBrowser: boolean
-  constructor(private userClient: UserClient,
+  constructor(private readonly userClient: UserClient,
               @Inject(PLATFORM_ID) platformId: object)
   {
     this.isBrowser = isPlatformBrowser(platformId);

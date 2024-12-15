@@ -15,8 +15,8 @@
       <div class="buttons-doctor" *ngIf="isUserDoctor()">
         <button mat-flat-button (click)="onViewAppointments()">View appointments</button>
       </div>
-      <div class="buttons-patient" (click)="onCreateAppointments()" *ngIf="isUserPatient()">
-        <button mat-flat-button>Create appointment</button>
+      <div class="buttons-patient" *ngIf="isUserPatient()">
+        <button mat-flat-button (click)="onCreateAppointments()">Create appointment</button>
       </div>
     </div>
 

@@ -1,14 +1,11 @@
 import {ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
-  GuardResult,
-  MaybeAsync,
   Router,
   RouterStateSnapshot
 } from "@angular/router";
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -53,24 +50,24 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
     if(this.authenticationService.isRefreshTokenExpired())
       return false;
 
-      const refreshToken = this.authenticationService.getCookie('refreshToken');
-      if(!refreshToken)
-      {
-        return false;
-      }
+    const refreshToken = this.authenticationService.getCookie('refreshToken');
+    if(!refreshToken)
+    {
+      return false;
+    }
 
-      try
-      {
-        const result = await this.authenticationService.refreshTokenAsync(refreshToken);
-        this.authenticationService.setCookie('token', result.accessToken);
-        this.authenticationService.setCookie('refreshToken', result.refreshToken);
-        return true;
+    try
+    {
+      const result = await this.authenticationService.refreshTokenAsync(refreshToken);
+      this.authenticationService.setCookie('token', result.accessToken);
+      this.authenticationService.setCookie('refreshToken', result.refreshToken);
+      return true;
 
-      }
-      catch (error)
-      {
-        return false;
-      }
+    }
+    catch (error)
+    {
+      return false;
+    }
   }
 
 

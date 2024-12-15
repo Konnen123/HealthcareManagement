@@ -6,7 +6,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
 })
 export class RoleService {
 
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(private readonly authenticationService: AuthenticationService) { }
 
   public isUserDoctor(): boolean
   {
