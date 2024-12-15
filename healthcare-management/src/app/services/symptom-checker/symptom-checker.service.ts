@@ -1,7 +1,4 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import {JwtHelperService} from '@auth0/angular-jwt';
 import {isPlatformBrowser} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
 import {SymptomClient} from '../../clients/symptom.client';

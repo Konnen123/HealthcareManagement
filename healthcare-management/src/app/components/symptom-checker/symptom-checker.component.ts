@@ -8,7 +8,7 @@ import {
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatIconModule} from '@angular/material/icon';
-import {AsyncPipe, JsonPipe, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {
   MatAutocomplete,
   MatAutocompleteModule, MatAutocompleteSelectedEvent,
@@ -63,7 +63,7 @@ export class SymptomCheckerComponent implements OnInit{
   }
 
   private _filter(value: string | null): string[] {
-    const filterValue = (value || '').toLowerCase();
+    const filterValue = (value ?? '').toLowerCase();
     return this.allOptions.filter(option => option.toLowerCase().includes(filterValue) && !this.selectedOptions.includes(option));
   }
 
