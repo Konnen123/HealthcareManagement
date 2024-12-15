@@ -137,11 +137,5 @@ export class AuthenticationService
 
     document.cookie = `${name}=${value}; path=/`;
   }
-  setRefreshCookie(value: string): void {
-    if (!this.isBrowser) return;
 
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
-    document.cookie = `refreshToken=${value}; Path=/; Expires=${date.toUTCString()}`;
-  }
 }

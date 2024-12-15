@@ -49,7 +49,7 @@ export class LoginComponent {
       const refreshToken = response.refreshToken;
 
       this.authenticationService.setCookie('token', accessToken);
-      this.authenticationService.setRefreshCookie(refreshToken);
+      this.authenticationService.setCookie('refreshToken', refreshToken);
       console.log('Response from the service:', response);
       this.router.navigate(['/']);
     }).catch((error) => {
