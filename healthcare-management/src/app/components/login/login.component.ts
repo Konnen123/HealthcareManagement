@@ -40,7 +40,7 @@ export class LoginComponent {
       const accessToken = response.accessToken;
       this.authenticationService.setCookie('token', accessToken);
       console.log('Response from the service:', response);
-      this.router.navigate(['appointments']);
+      this.router.navigate(['/']);
     }).catch((error) => {
       console.error('Error from the service:', error);
     });

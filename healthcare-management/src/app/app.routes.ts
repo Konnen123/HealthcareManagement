@@ -31,7 +31,11 @@ export const routes: Routes = [
       }
     ],
   },
-
+  {
+    path: '',
+    loadComponent: () => import('./components/home-page/home-page.component').then(m=>m.HomePageComponent),
+    canActivate: [AuthenticationGuard],
+  },
   {
     path: 'login',
     loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent),
@@ -42,12 +46,7 @@ export const routes: Routes = [
     loadComponent: () => import('./components/signup/signup.component').then(m => m.SignupComponent),
     data: {isNavbarHidden: true}
   },
-  {
-    path: '',
-    loadComponent: () => import('./components/appointment/appointment-list/appointment-list.component').then(m=>m.AppointmentListComponent),
-    canActivate: [AuthenticationGuard, RoleGuard],
-    data: {expectedRole: ['DOCTOR']}
-  },
+
   {
     path: 'access-denied',
     loadComponent: () => import('./components/access-denied/access-denied.component').then(m=>m.AccessDeniedComponent),

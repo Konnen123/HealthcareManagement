@@ -63,7 +63,7 @@ export class AppointmentFormComponent implements OnInit, OnChanges{
 
   ngOnChanges(): void
   {
-    if (this.initialData)
+    if (this.initialData && this.appointmentForm)
     {
       this.appointmentForm.patchValue({
         doctorId: this.initialData.doctor.userId,
