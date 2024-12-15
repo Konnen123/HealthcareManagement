@@ -8,8 +8,13 @@ namespace Identity.Persistence
 {
     public class UsersDbContext(DbContextOptions<UsersDbContext> option) : DbContext(option)
     {
+        public DbSet<User> Users { get; set; }
 
-        public DbSet<UserAuthentication> Users { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+
+        public DbSet<Staff> Staffs { get; set; }
+
+        public DbSet<Doctor> Doctors { get; set; }
         public DbSet<FailedLoginAttempt> FailedLoginAttempts { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
@@ -17,12 +22,58 @@ namespace Identity.Persistence
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
-            modelBuilder.Entity<UserAuthentication>(
-                entity => 
+            modelBuilder.Entity<User>(
+                entity =>
                 {
-                    DbContextSingleton.ConfigureUserProperties<UserAuthentication>(entity);
-                    entity.Property(e => e.Password).HasMaxLength(100);
+                    entity.ToTable("users");
+                    entity.HasKey(e => e.UserId);
+                    entity.Property(e => e.UserId)
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()")
+                        .ValueGeneratedOnAdd();
+
+                    entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
+                    entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
+                    entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+                    entity.Property(e => e.Password).IsRequired().HasMaxLength(100);
+                    entity.Property(e => e.DateOfBirth).IsRequired();
+                    entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    entity.Property(e => e.CreatedAt).IsRequired();
                 });
+
+            modelBuilder.Entity<Patient>(
+                 entity =>
+                 {
+                     entity.ToTable("patients");
+                     entity.HasBaseType<User>();
+                 });
+            modelBuilder.Entity<Staff>(
+                entity =>
+                {
+                    entity.ToTable("staffs");
+                    entity.HasBaseType<User>();
+                    entity.Property(entity => entity.MedicalRank).IsRequired().HasMaxLength(50);
+                });
+            modelBuilder.Entity<Doctor>(
+                entity =>
+                {
+                    entity.ToTable("doctors");
+                    entity.HasBaseType<Staff>();
+                });
+            modelBuilder.Entity<Admin>(
+                entity =>
+                {
+                    entity.ToTable("admins");
+                    entity.HasBaseType<Staff>();
+                });
+            modelBuilder.Entity<SuperAdmin>(
+                entity =>
+                {
+                    entity.ToTable("super_admins");
+                    entity.HasBaseType<Staff>();
+                });
+
+
             modelBuilder.Entity<FailedLoginAttempt>(entity =>
             {
                 entity.ToTable("failed_login_attempts");
@@ -54,7 +105,7 @@ namespace Identity.Persistence
                 .HasDefaultValueSql("uuid_generate_v4()");
             
             modelBuilder.Entity<RefreshToken>()
-                .HasOne(rt => rt.UserAuthentication)
+                .HasOne(rt => rt.User)
                 .WithMany(sm => sm.RefreshTokens)
                 .HasForeignKey(rt => rt.UserId)
                 .OnDelete(DeleteBehavior.Cascade);

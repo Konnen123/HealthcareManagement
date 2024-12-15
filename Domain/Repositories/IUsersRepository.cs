@@ -5,9 +5,9 @@ namespace Domain.Repositories
 {
     public interface IUsersRepository
     {
-        Task<Result<Guid>> Register(UserAuthentication user, CancellationToken cancellationToken);
-        Task<Result<string>> Login(UserAuthentication user, CancellationToken cancellationToken);
-        Task<Result<UserAuthentication>> GetByEmailAsync(string email, CancellationToken cancellationToken);
-        Task<Result<UserAuthentication>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-    }
+        Task<Result<Guid>> Register(User user, CancellationToken cancellationToken);
+        Task<Result<string>> Login(User user, CancellationToken cancellationToken);
+        Task<Result<User>> GetByEmailAsync(string email, CancellationToken cancellationToken);
+        Task<Result<User>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    }   
 }

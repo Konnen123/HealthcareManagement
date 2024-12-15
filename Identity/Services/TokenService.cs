@@ -22,7 +22,7 @@ public class TokenService : ITokenService
         _refreshTokenRepository = refreshTokenRepository;
     }
     
-    public string GenerateAccessToken(UserAuthentication user)
+    public string GenerateAccessToken(User user)
     {
         var jwtSecret = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Unable to read JWT from config in TokenService");
         var claims = new[]
@@ -48,7 +48,7 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public RefreshToken GenerateRefreshToken(UserAuthentication user, string? deviceInfo = null, string? ipAddress = null)
+    public RefreshToken GenerateRefreshToken(User user, string? deviceInfo = null, string? ipAddress = null)
     {
         return new RefreshToken
         {

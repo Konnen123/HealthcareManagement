@@ -32,7 +32,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
 
         var user = await _usersRepository.GetByIdAsync(refreshToken.UserId, cancellationToken);
         if (!user.IsSuccess)
-            return Result<TokenResponse>.Failure(EntityErrors.GetFailed(nameof(UserAuthentication), "User not found"));
+            return Result<TokenResponse>.Failure(EntityErrors.GetFailed(nameof(User), "User not found"));
 
         refreshToken.IsRevoked = true;
         refreshToken.RevokedAt = DateTime.UtcNow;

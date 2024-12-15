@@ -1,4 +1,5 @@
-﻿
+﻿using Application.DTOs.UserDto;
+
 namespace Application.DTOs
 {
     public class AppointmentDto
@@ -11,8 +12,8 @@ namespace Application.DTOs
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
         public string? UserNotes { get; set; }
-        public Guid PatientId { get; set; }
-        public Guid DoctorId { get; set; }
+        public required PatientDto Patient { get; set; }
+        public required DoctorDto Doctor { get; set; }
         public DateTime? CanceledAt { get; set; }
         public string? CancellationReason { get; set; }
         public string? RoomNo { get; set; }

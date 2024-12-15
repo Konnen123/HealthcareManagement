@@ -1,4 +1,5 @@
 using Application.DTOs;
+using Application.DTOs.UserDto;
 using Application.Use_Cases.Commands;
 using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Use_Cases.Commands.AuthCommands;
@@ -23,6 +24,9 @@ public class MappingProfile : Profile
         CreateMap<DailyDoctorSchedule, DailyDoctorScheduleDto>().ReverseMap();
         CreateMap<CreateDailyDoctorScheduleCommand, DailyDoctorSchedule>().ReverseMap();
         CreateMap<UpdateDailyDoctorScheduleCommand, DailyDoctorSchedule>().ReverseMap();
-        CreateMap<RegisterUserCommand, UserAuthentication>().ReverseMap();
+        CreateMap<RegisterUserCommand, Patient>().ReverseMap();
+        CreateMap<RegisterUserCommand, Doctor>().ReverseMap();
+        CreateMap<Doctor, DoctorDto>().ReverseMap();
+        CreateMap<Patient, PatientDto>().ReverseMap();
     }
 }
