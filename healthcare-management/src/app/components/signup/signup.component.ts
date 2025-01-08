@@ -49,7 +49,7 @@ export class SignupComponent {
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.maxLength(50)]],
       phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      dateOfBirth: ['', [Validators.required]],
+      dateOfBirth: ['', [Validators.required, CustomValidators.dateOfBirthValidator]],
       email: ['', [Validators.required, Validators.email]],
       role: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(100)]],
@@ -64,6 +64,10 @@ export class SignupComponent {
 
     return password === confirmPassword ? null : { mismatch: true };
   }
+
+
+  
+
 
   onSubmit(): void {
     const formData = { ... this.signupForm.value };
