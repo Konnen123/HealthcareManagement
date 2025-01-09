@@ -1,0 +1,28 @@
+<div class="landing-page-container">
+  <mat-toolbar color="primary">
+    <span>Predictive Healthcare</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/signup">Sign Up</button>
+    <button mat-button routerLink="/login">Login</button>
+  </mat-toolbar>
+
+  <div class="hero-section">
+    <h1>Your Health, Our Priority</h1>
+    <p>
+      A cutting-edge system for managing patient records, appointments, and predicting health risks using AI.
+    </p>
+    <button mat-raised-button color="accent" routerLink="/signup">Get Started</button>
+  </div>
+
+  <div class="features-section">
+    <mat-card class="feature-card" *ngFor="let feature of features">
+      <mat-icon>{{ feature.icon }}</mat-icon>
+      <h3>{{ feature.title }}</h3>
+      <p>{{ feature.description }}</p>
+    </mat-card>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Predictive Healthcare. All Rights Reserved.</p>
+  </footer>
+</div>

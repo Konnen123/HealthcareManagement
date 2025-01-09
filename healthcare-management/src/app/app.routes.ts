@@ -43,6 +43,11 @@ export const routes: Routes = [
     data: {isNavbarHidden: true}
   },
   {
+    path: 'landing-page',
+    loadComponent: () => import('./components/landing-page/landing-page.component').then(m => m.LandingPageComponent),
+    data: {isNavbarHidden: true}
+  },
+  {
     path: '',
     loadComponent: () => import('./components/appointment/appointment-list/appointment-list.component').then(m=>m.AppointmentListComponent),
     canActivate: [AuthenticationGuard, RoleGuard],
