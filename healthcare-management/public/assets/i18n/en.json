@@ -1,0 +1,99 @@
+{
+  "email": {
+    "EMAIL": "Email",
+    "REQUIRED": "Email is required",
+    "INVALID": "Email is invalid"
+  },
+  "password": {
+    "PASSWORD": "Password",
+    "REQUIRED": "Password is required",
+    "INVALID": "Password must have at least 6 characters",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "CONFIRM_PASSWORD_REQUIRED": "Confirm Password is required",
+    "MISMATCH": "Passwords must match"
+  },
+  "LOGIN": "Login",
+  "REGISTER": "Register",
+  "FORGOT_PASSWORD": "Forgot password?",
+  "FIRST_NAME": "First Name",
+  "LAST_NAME": "Last Name",
+  "PHONE_NUMBER": "Phone Number",
+  "DATE_OF_BIRTH": "Date of Birth",
+  "ROLE": "Role",
+  "PATIENT": "Patient",
+  "DOCTOR": "Doctor",
+  "FIRST_NAME_REQUIRED": "First name is required",
+  "LAST_NAME_REQUIRED": "Last name is required",
+  "PHONE_NUMBER_REQUIRED": "Phone number is required",
+  "PHONE_NUMBER_INVALID": "Phone number is invalid",
+  "DATE_OF_BIRTH_REQUIRED": "Date of birth is required",
+  "DATE_OF_BIRTH_INVALID_TOO_OLD": "Date of Birth cannot be more than 100 years ago",
+  "DATE_OF_BIRTH_INVALID_FUTURE": "Date of Birth cannot be in the future",
+  "ROLE_REQUIRED": "Role is required",
+  "home": {
+    "WELCOME": "Welcome to the Healthcare Management App",
+    "SUB_TITLE": "Your one-stop solution for managing healthcare appointments and records.",
+    "FEATURES": "Features",
+    "FEATURE1": "Access our AI assistant to detect diseases",
+    "FEATURE2": "Book and manage appointments with ease",
+    "FEATURE3": "Access your medical records anytime, anywhere",
+    "FEATURE4": "Get reminders for upcoming appointments",
+    "VIEW_APPOINTMENTS": "View appointments",
+    "CREATE_APPOINTMENT": "Create appointment"
+  },
+  "header":{
+    "CHECK_SYMPTOMS": "Check Symptoms",
+    "SELECT_LANGUAGE": "Select language",
+    "LOGOUT": "Logout"
+  },
+  "symptom-checker": {
+    "TITLE": "Medical Symptom Checker",
+    "DESCRIPTION": "Select the symptoms you are experiencing from the list below to receive a prediction for possible medical conditions.",
+    "SELECT_SYMPTOMS": "Select Symptoms...",
+    "SUBMIT_SYMPTOMS": "Submit Symptoms",
+    "RESULTS": "Predicted medical condition:"
+  },
+  "appointment-form": {
+    "CREATE_APPOINTMENT": "Create appointment",
+    "UPDATE_APPOINTMENT": "Update appointment",
+    "SELECT_DOCTOR": "Select doctor",
+    "DOCTOR_REQUIRED": "Doctor selection is required",
+    "START_TIME": "Start Time",
+    "START_TIME_REQUIRED": "Start time is required",
+    "END_TIME": "End Time",
+    "END_TIME_REQUIRED": "End time is required",
+    "END_TIME_AFTER_START_TIME": "End time must be after start time",
+    "CHOOSE_DATE": "Choose date",
+    "DATE_REQUIRED": "Date is required",
+    "DATE_INVALID_PAST": "Date cannot be in the past",
+    "DATE_INVALID": "Invalid date",
+    "ADDITIONAL_NOTES": "Additional Notes",
+    "ADDITIONAL_NOTES_INVALID_SIZE": "Additional notes must be less than 500 characters",
+    "SUBMIT": "Submit"
+  },
+  "appointment-detail": {
+    "DETAILS": "Appointment Details",
+    "SEE_APPOINTMENTS": "See Appointments",
+    "DATE": "Date",
+    "TIME": "Time",
+    "ADDITIONAL_NOTES": "Additional Notes",
+    "DELETE": "Delete",
+    "UPDATE": "Update"
+  },
+  "appointment-list": {
+    "APPOINTMENTS": "Appointments",
+    "FILTERS": "Filters",
+    "PATIENT_NAME": "Patient name",
+    "DOCTOR_NAME": "Doctor name",
+    "DATE": "Date",
+    "INTERVAL_TIME": "Interval Time"
+  },
+  "filter": {
+    "APPOINTMENTS": "Filter Appointments",
+    "START_TIME": "Start Time",
+    "CHOOSE_DATE": "Choose date",
+    "CANCEL": "Cancel",
+    "APPLY": "Apply"
+  }
+
+}

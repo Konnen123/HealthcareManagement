@@ -1,98 +1,101 @@
 <div class="signup-container">
   <mat-card class="signup-card">
 
-    <h2>Sign Up</h2>
+    <h2>{{ 'REGISTER' | translate }}</h2>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
       <div class="row">
         <mat-form-field appearance="outline" class="half-width">
-          <mat-label>First Name</mat-label>
+          <mat-label>{{ 'FIRST_NAME' | translate }}</mat-label>
           <input matInput type="text" formControlName="firstName" />
           <mat-error *ngIf="signupForm.get('firstName')?.hasError('required')">
-            First Name is required
+            {{ 'FIRST_NAME_REQUIRED' | translate }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Last Name</mat-label>
+          <mat-label>{{ 'LAST_NAME' | translate }}</mat-label>
           <input matInput type="text" formControlName="lastName" />
           <mat-error *ngIf="signupForm.get('firstName')?.hasError('required')">
-            Last Name is required
+            {{ 'LAST_NAME_REQUIRED' | translate }}
           </mat-error>
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Phone Number</mat-label>
+          <mat-label>{{ 'PHONE_NUMBER' | translate }}</mat-label>
           <input matInput type="tel" formControlName="phoneNumber" />
           <mat-error *ngIf="signupForm.get('phoneNumber')?.hasError('required')">
-            Phone Number is required
+            {{ 'PHONE_NUMBER_REQUIRED' | translate }}
           </mat-error>
           <mat-error *ngIf="signupForm.get('phoneNumber')?.hasError('pattern')">
-            Enter a valid phone number
+            {{ 'PHONE_NUMBER_INVALID' | translate }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Date of Birth</mat-label>
+          <mat-label>{{ 'DATE_OF_BIRTH' | translate }}</mat-label>
           <input matInput type="date" formControlName="dateOfBirth" />
-          
+
           <mat-error *ngIf="signupForm.get('dateOfBirth')?.hasError('required')">
-            Date of Birth is required
+            {{ 'DATE_OF_BIRTH_REQUIRED' | translate }}
           </mat-error>
-          
+
           <mat-error *ngIf="signupForm.get('dateOfBirth')?.hasError('tooOld')">
-            Date of Birth cannot be more than 100 years ago
+            {{ 'DATE_OF_BIRTH_INVALID_TOO_OLD' | translate }}
           </mat-error>
           <mat-error *ngIf="signupForm.get('dateOfBirth')?.hasError('futureDate')">
-            Date of Birth cannot be in the future
+            {{ 'DATE_OF_BIRTH_INVALID_FUTURE' | translate }}
           </mat-error>
         </mat-form-field>
-                
+
       </div>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
+        <mat-label>{{ 'email.EMAIL' | translate }}</mat-label>
         <input matInput type="email" formControlName="email"  />
         <mat-error *ngIf="signupForm.get('email')?.hasError('email')">
-          Enter a valid email
+          {{ 'email.INVALID' | translate }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Role</mat-label>
+        <mat-label>{{ 'ROLE' | translate }}</mat-label>
         <mat-select formControlName="role" >
           <mat-option value="doctor">Doctor</mat-option>
           <mat-option value="patient">Patient</mat-option>
         </mat-select>
         <mat-error *ngIf="signupForm.get('role')?.hasError('required')">
-          Role is required
+          {{ 'ROLE_REQUIRED' | translate }}
         </mat-error>
       </mat-form-field>
 
       <div class="row">
         <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Password</mat-label>
+          <mat-label>{{ 'password.PASSWORD' | translate }}</mat-label>
           <input matInput type="password" formControlName="password"  />
           <mat-error *ngIf="signupForm.get('password')?.hasError('required')">
-            Password is required
+            {{ 'password.REQUIRED' | translate }}
           </mat-error>
           <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">
-            Password must be at least 6 characters
+            {{ 'password.INVALID' | translate }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Confirm Password</mat-label>
+          <mat-label>{{ 'password.CONFIRM_PASSWORD' | translate }}</mat-label>
           <input matInput type="password" formControlName="confirmPassword" />
+          <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('required')">
+            {{ 'password.CONFIRM_PASSWORD_REQUIRED' | translate }}
+          </mat-error>
           <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('passwordsMismatch')">
-            Passwords do not match
+            {{ 'password.MISMATCH' | translate }}
           </mat-error>
         </mat-form-field>
       </div>
 
-      <button mat-raised-button color="primary" type="submit" [disabled]="!signupForm.valid">Sign Up</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!signupForm.valid">{{ 'REGISTER' | translate }}</button>
     </form>
   </mat-card>
 </div>

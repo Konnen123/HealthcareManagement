@@ -5,12 +5,15 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
-import {NgIf} from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AbstractControl, ValidationErrors} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
 import {Appointment} from '../../../models/appointment.model';
 import {AppointmentService} from '../../../services/appointment/appointment.service';
+import {TranslatePipe} from '@ngx-translate/core';
+import {LanguageService} from '../../../services/language/language.service';
+import {RoleService} from '../../../services/role/role.service';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -19,6 +22,7 @@ import {AppointmentService} from '../../../services/appointment/appointment.serv
     MatIcon,
     NgIf,
     MatButton,
+    TranslatePipe
   ],
   templateUrl: './appointment-detail.component.html',
   styleUrl: './appointment-detail.component.scss'
@@ -32,11 +36,15 @@ export class AppointmentDetailComponent implements OnInit{
     readonly route: ActivatedRoute,
     readonly appointmentService: AppointmentService,
     readonly snackBar: MatSnackBar,
-    readonly router: Router
+    readonly router: Router,
+    readonly languageService: LanguageService,
+    readonly roleService: RoleService
   ) {
   }
 
   ngOnInit() {
+    this.languageService.setLanguage();
+
     this.route.params.subscribe(async (params:Params) => {
       this.appointmentId = params['id'];
       this.fetchAppointmentDetails();
@@ -80,5 +88,15 @@ export class AppointmentDetailComponent implements OnInit{
     const guidRegex =
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
     return guidRegex.test(control.value) ? null : { invalidGuid: true };
+  }
+
+  onAppointmentsClick()
+  {
+    this.router.navigate(['/appointments']);
+  }
+
+  onUpdate()
+  {
+    this.router.navigate([`/appointments/update/${this.appointmentId}`]);
   }
 }

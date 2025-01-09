@@ -1,18 +1,18 @@
 
 <form [formGroup]="filterForm">
 <div mat-dialog-content>
-  <h3 class="dialog-title">Filter Appointments</h3>
+  <h3 class="dialog-title">{{ 'filter.APPOINTMENTS' | translate }}</h3>
 
   <!-- Start Time Filter -->
   <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>Start Time</mat-label>
+    <mat-label>{{ 'filter.START_TIME' | translate }}</mat-label>
     <input matInput type="time" formControlName="startTime" />
     <mat-icon matSuffix>access_time</mat-icon>
   </mat-form-field>
 
   <!-- Date Filter -->
   <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>Choose a Date</mat-label>
+    <mat-label>{{ 'filter.CHOOSE_DATE' | translate }}</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="date" />
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -21,8 +21,8 @@
 </div>
 
 <div mat-dialog-actions class="dialog-actions">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button color="primary" (click)="applyFilters()">Apply</button>
+  <button mat-button mat-dialog-close>{{ 'filter.CANCEL' | translate }}</button>
+  <button mat-raised-button color="primary" (click)="applyFilters()">{{ 'filter.APPLY' | translate }}</button>
 </div>
 </form>
 

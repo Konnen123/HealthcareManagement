@@ -15,14 +15,14 @@ namespace Application.Use_Cases.Queries.TranslateTextQueries
         public string? Text { get; set; }
         public string SourceLanguage { get; }
         public string TargetLanguage { get; }
-        public List<string> symptoms { get; set; }
+        public List<string> Symptoms { get; set; }
 
         public TranslateTextQuery(string text, string sourceLanguage, string targetLanguage, List<string> symptoms)
         {
             Text = text;
             SourceLanguage = sourceLanguage;
             TargetLanguage = targetLanguage;
-            this.symptoms = symptoms;
+            Symptoms = symptoms;
         }
     }
 }

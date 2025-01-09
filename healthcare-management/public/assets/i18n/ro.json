@@ -1,0 +1,100 @@
+{
+  "email": {
+    "EMAIL": "E-mail",
+    "REQUIRED": "E-mailul este obligatoriu",
+    "INVALID": "E-mailul este invalid"
+  },
+  "password": {
+    "PASSWORD": "Parolă",
+    "REQUIRED": "Parola este obligatorie",
+    "INVALID": "Parola trebuie să aibă minim 6 caractere",
+    "CONFIRM_PASSWORD": "Confirmă Parola",
+    "CONFIRM_PASSWORD_REQUIRED": "Confirmarea parolei este obligatorie",
+    "MISMATCH": "Parolele trebuie să coincidă"
+  },
+  "LOGIN": "Autentificare",
+  "REGISTER": "Înregistrare",
+  "FORGOT_PASSWORD": "Ai uitat parola?",
+  "FIRST_NAME": "Prenume",
+  "LAST_NAME": "Nume",
+  "PHONE_NUMBER": "Număr de telefon",
+  "DATE_OF_BIRTH": "Data nașterii",
+  "ROLE": "Rol",
+  "PATIENT": "Pacient",
+  "DOCTOR": "Doctor",
+  "FIRST_NAME_REQUIRED": "Prenumele este obligatoriu",
+  "LAST_NAME_REQUIRED": "Numele este obligatoriu",
+  "PHONE_NUMBER_REQUIRED": "Numărul de telefon este obligatoriu",
+  "PHONE_NUMBER_INVALID": "Numărul de telefon este invalid",
+  "DATE_OF_BIRTH_REQUIRED": "Data nașterii este obligatorie",
+  "DATE_OF_BIRTH_INVALID_TOO_OLD": "Data nașterii nu poate fi mai mult de 100 de ani",
+  "DATE_OF_BIRTH_INVALID_FUTURE": "Data nașterii nu poate fi in viitor",
+  "ROLE_REQUIRED": "Rolul este obligatoriu",
+  "home": {
+    "WELCOME": "Bine ați venit în aplicația de management al sănătății",
+    "SUB_TITLE": "Soluția dvs. completă pentru gestionarea programărilor și a dosarelor medicale.",
+    "FEATURES": "Caracteristici",
+    "FEATURE1": "Accesați asistentul nostru AI pentru a detecta boli",
+    "FEATURE2": "Programați și gestionați întâlnirile cu ușurință",
+    "FEATURE3": "Accesați dosarele medicale oricând, oriunde",
+    "FEATURE4": "Primiți notificări pentru programările viitoare",
+    "VIEW_APPOINTMENTS": "Vizualizați programările",
+    "CREATE_APPOINTMENT": "Creați o programare"
+  },
+  "header":{
+    "CHECK_SYMPTOMS": "Verifică simptomele",
+    "SELECT_LANGUAGE": "Selectează limba",
+    "LOGOUT": "Deloghează-te"
+  },
+  "symptom-checker": {
+    "TITLE": "Verificator de Simptome Medicale",
+    "DESCRIPTION": "Selectați simptomele pe care le experimentați din lista de mai jos pentru a primi o predicție a posibilelor afecțiuni medicale.",
+    "SELECT_SYMPTOMS": "Selectați Simptome...",
+    "SUBMIT_SYMPTOMS": "Trimiteți Simptomele",
+    "RESULTS": "Afecțiune medicală prezisă:"
+  },
+  "appointment-form": {
+    "CREATE_APPOINTMENT": "Creează o programare",
+    "UPDATE_APPOINTMENT": "Actualizează programarea",
+    "SELECT_DOCTOR": "Selectați doctorul",
+    "DOCTOR_REQUIRED": "Selecția doctorului este obligatorie",
+    "START_TIME": "Ora de începere",
+    "START_TIME_REQUIRED": "Ora de începere este obligatorie",
+    "END_TIME": "Ora de încheiere",
+    "END_TIME_REQUIRED": "Ora de încheiere este obligatorie",
+    "END_TIME_AFTER_START_TIME": "Ora de încheiere trebuie să fie după ora de începere",
+    "CHOOSE_DATE": "Alegeți data",
+    "DATE_REQUIRED": "Data este obligatorie",
+    "DATE_INVALID_PAST": "Data nu poate fi în trecut",
+    "DATE_INVALID": "Data este invalidă",
+    "ADDITIONAL_NOTES": "Note suplimentare",
+    "ADDITIONAL_NOTES_INVALID_SIZE": "Notele suplimentare nu pot avea mai mult de 500 de caractere",
+    "SUBMIT": "Trimiteți"
+  },
+  "appointment-detail": {
+    "DETAILS": "Detalii Programare",
+    "SEE_APPOINTMENTS": "Vezi Programările",
+    "DATE": "Dată",
+    "TIME": "Ora",
+    "ADDITIONAL_NOTES": "Note Suplimentare",
+    "DELETE": "Șterge",
+    "UPDATE": "Actualizează"
+  },
+  "appointment-list": {
+    "APPOINTMENTS": "Programări",
+    "FILTERS": "Filtre",
+    "PATIENT_NAME": "Nume Pacient",
+    "DOCTOR_NAME": "Nume Doctor",
+    "DATE": "Dată",
+    "INTERVAL_TIME": "Interval Orar"
+  },
+  "filter": {
+    "APPOINTMENTS": "Filtrează Programările",
+    "START_TIME": "Ora de începere",
+    "CHOOSE_DATE": "Alegeți data",
+    "CANCEL": "Anulează",
+    "APPLY": "Aplică"
+  }
+
+
+}

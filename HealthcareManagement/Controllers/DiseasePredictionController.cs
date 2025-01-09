@@ -45,7 +45,7 @@ public class DiseasePredictionController : ControllerBase
     {
         try
         {
-            var diagnosis = _diagnosisPredictionModel.Predict(translateTextQuery.symptoms, _csvPath);
+            var diagnosis = _diagnosisPredictionModel.Predict(translateTextQuery.Symptoms, _csvPath);
 
             translateTextQuery.Text = diagnosis.Disease;
             var translatedDiagnosis = await mediator.Send(translateTextQuery);

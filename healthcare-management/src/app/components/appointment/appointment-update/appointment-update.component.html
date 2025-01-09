@@ -1,5 +1,5 @@
 <app-appointment-form
-  mode="Update"
+  mode="{{ 'appointment-form.UPDATE_APPOINTMENT' | translate }}"
   [initialData]="appointmentData"
   (formSubmit)="onFormSubmit($event)"
 ></app-appointment-form>

@@ -1,30 +1,15 @@
+<button class="go-back-button"
+        mat-button
+        *ngIf="roleService.isUserDoctor()"
+        (click)="onAppointmentsClick()">{{ 'appointment-detail.SEE_APPOINTMENTS' | translate }}</button>
 <mat-card *ngIf="!loading">
-  <h3>Appointment Details</h3>
-  <div class="form-row">
-    <!-- Patient ID -->
-    <div class="detail-item">
-      <div class="detail-item-row">
-        <mat-icon>person</mat-icon>
-        <strong>Patient ID:</strong>
-      </div>
-      <span>{{appointmentDetails.patientId}}</span>
-    </div>
-    <!-- Doctor ID -->
-    <div class="detail-item">
-      <div class="detail-item-row">
-        <mat-icon>medical_services</mat-icon>
-        <strong>Doctor ID:</strong>
-      </div>
-      <span>{{ appointmentDetails.doctorId }}</span>
-    </div>
-  </div>
-
+  <h3>{{ 'appointment-detail.DETAILS' | translate }}</h3>
   <div class="form-row">
     <!-- Date -->
     <div class="detail-item">
       <div class="detail-item-row">
         <mat-icon>calendar_today</mat-icon>
-        <strong>Date:</strong>
+        <strong>{{ 'appointment-detail.DATE' | translate }}</strong>
       </div>
       <span>{{appointmentDetails.date}}</span>
     </div>
@@ -32,9 +17,9 @@
     <div class="detail-item">
       <div class="detail-item-row">
         <mat-icon>access_time</mat-icon>
-        <strong>Time:</strong>
+        <strong>{{ 'appointment-detail.TIME' | translate }}</strong>
       </div>
-      <span>{{appointmentDetails.startTime}} - {{appointmentDetails.endTime}}</span>
+      <span>{{appointmentDetails.startTime.split(':').slice(0, 2).join(':')}} - {{appointmentDetails.endTime.split(':').slice(0, 2).join(':')}}</span>
     </div>
   </div>
 
@@ -43,13 +28,22 @@
     <div class="detail-item">
       <div class="detail-item-row">
         <mat-icon>notes</mat-icon>
-        <strong>Additional Notes:</strong>
+        <strong>{{ 'appointment-detail.ADDITIONAL_NOTES' | translate }}</strong>
       </div>
       <span class="user-notes">{{appointmentDetails.userNotes}}</span>
     </div>
   </div>
 
   <div class="form-actions">
-    <button mat-stroked-button color="warn" (click)="onDelete()">Delete</button>
+    <button class="update-button" *ngIf="roleService.isUserDoctor()" mat-flat-button (click)="onUpdate()">
+      {{ 'appointment-detail.UPDATE' | translate }}
+    </button>
+
+    <button class="delete-button" *ngIf="roleService.isUserDoctor()"
+            mat-stroked-button
+            color="warn"
+            (click)="onDelete()">
+      {{ 'appointment-detail.DELETE' | translate }}
+    </button>
   </div>
 </mat-card>

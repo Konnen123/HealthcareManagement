@@ -1,66 +1,66 @@
 <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
-  <h1>{{ mode  }} Appointment</h1>
+  <h1>{{ mode  }}</h1>
   <div class="form-row">
     <mat-form-field floatLabel="auto">
-      <mat-label>Select Doctor</mat-label>
+      <mat-label>{{ 'appointment-form.SELECT_DOCTOR' | translate }}</mat-label>
       <mat-select [(value)]="selectedDoctor" (selectionChange)="onDoctorSelectionChange($event)" required>
         <mat-option *ngFor="let doctor of doctors" [value]="doctor">
           {{ doctor.firstName }} {{ doctor.lastName }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="appointmentForm.get('doctorId')?.hasError('required')">
-        Doctor selection is required.
+        {{ 'appointment-form.DOCTOR_REQUIRED' | translate }}
       </mat-error>
     </mat-form-field>
   </div>
 
   <div class="form-row">
     <mat-form-field>
-      <mat-label>StartTime</mat-label>
+      <mat-label>{{ 'appointment-form.START_TIME' | translate }}</mat-label>
       <input matInput type="time" formControlName="startTime"/>
       <mat-icon matSuffix>access_time</mat-icon>
       <mat-error *ngIf="appointmentForm.get('startTime')?.hasError('required')">
-        StartTime is required.
+        {{ 'appointment-form.START_TIME_REQUIRED' | translate }}
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>EndTime</mat-label>
+      <mat-label>{{ 'appointment-form.END_TIME' | translate }}</mat-label>
       <input matInput type="time" formControlName="endTime"/>
       <mat-icon matSuffix>access_time</mat-icon>
       <mat-error *ngIf="appointmentForm.get('endTime')?.hasError('required')">
-        EndTime is required.
+        {{ 'appointment-form.END_TIME_REQUIRED' | translate }}
       </mat-error>
       <mat-error *ngIf="appointmentForm.get('endTime')?.hasError('endTimeBeforeStartTime')">
-        EndTime must be after StartTime.
+        {{ 'appointment-form.END_TIME_AFTER_START_TIME' | translate }}
       </mat-error>
     </mat-form-field>
 
 
   </div>
   <mat-form-field>
-    <mat-label>Choose a date</mat-label>
+    <mat-label>{{ 'appointment-form.CHOOSE_DATE' | translate }}</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="date">
     <mat-error *ngIf="appointmentForm.get('date')?.hasError('required')">
-      Date is required.
+      {{ 'appointment-form.DATE_REQUIRED' | translate }}
     </mat-error>
     <mat-error *ngIf="appointmentForm.get('date')?.hasError('pastDate')">
-      Date cannot be in the past.
+      {{ 'appointment-form.DATE_INVALID_PAST' | translate }}
     </mat-error>
     <mat-error *ngIf="appointmentForm.get('date')?.hasError('isValidDate')">
-      Date must be a valid date.
+      {{ 'appointment-form.DATE_INVALID' | translate }}
     </mat-error>
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Additional Notes</mat-label>
+    <mat-label>{{ 'appointment-form.ADDITIONAL_NOTES' | translate }}</mat-label>
     <textarea matInput formControlName="userNotes" rows="4"></textarea>
     <mat-error *ngIf="appointmentForm.get('userNotes')?.hasError('maxlength')">
-      Additional Notes cannot be longer than 500 characters.
+      {{ 'appointment-form.ADDITIONAL_NOTES_INVALID_SIZE' | translate }}
     </mat-error>
   </mat-form-field>
   <div class="form-actions">
-    <button mat-flat-button type="submit">Submit</button>
+    <button mat-flat-button type="submit">{{ 'appointment-form.SUBMIT' | translate }}</button>
   </div>
 </form>

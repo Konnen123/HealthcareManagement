@@ -1,22 +1,22 @@
 <div class="home-page">
   <div>
-    <h1>Welcome to the Healthcare Management App</h1>
-    <p>Your one-stop solution for managing healthcare appointments and records.</p>
+    <h1>{{ 'home.WELCOME' | translate }}</h1>
+    <p>{{ 'home.SUB_TITLE' | translate }}</p>
     <mat-card class="features">
-      <h3 class="features-title">Features</h3>
+      <h3 class="features-title">{{ 'home.FEATURES' | translate }}</h3>
       <ul>
-        <li>Access our AI assistant to detect diseases</li>
-        <li>Book and manage appointments with ease</li>
-        <li>Access your medical records anytime, anywhere</li>
-        <li>Get reminders for upcoming appointments</li>
+        <li>{{ 'home.FEATURE1' | translate }}</li>
+        <li>{{ 'home.FEATURE2' | translate }}</li>
+        <li>{{ 'home.FEATURE3' | translate }}</li>
+        <li>{{ 'home.FEATURE4' | translate }}</li>
       </ul>
     </mat-card>
     <div class="buttons">
       <div class="buttons-doctor" *ngIf="isUserDoctor()">
-        <button mat-flat-button (click)="onViewAppointments()">View appointments</button>
+        <button mat-flat-button (click)="onViewAppointments()">{{ 'home.VIEW_APPOINTMENTS' | translate }}</button>
       </div>
       <div class="buttons-patient" *ngIf="isUserPatient()">
-        <button mat-flat-button (click)="onCreateAppointments()">Create appointment</button>
+        <button mat-flat-button (click)="onCreateAppointments()">{{ 'home.CREATE_APPOINTMENT' | translate }}</button>
       </div>
     </div>
 

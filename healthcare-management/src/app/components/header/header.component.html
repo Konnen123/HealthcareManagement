@@ -1,6 +1,9 @@
 <mat-toolbar color="primary">
   <!-- Title or Logo -->
-  <span class="toolbar-title">HealthcareApp</span>
+  <button
+    mat-button
+    class="toolbar-title"
+    (click)="onLogoClicked()">HealthcareApp</button>
 
   <!-- Spacer to push the logout button to the right -->
   <span class="spacer"></span>
@@ -8,17 +11,19 @@
   <!-- Check Symptoms Button -->
   <button
     mat-icon-button
-    matTooltip="Check Symptoms"
+    matTooltip="{{ 'header.CHECK_SYMPTOMS' | translate}}"
     (click)="redirectToSymptomChecker()"
     aria-label="Medical Condition"
   >
     <mat-icon>healing</mat-icon>
   </button>
 
+  <app-language-picker></app-language-picker>
+
   <!-- Logout Button with Icon -->
   <button
     mat-icon-button
-    matTooltip="Logout from your account"
+    matTooltip="{{ 'header.LOGOUT' | translate}}"
     matTooltipPosition="above"
     (click)="logout()"
     aria-label="Logout">
