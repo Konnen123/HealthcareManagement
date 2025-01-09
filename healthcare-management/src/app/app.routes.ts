@@ -31,7 +31,17 @@ export const routes: Routes = [
       }
     ],
   },
-
+  {
+    path: 'symptom-checker',
+    loadComponent: () => import('./components/symptom-checker/symptom-checker.component').then(m => m.SymptomCheckerComponent),
+    canActivate: [AuthenticationGuard, RoleGuard],
+    data: {expectedRole: ['PATIENT', "DOCTOR"]}
+  },
+  {
+    path: '',
+    loadComponent: () => import('./components/home-page/home-page.component').then(m=>m.HomePageComponent),
+    canActivate: [AuthenticationGuard],
+  },
   {
     path: 'login',
     loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent),
@@ -47,12 +57,13 @@ export const routes: Routes = [
     loadComponent: () => import('./components/landing-page/landing-page.component').then(m => m.LandingPageComponent),
     data: {isNavbarHidden: true}
   },
-  {
-    path: '',
-    loadComponent: () => import('./components/appointment/appointment-list/appointment-list.component').then(m=>m.AppointmentListComponent),
-    canActivate: [AuthenticationGuard, RoleGuard],
-    data: {expectedRole: ['DOCTOR']}
-  },
+  // {
+  //   path: '',
+  //   loadComponent: () => import('./components/appointment/appointment-list/appointment-list.component').then(m=>m.AppointmentListComponent),
+  //   canActivate: [AuthenticationGuard, RoleGuard],
+  //   data: {expectedRole: ['DOCTOR']}
+  // },
+
   {
     path: 'access-denied',
     loadComponent: () => import('./components/access-denied/access-denied.component').then(m=>m.AccessDeniedComponent),

@@ -1,11 +1,11 @@
-:host{
-  padding:20px;
+:host {
+  padding: 20px;
 }
 
 form {
   max-width: 600px;
   padding: 40px;
-  margin:  0 auto;
+  margin: 0 auto;
   background-color: #f5f5f5;
   border-radius: 5px;
   display: flex;
@@ -13,23 +13,38 @@ form {
   gap: 20px;
 }
 
-.form-row{
+.form-row {
   display: flex;
   gap: 20px;
   align-items: flex-start;
   justify-content: space-between;
 }
 
-mat-form-field{
+mat-form-field {
   width: 100%;
 }
 
-.form-actions{
+.form-actions {
   text-align: right;
+
+  button {
+    background: #00796b;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+
+    &:hover {
+      background: #004d40;
+    }
+
+    &[disabled] {
+      background: #c1c1c1;
+    }
+  }
 }
 
 @media (max-width: 600px) {
-  .form-row{
+  .form-row {
     flex-direction: column;
   }
 }

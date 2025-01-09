@@ -1,0 +1,52 @@
+<div class="form-container">
+  <header class="header-section">
+    <h1>Medical Symptom Checker</h1>
+    <p>
+      Select the symptoms you are experiencing from the list below to receive a prediction
+      for possible medical conditions.
+    </p>
+  </header>
+
+  <mat-form-field class="multi-select-form-field">
+    <mat-chip-grid #chipGrid aria-label="Multi-select">
+      <mat-chip-row *ngFor="let option of selectedOptions" (removed)="remove(option)">
+        {{ option }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      <input
+        placeholder="Select options..."
+        [formControl]="multiSelectControl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-chip-grid>
+
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <!-- Button directly under the form field -->
+  <div class="submit-button-container">
+    <button
+      mat-raised-button
+      [disabled]="!selectedOptions || selectedOptions.length === 0"
+      color="primary"
+      (click)="submitSymptoms()"
+    >
+      Submit Symptoms
+    </button>
+  </div>
+
+  <!-- Result Section -->
+  <div *ngIf="result">
+    <h3>Predicted medical condition:</h3>
+    <p class="disease-result">{{ result }}</p>
+  </div>
+</div>

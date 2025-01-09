@@ -2,25 +2,10 @@
   <h1>{{ mode  }} Appointment</h1>
   <div class="form-row">
     <mat-form-field floatLabel="auto">
-      <mat-label>PatientId</mat-label>
-      <input matInput formControlName="patientId" required/>
-      <mat-icon matSuffix>person</mat-icon>
-      <mat-error *ngIf="appointmentForm.get('patientId')?.hasError('required')">
-        PatientId is required.
-      </mat-error>
-      <mat-error *ngIf="appointmentForm.get('patientId')?.hasError('invalidGuid')">
-        PatientId must be a valid GUID.
-      </mat-error>
-      <mat-error *ngIf="appointmentForm.get('patientId')?.hasError('emptyGuid')">
-        PatientId cannot be an empty GUID.
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field floatLabel="auto">
       <mat-label>Select Doctor</mat-label>
-      <mat-select formControlName="doctorId" required>
-        <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">
-          {{ doctor.name }}
+      <mat-select [(value)]="selectedDoctor" (selectionChange)="onDoctorSelectionChange($event)" required>
+        <mat-option *ngFor="let doctor of doctors" [value]="doctor">
+          {{ doctor.firstName }} {{ doctor.lastName }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="appointmentForm.get('doctorId')?.hasError('required')">
