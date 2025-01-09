@@ -44,6 +44,10 @@ builder.Configuration["Jwt:RefreshExpiry"] = Environment.GetEnvironmentVariable(
 builder.Configuration["ML:DiagnosisModelPath"] = Environment.GetEnvironmentVariable("DIAGNOSIS_MODEL_PATH");
 builder.Configuration["ML:OutputFilePath"] = Environment.GetEnvironmentVariable("OUTPUT_DIAGNOSIS_PATH");
 
+builder.Configuration["AWS:AccessKey"] = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
+builder.Configuration["AWS:SecretKey"] = Environment.GetEnvironmentVariable("AWS_SECRET_KEY");
+builder.Configuration["AWS:Region"] = Environment.GetEnvironmentVariable("AWS_REGION");
+
 var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
 builder.Services.AddCors(options =>
 {
