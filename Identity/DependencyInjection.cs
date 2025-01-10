@@ -1,18 +1,17 @@
-﻿using Domain.Repositories;
-using Identity.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Shared;
-using System.Text;
+﻿using System.Text;
+using Application.Utils;
+using Domain.Repositories;
 using Domain.Services;
 using Identity.Persistence;
+using Identity.Repositories;
 using Identity.Services;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Shared;
 
 namespace Identity
 {
@@ -63,6 +62,8 @@ namespace Identity
                 options.AddPolicy("PATIENT", policy =>
                     policy.RequireRole("PATIENT"));
             });
+            
+            services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
 
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IPatientsRepository, PatientsRepository>();
@@ -71,6 +72,8 @@ namespace Identity
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFailedLoginAttemptsRepository, FailedLoginAttemptsRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<IResetPasswordTokenRepository, ResetPasswordTokenRepository>();
+            services.AddScoped<IMailService, SmtpEmailService>();
           
             return services;
         }

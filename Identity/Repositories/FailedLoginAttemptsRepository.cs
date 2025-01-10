@@ -31,14 +31,13 @@ namespace Identity.Repositories
             }
             else
             {
-                
                 failedAttempt.FailedAttempts++;
                 failedAttempt.LastFailedAttemptTime = DateTime.UtcNow;
 
-                
+
                 if (failedAttempt.FailedAttempts >= failedAttempt.MaxFailedLoginAttempts)
                 {
-                    failedAttempt.LockoutEndTime = DateTime.UtcNow.AddSeconds(40); 
+                    failedAttempt.LockoutEndTime = DateTime.UtcNow.AddSeconds(40);
                 }
 
                 _context.FailedLoginAttempts.Update(failedAttempt);
@@ -54,7 +53,7 @@ namespace Identity.Repositories
 
             if (failedAttempt == null || failedAttempt.LockoutEndTime == null)
             {
-                return false; 
+                return false;
             }
 
             if (failedAttempt.LockoutEndTime > DateTime.UtcNow)

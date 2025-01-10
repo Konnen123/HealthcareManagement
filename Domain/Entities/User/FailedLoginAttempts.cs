@@ -8,12 +8,6 @@
         public DateTime LastFailedAttemptTime { get; set; }
         public DateTime? LockoutEndTime { get; set; }
         public int MaxFailedLoginAttempts { get; set; } = 5;
-
-<<<<<<< HEAD
-            public User UserAuthentication { get; set; } = null!;
-        }
-=======
         public UserAuthentication UserAuthentication { get; set; } = null!;
->>>>>>> 6fc9b82 (Added repos for forgot and reset password,entities and token logic)
     }
 }

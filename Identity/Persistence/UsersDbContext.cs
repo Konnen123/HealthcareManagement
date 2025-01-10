@@ -14,6 +14,8 @@ namespace Identity.Persistence
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<FailedLoginAttempt> FailedLoginAttempts { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        
+        public DbSet<ResetPasswordToken> ResetPasswordTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -107,6 +109,38 @@ namespace Identity.Persistence
                 .HasForeignKey(rt => rt.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             
+            modelBuilder.Entity<ResetPasswordToken>(entity =>
+            {
+                entity.ToTable("reset_password_tokens");
+                
+                entity.HasKey(t => t.ResetPasswordTokenId);
+                
+                entity.Property(t => t.ResetPasswordTokenId)
+                    .HasDefaultValueSql("uuid_generate_v4()");
+                
+                entity.Property(t => t.Token)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.Property(t => t.CreatedAt)
+                      .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                      .HasConversion(
+                          v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                          v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                      );
+
+                entity.Property(t => t.ExpiresAt)
+                      .HasConversion(
+                          v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                          v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                      );
+
+                entity.HasOne(t => t.UserAuthentication)
+                    .WithOne(t => t.ResetPasswordToken)
+                    .HasForeignKey<ResetPasswordToken>(t => t.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
         }
     }
 }
