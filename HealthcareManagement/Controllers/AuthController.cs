@@ -1,6 +1,5 @@
 ﻿using Application.Use_Cases.Commands.AuthCommands;
 using Domain.Errors;
-using Domain.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -82,6 +81,26 @@ namespace HealthcareManagement.Controllers
                     if (error.GetType() == AuthorizationErrors.Unauthorized("","").GetType())
                     {
                         return Unauthorized(error);
+                    }
+                    return BadRequest(error);
+                }
+            );
+        }
+
+        [HttpPut("reset-password")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+        {
+            var resultObject = await _mediator.Send(command);
+            return resultObject.Match<IActionResult>(
+                onSuccess: value => Ok(value),
+                onFailure: error => 
+                {
+                    if (error.GetType() == AuthorizationErrors.Unauthorized("","").GetType())
+                    {
+                        return Unauthorized(resultObject.Value);
                     }
                     return BadRequest(error);
                 }
