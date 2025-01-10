@@ -23,5 +23,7 @@ namespace Domain.Entities.User
         public Roles Role { get; set; }
 
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+        
+        public ResetPasswordToken ResetPasswordToken { get; set; } = null!;
     }
 }

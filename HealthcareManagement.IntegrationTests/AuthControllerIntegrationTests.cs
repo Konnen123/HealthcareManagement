@@ -58,7 +58,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
     {
         const string newPassword = "NewPassword";
         const string mockToken = "MockToken";
-        UserAuthentication user = UserSUT();
+        User user = UserSUT();
         var resetPasswordToken = resetPasswordTokenSut(mockToken, user);
         dbContext.Users.Add(user);
         dbContext.ResetPasswordTokens.Add(resetPasswordToken);
@@ -84,7 +84,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
     {
         const string newPassword = "NewPassword";
         const string mockToken = "invalidToken";
-        UserAuthentication user = UserSUT();
+        User user = UserSUT();
         var resetPasswordToken = resetPasswordTokenSut(mockToken, user);
         resetPasswordToken.ExpiresAt = DateTime.UtcNow;
         dbContext.Users.Add(user);
@@ -106,7 +106,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
     {
         const string newPassword = "NewPassword";
         const string mockToken = "invalidToken";
-        UserAuthentication user = UserSUT();
+        User user = UserSUT();
         var resetPasswordToken = resetPasswordTokenSut(mockToken, user);
         resetPasswordToken.ExpiresAt = DateTime.UtcNow;
         dbContext.Users.Add(user);
@@ -127,9 +127,9 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
 
     #region SUTs
 
-    private static UserAuthentication UserSUT()
+    private static User UserSUT()
     {
-        return new UserAuthentication()
+        return new Doctor()
         {
             FirstName = "mock",
             LastName = "mock",
@@ -139,6 +139,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
             DateOfBirth = new DateOnly(2000, 2, 2),
             CreatedAt = DateSingleton.GetCurrentDateOnly(),
             IsEnabled = true,
+            MedicalRank = "mock"
         };
     }
 
@@ -158,7 +159,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
         };
     }
 
-    private static ResetPasswordToken resetPasswordTokenSut(string token, UserAuthentication user)
+    private static ResetPasswordToken resetPasswordTokenSut(string token, User user)
     {
         return new ResetPasswordToken()
         {

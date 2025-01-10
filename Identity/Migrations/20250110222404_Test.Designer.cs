@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20250109185747_ResetPasswordTokenTable")]
-    partial class ResetPasswordTokenTable
+    [Migration("20250110222404_Test")]
+    partial class Test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,37 @@ namespace Identity.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempt", b =>
+                {
+                    b.Property<Guid>("AttemptId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("FailedAttempts")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("LastFailedAttemptTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LockoutEndTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MaxFailedLoginAttempts")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(5);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("AttemptId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("failed_login_attempts", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.RefreshToken", b =>
                 {
                     b.Property<Guid>("RefreshTokenId")
                         .ValueGeneratedOnAdd()
@@ -65,36 +95,6 @@ namespace Identity.Migrations
                     b.ToTable("RefreshTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempt", b =>
-                {
-                    b.Property<Guid>("AttemptId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("FailedAttempts")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("LastFailedAttemptTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("LockoutEndTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("MaxFailedLoginAttempts")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(5);
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("AttemptId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("failed_login_attempts", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.User.ResetPasswordToken", b =>
                 {
                     b.Property<Guid>("ResetPasswordTokenId")
@@ -126,7 +126,7 @@ namespace Identity.Migrations
                     b.ToTable("reset_password_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.User.UserAuthentication", b =>
+            modelBuilder.Entity("Domain.Entities.User.User", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -174,22 +174,53 @@ namespace Identity.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("users", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Domain.Entities.User.Patient", b =>
                 {
-                    b.HasOne("Domain.Entities.User.UserAuthentication", "UserAuthentication")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("Domain.Entities.User.User");
 
-                    b.Navigation("UserAuthentication");
+                    b.ToTable("patients", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.Staff", b =>
+                {
+                    b.HasBaseType("Domain.Entities.User.User");
+
+                    b.Property<string>("MedicalRank")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.ToTable("staffs", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.Admin", b =>
+                {
+                    b.HasBaseType("Domain.Entities.User.Staff");
+
+                    b.ToTable("admins", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.Doctor", b =>
+                {
+                    b.HasBaseType("Domain.Entities.User.Staff");
+
+                    b.ToTable("doctors", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.SuperAdmin", b =>
+                {
+                    b.HasBaseType("Domain.Entities.User.Staff");
+
+                    b.ToTable("super_admins", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempt", b =>
                 {
-                    b.HasOne("Domain.Entities.User.UserAuthentication", "UserAuthentication")
+                    b.HasOne("Domain.Entities.User.User", "UserAuthentication")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -198,9 +229,20 @@ namespace Identity.Migrations
                     b.Navigation("UserAuthentication");
                 });
 
+            modelBuilder.Entity("Domain.Entities.User.RefreshToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.User.ResetPasswordToken", b =>
                 {
-                    b.HasOne("Domain.Entities.User.UserAuthentication", "UserAuthentication")
+                    b.HasOne("Domain.Entities.User.User", "UserAuthentication")
                         .WithOne("ResetPasswordToken")
                         .HasForeignKey("Domain.Entities.User.ResetPasswordToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -209,7 +251,52 @@ namespace Identity.Migrations
                     b.Navigation("UserAuthentication");
                 });
 
-            modelBuilder.Entity("Domain.Entities.User.UserAuthentication", b =>
+            modelBuilder.Entity("Domain.Entities.User.Patient", b =>
+                {
+                    b.HasOne("Domain.Entities.User.User", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.User.Patient", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.Staff", b =>
+                {
+                    b.HasOne("Domain.Entities.User.User", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.User.Staff", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.Admin", b =>
+                {
+                    b.HasOne("Domain.Entities.User.Staff", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.User.Admin", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.Doctor", b =>
+                {
+                    b.HasOne("Domain.Entities.User.Staff", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.User.Doctor", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.SuperAdmin", b =>
+                {
+                    b.HasOne("Domain.Entities.User.Staff", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.User.SuperAdmin", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.User", b =>
                 {
                     b.Navigation("RefreshTokens");
 

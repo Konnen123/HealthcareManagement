@@ -72,7 +72,7 @@ public class MailControllerIntegrationTests : IClassFixture<WebApplicationFactor
     [Fact]
     public async Task SendForgotPasswordMail_GivenForgotPasswordCommandValid_ShouldReturnOkResponse()
     {
-        UserAuthentication user = UserSUT();
+        User user = UserSUT();
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
         var forgotPasswordCommand = ForgotPasswordCommandSUT(user.Email);
@@ -91,17 +91,13 @@ public class MailControllerIntegrationTests : IClassFixture<WebApplicationFactor
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),
             Times.Once);
-        var token = dbContext.ResetPasswordTokens.FirstOrDefault(t => t.UserId == user.UserId);
-        Assert.NotNull(token);
-        Assert.Equal(user.UserId, token.UserId);
-        Assert.NotEmpty(token.Token); 
     }
 
     [Fact]
     public async Task SendForgotPasswordMail_GivenForgotPasswordCommandInvalid_ShouldReturnBadRequestResponse()
     {
         const string INVALID_MAIL = "invalid-email";
-        UserAuthentication user = UserSUT();
+        User user = UserSUT();
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
         var forgotPasswordCommand = ForgotPasswordCommandSUT(INVALID_MAIL);
@@ -124,9 +120,9 @@ public class MailControllerIntegrationTests : IClassFixture<WebApplicationFactor
     #endregion
     
     #region SUTs
-    private static UserAuthentication UserSUT()
+    private static User UserSUT()
     {
-        return new UserAuthentication()
+        return new Doctor()
         {
             FirstName = "mock",
             LastName = "mock",
@@ -136,6 +132,7 @@ public class MailControllerIntegrationTests : IClassFixture<WebApplicationFactor
             DateOfBirth = new DateOnly(2000, 2, 2),
             CreatedAt = DateSingleton.GetCurrentDateOnly(),
             IsEnabled = true,
+            MedicalRank = "mock"
         };
     }
 

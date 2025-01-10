@@ -1,4 +1,4 @@
-﻿﻿using Domain.Entities.User;
+﻿using Domain.Entities.User;
 using Domain.Errors;
 using Domain.Repositories;
 using Domain.Utils;
@@ -17,25 +17,47 @@ namespace Identity.Repositories
             _context = context;
         }
 
-        public async Task<Result<string>> Login(UserAuthentication user, CancellationToken cancellationToken)
+        public async Task<Result<string>> Login(User user, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Result<UserAuthentication>> GetByEmailAsync(string email, CancellationToken cancellationToken)
+        public async Task<Result<User>> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {
             try
             {
                 var account = await _context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
-                return account == null ? Result<UserAuthentication>.Failure(AuthErrors.EmailNotFound(nameof(UserAuthentication), email)) : Result<UserAuthentication>.Success(account);
+                return account == null
+                    ? Result<User>.Failure(AuthErrors.EmailNotFound(nameof(User), email))
+                    : Result<User>.Success(account);
             }
             catch (Exception e)
             {
-                return Result<UserAuthentication>.Failure(EntityErrors.GetFailed(nameof(UserAuthentication), e.InnerException?.Message ?? $"An unexpected error occurred while retrieving the account with email {email}"));
+                return Result<User>.Failure(EntityErrors.GetFailed(nameof(User),
+                    e.InnerException?.Message ??
+                    $"An unexpected error occurred while retrieving the account with email {email}"));
             }
         }
 
-        public async Task<Result<Unit>> UpdateUserPasswordAsync(UserAuthentication user, CancellationToken cancellationToken)
+        public async Task<Result<User>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var account = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
+                return account == null
+                    ? Result<User>.Failure(EntityErrors.NotFound(nameof(User), id))
+                    : Result<User>.Success(account);
+            }
+            catch (Exception e)
+            {
+                return Result<User>.Failure(EntityErrors.GetFailed(nameof(User),
+                    e.InnerException?.Message ??
+                    $"An unexpected error occurred while retrieving the account with id {id}"));
+            }
+        }
+
+        public async Task<Result<Unit>> UpdateUserPasswordAsync(User user,
+            CancellationToken cancellationToken)
         {
             try
             {
@@ -47,38 +69,33 @@ namespace Identity.Repositories
             catch (Exception ex)
             {
                 return Result<Unit>.Failure(
-                    EntityErrors.UpdateFailed(nameof(UserAuthentication),
+                    EntityErrors.UpdateFailed(nameof(User),
                         ex.InnerException?.Message ?? "An unexpected error occurred while updating the user password")
                 );
             }
-
         }
 
-        public async Task<Result<UserAuthentication>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Register(User user, CancellationToken cancellationToken)
         {
             try
             {
-                var account = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
-                return account == null ? Result<UserAuthentication>.Failure(EntityErrors.NotFound(nameof(UserAuthentication), id)) : Result<UserAuthentication>.Success(account);
-            }
-            catch (Exception e)
-            {
-                return Result<UserAuthentication>.Failure(EntityErrors.GetFailed(nameof(UserAuthentication), e.InnerException?.Message ?? $"An unexpected error occurred while retrieving the account with id {id}"));
-            }
-        }
-
-        public async Task<Result<Guid>> Register(UserAuthentication user, CancellationToken cancellationToken)
-        {
-            Console.WriteLine(user.Password.Length);
-            try
-            {
-                await _context.Users.AddAsync(user);
+                await _context.Users.AddAsync(user, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
                 return Result<Guid>.Success(user.UserId);
             }
+            catch (DbUpdateException dbEx)
+            {
+                if (dbEx.InnerException?.Message.Contains("IX_users_Email", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    return Result<Guid>.Failure(AuthErrors.EmailAlreadyExists(nameof(User), $"{user.Email}"));
+                }
+
+                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User),
+                    dbEx.InnerException?.Message ?? "An unexpected error occurred while creating the user account"));
+            }
             catch (Exception e)
             {
-                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(UserAuthentication),e.InnerException?.Message ?? "An unexpected error occurred while creating the user account"));
+                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User), e.Message));
             }
         }
     }

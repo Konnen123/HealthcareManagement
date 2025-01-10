@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class ResetPasswordTokenTable : Migration
+    public partial class Test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

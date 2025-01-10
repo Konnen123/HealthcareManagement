@@ -8,7 +8,7 @@ public class ResetPasswordToken
     
     public Guid UserId { get; set; }
     
-    public UserAuthentication UserAuthentication { get; set; } = null!;
+    public User UserAuthentication { get; set; } = null!;
     
     public DateTime CreatedAt { get; set; }
     

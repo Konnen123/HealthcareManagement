@@ -30,7 +30,7 @@ public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordComman
         var user = await _usersRepository.GetByEmailAsync(request.Email, cancellationToken);
         if (!user.IsSuccess)
         {
-            return Result<string>.Failure(AuthErrors.EmailNotFound(nameof(UserAuthentication), request.Email));
+            return Result<string>.Failure(AuthErrors.EmailNotFound(nameof(User), request.Email));
         }
 
         var resetPasswordToken = _tokenService.GenerateResetPasswordToken(user.Value!);

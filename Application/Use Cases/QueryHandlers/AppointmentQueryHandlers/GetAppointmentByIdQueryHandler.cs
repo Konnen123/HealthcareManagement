@@ -33,7 +33,7 @@ public class GetAppointmentByIdQueryHandler : IRequestHandler<GetAppointmentById
         var result = await repository.GetAsync(request.Id);
         if (!result.IsSuccess)
         {
-            return Result<AppointmentDto>.Failure(result.Error);
+            return Result<AppointmentDto>.Failure(result.Error!);
         }
 
         Appointment appointment = result.Value!;

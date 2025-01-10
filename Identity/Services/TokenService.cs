@@ -2,11 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Domain.Entities;
 using Domain.Entities.User;
 using Domain.Repositories;
 using Domain.Services;
-using Domain.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -26,7 +24,7 @@ public class TokenService : ITokenService
         _resetPasswordTokenRepository = resetPasswordTokenRepository;
     }
 
-    public string GenerateAccessToken(UserAuthentication user)
+    public string GenerateAccessToken(User user)
     {
         var jwtSecret = _configuration["Jwt:Key"] ??
                         throw new InvalidOperationException("Unable to read JWT from config in TokenService");
@@ -53,7 +51,7 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public ResetPasswordToken GenerateResetPasswordToken(UserAuthentication user)
+    public ResetPasswordToken GenerateResetPasswordToken(User user)
     {
         return new ResetPasswordToken
         {
@@ -64,7 +62,7 @@ public class TokenService : ITokenService
         };
     }
 
-    public RefreshToken GenerateRefreshToken(UserAuthentication user, string? deviceInfo = null,
+    public RefreshToken GenerateRefreshToken(User user, string? deviceInfo = null,
         string? ipAddress = null)
     {
         return new RefreshToken

@@ -1,21 +1,25 @@
-using System.Net;
-using System.Net.Http.Headers;
-using System.Text;
 using Application.Use_Cases.Commands;
-using Application.Use_Cases.Commands.AppointmentCommands;
 using Application.Utils;
-using Domain.Entities;
-using Domain.Entities.User;
-using Domain.Utils;
-using DotNetEnv;
-using FluentAssertions;
-using Identity.Persistence;
+using System.Net;
+using System.Text;
 using Infrastructure.Persistence;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using FluentAssertions;
+using Domain.Entities;
+using Application.Use_Cases.Commands.AppointmentCommands;
+using DotNetEnv;
+using Domain.Entities.User;
+using Identity.Persistence;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Domain.Utils;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
+
 
 namespace HealthcareManagement.IntegrationTests
 {
