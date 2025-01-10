@@ -72,16 +72,19 @@ public class MailControllerIntegrationTests : IClassFixture<WebApplicationFactor
     [Fact]
     public async Task SendForgotPasswordMail_GivenForgotPasswordCommandValid_ShouldReturnOkResponse()
     {
+        //Arrange
         User user = UserSUT();
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
         var forgotPasswordCommand = ForgotPasswordCommandSUT(user.Email);
         var serialize = JsonConvert.SerializeObject(forgotPasswordCommand);
-        
         HttpClient client = this.factory.CreateClient();
+        
+        //Act
         var response = await client.PostAsync(BaseUrl, new StringContent(
             serialize, Encoding.UTF8, "application/json"));
         
+        //Assert
         response.EnsureSuccessStatusCode();
         
         mockEmailService.Verify(service => 
@@ -96,6 +99,7 @@ public class MailControllerIntegrationTests : IClassFixture<WebApplicationFactor
     [Fact]
     public async Task SendForgotPasswordMail_GivenForgotPasswordCommandInvalid_ShouldReturnBadRequestResponse()
     {
+        //Arrange
         const string INVALID_MAIL = "invalid-email";
         User user = UserSUT();
         dbContext.Users.Add(user);
@@ -104,9 +108,11 @@ public class MailControllerIntegrationTests : IClassFixture<WebApplicationFactor
         var serialize = JsonConvert.SerializeObject(forgotPasswordCommand);
         HttpClient client = this.factory.CreateClient();
         
+        //Act
         var response = await client.PostAsync(BaseUrl, new StringContent(
             serialize, Encoding.UTF8, "application/json"));
         
+        //Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         mockEmailService.Verify(service => 
                 service.SendEmailAsync(

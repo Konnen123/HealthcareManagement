@@ -56,21 +56,24 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
     [Fact]
     public async Task ResetUserPassword_GivenResetPasswordCommandValid_ShouldReturnOkResponse()
     {
+        //Arrange
         const string newPassword = "NewPassword";
         const string mockToken = "MockToken";
         User user = UserSUT();
-        var resetPasswordToken = resetPasswordTokenSut(mockToken, user);
+        var resetPasswordToken = ResetPasswordTokenSUT(mockToken, user);
         dbContext.Users.Add(user);
         dbContext.ResetPasswordTokens.Add(resetPasswordToken);
         await dbContext.SaveChangesAsync();
-        var resetPasswordCommand = resetPasswordCommandSut(newPassword, mockToken);
+        var resetPasswordCommand = ResetPasswordCommandSUT(newPassword, mockToken);
 
         var serialize = JsonConvert.SerializeObject(resetPasswordCommand);
-
         HttpClient client = this.factory.CreateClient();
+        
+        //Act
         var response = await client.PutAsync(BaseUrl, new StringContent(
             serialize, Encoding.UTF8, "application/json"));
 
+        //Assert
         response.EnsureSuccessStatusCode();
 
         var token = dbContext.ResetPasswordTokens.FirstOrDefault(t => t.UserId == user.UserId);
@@ -82,44 +85,50 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
     [Fact]
     public async Task SendForgotPasswordMail_GivenResetPasswordCommandInvalid_ShouldReturnUnauthorizedResponse()
     {
+        //Arrange
         const string newPassword = "NewPassword";
         const string mockToken = "invalidToken";
         User user = UserSUT();
-        var resetPasswordToken = resetPasswordTokenSut(mockToken, user);
+        var resetPasswordToken = ResetPasswordTokenSUT(mockToken, user);
         resetPasswordToken.ExpiresAt = DateTime.UtcNow;
         dbContext.Users.Add(user);
         dbContext.ResetPasswordTokens.Add(resetPasswordToken);
         await dbContext.SaveChangesAsync();
-        var resetPasswordCommand = resetPasswordCommandSut(newPassword, mockToken);
+        var resetPasswordCommand = ResetPasswordCommandSUT(newPassword, mockToken);
 
         var serialize = JsonConvert.SerializeObject(resetPasswordCommand);
-
         HttpClient client = this.factory.CreateClient();
+        
+        //Act
         var response = await client.PutAsync(BaseUrl, new StringContent(
             serialize, Encoding.UTF8, "application/json"));
 
+        //Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
     
     [Fact]
     public async Task SendForgotPasswordMail_GivenResetPasswordCommandInvalid_ShouldReturnBadRequestResponse()
     {
+        //Arrange
         const string newPassword = "NewPassword";
         const string mockToken = "invalidToken";
         User user = UserSUT();
-        var resetPasswordToken = resetPasswordTokenSut(mockToken, user);
+        var resetPasswordToken = ResetPasswordTokenSUT(mockToken, user);
         resetPasswordToken.ExpiresAt = DateTime.UtcNow;
         dbContext.Users.Add(user);
         dbContext.ResetPasswordTokens.Add(resetPasswordToken);
         await dbContext.SaveChangesAsync();
-        var resetPasswordCommand = invalidResetPasswordCommandSut(newPassword);
+        var resetPasswordCommand = InvalidResetPasswordCommandSUT(newPassword);
 
         var serialize = JsonConvert.SerializeObject(resetPasswordCommand);
-
         HttpClient client = this.factory.CreateClient();
+        
+        //Act
         var response = await client.PutAsync(BaseUrl, new StringContent(
             serialize, Encoding.UTF8, "application/json"));
 
+        //Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
@@ -143,7 +152,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
         };
     }
 
-    private static ResetPasswordCommand resetPasswordCommandSut(string password, string token)
+    private static ResetPasswordCommand ResetPasswordCommandSUT(string password, string token)
     {
         return new ResetPasswordCommand()
         {
@@ -151,7 +160,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
             Token = token
         };
     }
-    private static ResetPasswordCommand invalidResetPasswordCommandSut(string password)
+    private static ResetPasswordCommand InvalidResetPasswordCommandSUT(string password)
     {
         return new ResetPasswordCommand()
         {
@@ -159,7 +168,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
         };
     }
 
-    private static ResetPasswordToken resetPasswordTokenSut(string token, User user)
+    private static ResetPasswordToken ResetPasswordTokenSUT(string token, User user)
     {
         return new ResetPasswordToken()
         {
