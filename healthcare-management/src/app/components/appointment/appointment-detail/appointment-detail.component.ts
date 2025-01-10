@@ -5,7 +5,7 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DatePipe, NgIf} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AbstractControl, ValidationErrors} from '@angular/forms';
 import {MatButton} from '@angular/material/button';

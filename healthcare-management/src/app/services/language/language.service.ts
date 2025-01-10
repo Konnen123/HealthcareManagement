@@ -19,7 +19,7 @@ export class LanguageService
     if(!this.isBrowser)
       return;
 
-    const language = localStorage.getItem('language') || this.getDefaultLanguage();
+    const language = localStorage.getItem('language') ?? this.getDefaultLanguage();
 
     localStorage.setItem('language', language);
     this.translateService.use(language);

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
-import {MatButton, MatButtonModule} from '@angular/material/button';
+import {MatButtonModule} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';
 import {LanguageService} from '../../services/language/language.service';
 import {MatMenu, MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
