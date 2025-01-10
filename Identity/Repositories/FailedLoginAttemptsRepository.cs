@@ -1,6 +1,6 @@
-﻿using Domain.Repositories;
+﻿using Domain.Entities.User;
+using Domain.Repositories;
 using Identity.Persistence;
-using static Domain.Entities.User.FailedLoginAttempts;
 
 namespace Identity.Repositories
 {

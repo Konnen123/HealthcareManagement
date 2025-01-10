@@ -1,9 +1,7 @@
 ﻿
-using Domain.Entities.User;
-
 namespace Domain.Repositories
 {
-    public interface IFailedLoginAttemptsRepository 
+    public interface IFailedLoginAttemptsRepository
     {
         void AddFailedAttempt(Guid userId);
         bool IsUserLockedOut(Guid userId);

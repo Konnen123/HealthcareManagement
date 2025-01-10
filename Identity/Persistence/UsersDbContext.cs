@@ -1,8 +1,5 @@
-﻿using Domain.Entities;
-using Domain.Entities.User;
+﻿using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
-using Shared;
-using static Domain.Entities.User.FailedLoginAttempts;
 
 namespace Identity.Persistence
 {
