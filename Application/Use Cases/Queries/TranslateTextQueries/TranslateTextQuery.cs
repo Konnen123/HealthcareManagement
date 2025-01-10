@@ -17,7 +17,7 @@ namespace Application.Use_Cases.Queries.TranslateTextQueries
         public string TargetLanguage { get; }
         public List<string> Symptoms { get; set; }
 
-        public TranslateTextQuery(string text, string sourceLanguage, string targetLanguage, List<string> symptoms)
+        public TranslateTextQuery(string? text, string sourceLanguage, string targetLanguage, List<string> symptoms)
         {
             Text = text;
             SourceLanguage = sourceLanguage;

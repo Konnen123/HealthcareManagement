@@ -9,14 +9,11 @@ namespace Application.Use_Cases.QueryHandlers.TranslateTextQueryHandlers
 {
     public class TranslateTextQueryHandler : IRequestHandler<TranslateTextQuery, Result<string>>
     {
-        private readonly AmazonTranslateClient translateClient;
+        private readonly IAmazonTranslate translateClient;
 
-        public TranslateTextQueryHandler(IConfiguration configuration)
+        public TranslateTextQueryHandler(IAmazonTranslate translateClient)
         {
-            var awsAccessKeyId = configuration["AWS:AccessKey"];
-            var awsSecretAccessKey = configuration["AWS:SecretKey"];
-
-            translateClient = new AmazonTranslateClient(awsAccessKeyId, awsSecretAccessKey);
+            this.translateClient = translateClient;
         }
 
         public async Task<Result<string>> Handle(TranslateTextQuery request, CancellationToken cancellationToken)
