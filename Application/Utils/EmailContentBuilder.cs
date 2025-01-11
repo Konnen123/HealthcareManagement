@@ -2,15 +2,13 @@
 
 public static class EmailContentBuilder
 {
-    private const string ClientBaseUrl = "http://localhost:4200";
-    private const string ServerBaseUrl = "https://localhost:7121/api/v1/Auth";
     public static string BuildResetPasswordEmail(string firstName, string resetPasswordToken)
     {
         return $@"
             Hello {firstName},
 
             We received a request to reset your password. Use the link below to reset it:
-            {ClientBaseUrl}/reset-password?token={resetPasswordToken}
+            http://localhost:4200/reset-password?token={resetPasswordToken}
 
             If you didn’t ask to reset your password, you can safely ignore this email.
 
@@ -23,7 +21,7 @@ public static class EmailContentBuilder
             Hello {firstName},
 
             Welcome to HealthCare! To complete your registration, please verify your email address by clicking the link below:
-            {ServerBaseUrl}/verify-email?token={verificationToken}
+            https://localhost:7121/api/v1/Auth/verify-email?token={verificationToken}
 
             If you didn’t create an account with us, you can safely ignore this email.
 

@@ -13,13 +13,11 @@ public class VerifyEmailQueryHandler : IRequestHandler<VerifyEmailQuery, Result<
 {
     private readonly IVerifyEmailTokenRepository _verifyEmailTokenRepository;
     private readonly IUsersRepository _usersRepository;
-    private readonly ITokenService _tokenService;
 
-    public VerifyEmailQueryHandler(IVerifyEmailTokenRepository verifyEmailTokenRepository, IUsersRepository usersRepository, ITokenService tokenService)
+    public VerifyEmailQueryHandler(IVerifyEmailTokenRepository verifyEmailTokenRepository, IUsersRepository usersRepository)
     {
         _verifyEmailTokenRepository = verifyEmailTokenRepository;
         _usersRepository = usersRepository;
-        _tokenService = tokenService;
     }
     public async Task<Result<string>> Handle(VerifyEmailQuery request, CancellationToken cancellationToken)
     {
