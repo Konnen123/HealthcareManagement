@@ -26,4 +26,16 @@ public class MailController : ControllerBase
             onFailure: error => BadRequest(error)
         );
     }
+    
+    [HttpPost(("verify-email"))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> VerifyEmail(VerifyEmailCommand verifyEmailCommand)
+    {
+        var resultObject = await _mediator.Send(verifyEmailCommand);
+        return resultObject.Match<IActionResult>(
+            onSuccess: value => Ok(value),
+            onFailure: error => BadRequest(error)
+        );
+    }
 }

@@ -11,5 +11,6 @@ namespace Domain.Repositories
         Task<Result<User>> GetByEmailAsync(string email, CancellationToken cancellationToken);
         Task<Result<User>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<Result<Unit>> UpdateUserPasswordAsync(User user, CancellationToken cancellationToken);
+        Task<Result<Unit>> VerifyEmailAsync(User user, CancellationToken cancellationToken);
     }
 }

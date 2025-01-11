@@ -2,6 +2,7 @@
 using System.Text;
 using Application.Use_Cases.Commands.AuthCommands;
 using Application.Utils;
+using Domain.Entities.Tokens;
 using Domain.Entities.User;
 using FluentAssertions;
 using Identity.Persistence;

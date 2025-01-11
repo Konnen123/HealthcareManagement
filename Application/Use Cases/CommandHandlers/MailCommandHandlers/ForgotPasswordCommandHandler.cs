@@ -36,7 +36,7 @@ public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordComman
         var resetPasswordToken = _tokenService.GenerateResetPasswordToken(user.Value!);
         await _resetPasswordTokenRepository.AddResetPasswordToken(resetPasswordToken);
        
-        var emailContent = EmailContentBuilder.Build(user.Value!.FirstName, resetPasswordToken.Token);
+        var emailContent = EmailContentBuilder.BuildResetPasswordEmail(user.Value!.FirstName, resetPasswordToken.Token);
         
         var emailResult = await _mailService.SendEmailAsync(
             receiver: request.Email,

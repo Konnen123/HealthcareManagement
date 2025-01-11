@@ -1,3 +1,4 @@
+using Domain.Entities.Tokens;
 using Domain.Entities.User;
 
 namespace Domain.Services;
@@ -9,4 +10,5 @@ public interface ITokenService
     ResetPasswordToken GenerateResetPasswordToken(User user);
     Task<RefreshToken?> ValidateRefreshTokenAsync(string token);
     Task<ResetPasswordToken?> ValidateResetPasswordTokenAsync(string token);
+    VerifyEmailToken GenerateVerifyEmailToken(User user);
 }

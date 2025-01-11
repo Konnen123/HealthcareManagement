@@ -50,6 +50,8 @@ builder.Configuration["SmtpSettings:FromEmail"] = Environment.GetEnvironmentVari
 builder.Configuration["ML:DiagnosisModelPath"] = Environment.GetEnvironmentVariable("DIAGNOSIS_MODEL_PATH");
 builder.Configuration["ML:OutputFilePath"] = Environment.GetEnvironmentVariable("OUTPUT_DIAGNOSIS_PATH");
 
+builder.Configuration["Server"] = "https://localhost:7121";
+
 var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
 builder.Services.AddCors(options =>
 {

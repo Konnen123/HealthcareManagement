@@ -75,6 +75,21 @@ namespace Identity.Repositories
             }
         }
 
+        public async Task<Result<Unit>> VerifyEmailAsync(User user, CancellationToken cancellationToken)
+        {
+            try
+            {
+                user.HasVerifiedEmail = true;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
+                return Result<Unit>.Success(Unit.Value);
+            }
+            catch (Exception e)
+            {
+                return Result<Unit>.Failure(EntityErrors.UpdateFailed(nameof(User), e.Message));
+            }
+        }
+
         public async Task<Result<Guid>> Register(User user, CancellationToken cancellationToken)
         {
             try
@@ -98,5 +113,6 @@ namespace Identity.Repositories
                 return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User), e.Message));
             }
         }
+        
     }
 }

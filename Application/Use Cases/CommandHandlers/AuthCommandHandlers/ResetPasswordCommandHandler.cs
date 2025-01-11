@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Use_Cases.Commands.AuthCommands;
 using AutoMapper;
+using Domain.Entities.Tokens;
 using Domain.Entities.User;
 using Domain.Errors;
 using Domain.Repositories;

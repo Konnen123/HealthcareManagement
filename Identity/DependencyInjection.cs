@@ -73,6 +73,7 @@ namespace Identity
             services.AddScoped<IFailedLoginAttemptsRepository, FailedLoginAttemptsRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IResetPasswordTokenRepository, ResetPasswordTokenRepository>();
+            services.AddScoped<IVerifyEmailTokenRepository, VerifyEmailTokenRepository>();
             services.AddScoped<IMailService, SmtpEmailService>();
           
             return services;

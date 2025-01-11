@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Domain.Entities.Tokens;
 using Domain.Entities.User;
 using Domain.Repositories;
 using Domain.Services;
@@ -15,6 +16,7 @@ public class TokenService : ITokenService
     private readonly IConfiguration _configuration;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IResetPasswordTokenRepository _resetPasswordTokenRepository;
+    private const int ExpiryForTokenInMinutes = 15;
 
     public TokenService(IConfiguration configuration, IRefreshTokenRepository refreshTokenRepository,
         IResetPasswordTokenRepository resetPasswordTokenRepository)
@@ -58,7 +60,18 @@ public class TokenService : ITokenService
             UserId = user.UserId,
             Token = GenerateSecureToken(),
             CreatedAt = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(15)
+            ExpiresAt = DateTime.UtcNow.AddMinutes(ExpiryForTokenInMinutes)
+        };
+    }
+    
+    public VerifyEmailToken GenerateVerifyEmailToken(User user)
+    {
+        return new VerifyEmailToken
+        {
+            UserId = user.UserId,
+            Token = GenerateSecureTokenBase64(),
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddMinutes(ExpiryForTokenInMinutes)
         };
     }
 
@@ -106,5 +119,17 @@ public class TokenService : ITokenService
     private static string GenerateSecureToken()
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+    }
+    private static string GenerateSecureTokenBase64()
+    {
+        byte[] randomBytes = RandomNumberGenerator.GetBytes(64);
+
+        // Use Base64 URL encoding
+        string base64UrlToken = Convert.ToBase64String(randomBytes)
+            .Replace("+", "-")
+            .Replace("/", "_")
+            .TrimEnd('=');
+
+        return base64UrlToken;
     }
 }

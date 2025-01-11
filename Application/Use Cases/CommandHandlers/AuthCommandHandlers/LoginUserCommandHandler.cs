@@ -1,6 +1,7 @@
 ﻿using Application.Use_Cases.Commands.AuthCommands;
 using Application.Use_Cases.Responses;
 using Domain.Entities;
+using Domain.Entities.Tokens;
 using Domain.Entities.User;
 using Domain.Errors;
 using Domain.Repositories;

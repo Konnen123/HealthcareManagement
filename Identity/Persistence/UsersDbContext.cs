@@ -1,4 +1,5 @@
-﻿using Domain.Entities.User;
+﻿using Domain.Entities.Tokens;
+using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Persistence
@@ -16,6 +17,7 @@ namespace Identity.Persistence
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         
         public DbSet<ResetPasswordToken> ResetPasswordTokens { get; set; }
+        public DbSet<VerifyEmailToken> VerifyEmailTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -138,6 +140,39 @@ namespace Identity.Persistence
                 entity.HasOne(t => t.UserAuthentication)
                     .WithOne(t => t.ResetPasswordToken)
                     .HasForeignKey<ResetPasswordToken>(t => t.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+            
+            
+            modelBuilder.Entity<VerifyEmailToken>(entity =>
+            {
+                entity.ToTable("verify_email_tokens");
+                
+                entity.HasKey(t => t.VerifyEmailTokenId);
+                
+                entity.Property(t => t.VerifyEmailTokenId)
+                    .HasDefaultValueSql("uuid_generate_v4()");
+                
+                entity.Property(t => t.Token)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.Property(t => t.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                    .HasConversion(
+                        v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                        v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                    );
+
+                entity.Property(t => t.ExpiresAt)
+                    .HasConversion(
+                        v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                        v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                    );
+
+                entity.HasOne(t => t.UserAuthentication)
+                    .WithOne(t => t.VerifyEmailToken)
+                    .HasForeignKey<VerifyEmailToken>(t => t.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
