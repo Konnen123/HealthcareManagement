@@ -78,7 +78,7 @@ namespace Identity.Repositories
                 {
                     return Result<bool>.Success(true);
                 }
-                
+
                 failedAttempt.LockoutEndTime = null;
                 failedAttempt.FailedAttempts = 0;
                 _context.FailedLoginAttempts.Update(failedAttempt);
@@ -89,7 +89,8 @@ namespace Identity.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while checking lockout status for user {UserId}", userId);
-                return Result<bool>.Failure(AuthErrors.LoginFailed(nameof(FailedLoginAttempt),"An error occurred while processing the request.")); // Provide error message
+                return Result<bool>.Failure(AuthErrors.LoginFailed(nameof(FailedLoginAttempt),
+                    "An error occurred while processing the request."));
             }
         }
 
@@ -106,11 +107,14 @@ namespace Identity.Repositories
                     await _context.SaveChangesAsync();
                     return Result<Unit>.Success(Unit.Value);
                 }
-                return Result<Unit>.Failure(AuthErrors.LoginFailed(nameof(FailedLoginAttempt),"Failed login attempt not found"));
+
+                return Result<Unit>.Failure(AuthErrors.LoginFailed(nameof(FailedLoginAttempt),
+                    "Failed login attempt not found"));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while resetting failed login attempts for user {UserId}", userId);
+                _logger.LogError(ex, "An error occurred while resetting failed login attempts for user {UserId}",
+                    userId);
                 return Result<Unit>.Failure(AuthErrors.LoginFailed(nameof(FailedLoginAttempt),
                     "An error occurred while resetting a failed login attempt"));
             }
