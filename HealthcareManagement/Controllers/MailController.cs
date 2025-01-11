@@ -27,7 +27,7 @@ public class MailController : ControllerBase
         );
     }
     
-    [HttpPost(("verify-email"))]
+    [HttpPost("verify-email")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> VerifyEmail(VerifyEmailCommand verifyEmailCommand)

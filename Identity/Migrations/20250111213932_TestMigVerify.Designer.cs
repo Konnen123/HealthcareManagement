@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20250111184126_AddingEmailVerifiedField")]
-    partial class AddingEmailVerifiedField
+    [Migration("20250111213932_TestMigVerify")]
+    partial class TestMigVerify
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

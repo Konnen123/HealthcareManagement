@@ -28,22 +28,26 @@ namespace HealthcareManagement.Controllers
             return resultObject.Match<IActionResult>(
                 onSuccess: value =>
                 {
-                    var client = _httpClientFactory.CreateClient();
-                    var server = _configuration["Server"];
-                    var request = new HttpRequestMessage(HttpMethod.Post, $"{server}/api/v1/Mail/verify-email")
-                    {
-                        Content = new StringContent(
-                            System.Text.Json.JsonSerializer.Serialize(new { Email = command.Email }),
-                            System.Text.Encoding.UTF8,
-                            "application/json"
-                        )
-                    };
-                    var response = client.Send(request);
+     
+                        var client = _httpClientFactory.CreateClient();
+                        var server = _configuration["Server"];
+                        var request = new HttpRequestMessage(HttpMethod.Post, $"{server}/api/v1/Mail/verify-email")
+                        {
+                            Content = new StringContent(
+                                System.Text.Json.JsonSerializer.Serialize(new { Email = command.Email }),
+                                System.Text.Encoding.UTF8,
+                                "application/json"
+                            )
+                        };
 
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new Exception("Failed to send verification email.");
-                    }
+                        var response = client.Send(request);
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new Exception("Failed to send verification email.");
+                        }
+                    
+                  
                     return Ok(value);
                 },
                 onFailure: error => BadRequest(error)
