@@ -39,12 +39,12 @@ namespace HealthcareManagement.Controllers
                 onSuccess: value => Ok(value),
                 onFailure: error =>
                 {
-                    if(error.Code != "UserAuthentication.AccountLocked")
+                    if(error.GetType() == AuthorizationErrors.Unauthorized("","").GetType())
                     {
-                        return BadRequest(error);
+                        return Unauthorized(error);
                     }
 
-                    return Forbid();
+                    return BadRequest(error);
                 }
             );
         }

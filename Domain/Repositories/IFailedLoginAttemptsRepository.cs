@@ -1,10 +1,12 @@
 ﻿
+using Domain.Utils;
+
 namespace Domain.Repositories
 {
     public interface IFailedLoginAttemptsRepository
     {
-        void AddFailedAttempt(Guid userId);
-        bool IsUserLockedOut(Guid userId);
-        void ResetFailedAttempts(Guid userId);
+        Task AddFailedAttemptAsync(Guid userId);
+        Task<Result<Boolean>> IsUserLockedOut(Guid userId);
+        Task ResetFailedAttemptsAsync(Guid userId);
     }
 }
