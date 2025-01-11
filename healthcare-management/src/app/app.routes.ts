@@ -43,6 +43,22 @@ export const routes: Routes = [
     data: {isNavbarHidden: true}
   },
   {
+    path: 'forgot-password',
+    data: {isNavbarHidden: true},
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./components/forgot-password/forgot-password-1/forgot-password-1.component').then(m => m.ForgotPassword1Component),
+        data: {isNavbarHidden: true}
+      },
+      {
+        path: 'change-password',
+        loadComponent: () => import('./components/forgot-password/forgot-password-2/forgot-password-2.component').then(m => m.ForgotPassword2Component),
+        data: {isNavbarHidden: true}
+      }
+    ]
+  },
+  {
     path: '',
     loadComponent: () => import('./components/appointment/appointment-list/appointment-list.component').then(m=>m.AppointmentListComponent),
     canActivate: [AuthenticationGuard, RoleGuard],
@@ -58,4 +74,5 @@ export const routes: Routes = [
     loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent),
     data: {isNavbarHidden: true}
   },
+
 ];
