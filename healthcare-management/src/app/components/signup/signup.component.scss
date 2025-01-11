@@ -1,4 +1,4 @@
-/* Containere */
+
 .signup-container {
   display: flex;
   justify-content: center;
@@ -7,7 +7,6 @@
   background: #f4f4f4;
 }
 
-/* Card de sign up */
 .signup-card {
   padding: 2rem;
   width: 100%;
@@ -16,7 +15,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   h2 {
-    color: #1976d2;
+    color: #00796b;
     margin-bottom: 1.5rem;
   }
 
@@ -49,13 +48,13 @@
     }
 
     button {
-      background: #1976d2;
+      background: #00796b;
       color: white;
       width: 100%;
       padding: 0.7rem;
 
       &:hover {
-        background: #1565c0;
+        background: #004d40;
       }
 
       &[disabled] {

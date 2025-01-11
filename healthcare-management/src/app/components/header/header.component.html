@@ -1,3 +1,27 @@
-<mat-toolbar>
-  <button mat-flat-button (click)="logout()">Logout</button>
+<mat-toolbar color="primary">
+  <!-- Title or Logo -->
+  <span class="toolbar-title">HealthcareApp</span>
+
+  <!-- Spacer to push the logout button to the right -->
+  <span class="spacer"></span>
+
+  <!-- Check Symptoms Button -->
+  <button
+    mat-icon-button
+    matTooltip="Check Symptoms"
+    (click)="redirectToSymptomChecker()"
+    aria-label="Medical Condition"
+  >
+    <mat-icon>healing</mat-icon>
+  </button>
+
+  <!-- Logout Button with Icon -->
+  <button
+    mat-icon-button
+    matTooltip="Logout from your account"
+    matTooltipPosition="above"
+    (click)="logout()"
+    aria-label="Logout">
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>

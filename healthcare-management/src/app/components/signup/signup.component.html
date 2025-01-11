@@ -37,10 +37,19 @@
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Date of Birth</mat-label>
           <input matInput type="date" formControlName="dateOfBirth" />
+          
           <mat-error *ngIf="signupForm.get('dateOfBirth')?.hasError('required')">
             Date of Birth is required
           </mat-error>
+          
+          <mat-error *ngIf="signupForm.get('dateOfBirth')?.hasError('tooOld')">
+            Date of Birth cannot be more than 100 years ago
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('dateOfBirth')?.hasError('futureDate')">
+            Date of Birth cannot be in the future
+          </mat-error>
         </mat-form-field>
+                
       </div>
 
       <mat-form-field appearance="outline" class="full-width">

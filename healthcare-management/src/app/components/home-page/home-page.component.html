@@ -1,0 +1,25 @@
+<div class="home-page">
+  <div>
+    <h1>Welcome to the Healthcare Management App</h1>
+    <p>Your one-stop solution for managing healthcare appointments and records.</p>
+    <mat-card class="features">
+      <h3 class="features-title">Features</h3>
+      <ul>
+        <li>Access our AI assistant to detect diseases</li>
+        <li>Book and manage appointments with ease</li>
+        <li>Access your medical records anytime, anywhere</li>
+        <li>Get reminders for upcoming appointments</li>
+      </ul>
+    </mat-card>
+    <div class="buttons">
+      <div class="buttons-doctor" *ngIf="isUserDoctor()">
+        <button mat-flat-button (click)="onViewAppointments()">View appointments</button>
+      </div>
+      <div class="buttons-patient" *ngIf="isUserPatient()">
+        <button mat-flat-button (click)="onCreateAppointments()">Create appointment</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+

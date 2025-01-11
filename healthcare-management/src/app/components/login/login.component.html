@@ -1,15 +1,27 @@
 <div class="login-container">
   <mat-card class="login-card">
     <h2>Login</h2>
-    <form (ngSubmit)="onSubmit()" class="login-form">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email</mat-label>
-        <input matInput type="email" [(ngModel)]="email" name="email" required />
+        <input matInput type="email" formControlName="email" name="email" required />
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+          Please enter a valid email address
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Password</mat-label>
-        <input matInput type="password" [(ngModel)]="password" name="password" required />
+        <input matInput type="password" formControlName="password" name="password" required />
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          Password is required
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+          Password must be at least 6 characters
+        </mat-error>
       </mat-form-field>
 
       <button mat-raised-button color="primary" type="submit">Login</button>

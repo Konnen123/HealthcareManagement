@@ -30,5 +30,19 @@ namespace Identity.Repositories
                 return Result<Doctor>.Failure(EntityErrors.GetFailed(nameof(Doctor), e.InnerException?.Message ?? $"An unexpected error occurred while retrieving the account with id {id}"));
             }
         }
+
+        public async Task<Result<List<Doctor>>> GetAllDoctors(CancellationToken cancellationToken)
+        {
+            try
+            {
+                List<Doctor> doctors = await context.Doctors.ToListAsync();
+
+                return Result<List<Doctor>>.Success(doctors);
+            }
+            catch (Exception e)
+            {
+                return Result<List<Doctor>>.Failure(EntityErrors.GetFailed(nameof(Doctor), e.InnerException?.Message ?? "An unexpected error occurred while retrieving the doctors"));
+            }
+        }
     }
 }
