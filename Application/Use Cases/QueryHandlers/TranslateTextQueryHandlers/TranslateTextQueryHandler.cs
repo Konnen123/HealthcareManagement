@@ -3,7 +3,6 @@ using Amazon.Translate.Model;
 using Application.Use_Cases.Queries.TranslateTextQueries;
 using Domain.Utils;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 
 namespace Application.Use_Cases.QueryHandlers.TranslateTextQueryHandlers
 {

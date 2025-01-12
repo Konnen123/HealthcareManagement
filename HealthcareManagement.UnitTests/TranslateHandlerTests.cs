@@ -1,13 +1,10 @@
-﻿using Amazon;
-using Amazon.Translate;
+﻿using Amazon.Translate;
 using Amazon.Translate.Model;
 using Application.Use_Cases.Queries.TranslateTextQueries;
 using Application.Use_Cases.QueryHandlers.TranslateTextQueryHandlers;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
-
 using NSubstitute.ExceptionExtensions;
-
 
 namespace HealthcareManagement.UnitTests
 {
