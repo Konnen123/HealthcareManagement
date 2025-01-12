@@ -21,21 +21,12 @@ export class AuthenticationService
 
 
   public async registerAsync(userData: any): Promise<any> {
-    try {
-      return await firstValueFrom(this.authenticationClient.register(userData));
-    } catch (error){
-      throw error;
-    }
+    return await firstValueFrom(this.authenticationClient.register(userData));
 
   }
 
   public async loginAsync(userData: any): Promise<any> {
-    try {
-      return await firstValueFrom(this.authenticationClient.login(userData));
-    } catch (error){
-      //console.error('Error while logging in service', error);
-      throw error;
-    }
+    return await firstValueFrom(this.authenticationClient.login(userData));
   }
 
   public async refreshTokenAsync(refreshToken: string): Promise<any> {
@@ -136,11 +127,7 @@ export class AuthenticationService
   }
 
   public async resetPasswordAsync(userData: any): Promise<any> {
-    try {
-      return await firstValueFrom(this.authenticationClient.resetPassword(userData));
-    } catch (error) {
-      throw error;
-    }
+    return await firstValueFrom(this.authenticationClient.resetPassword(userData));
   }
 
 }

@@ -23,8 +23,8 @@ export class VerifyEmailComponent implements OnInit {
   isSuccess: boolean = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router
+    readonly route: ActivatedRoute,
+    readonly router: Router
   ) {}
 
   ngOnInit(): void {

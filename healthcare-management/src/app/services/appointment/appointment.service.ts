@@ -28,42 +28,22 @@ export class AppointmentService{
     if (!this.isBrowser) {
       return Promise.reject('Not running in a browser environment.');
     }
-    try {
-      return firstValueFrom(this.appointmentClient.createAppointment(appointment));
-    } catch (error) {
-      throw error;
-    }
+    return firstValueFrom(this.appointmentClient.createAppointment(appointment));
   }
 
   public async getByIdAsync(id: string): Promise<Appointment> {
-    try {
-      return await firstValueFrom(this.appointmentClient.getAppointmentById(id));
-    } catch (error) {
-      throw error;
-    }
+    return await firstValueFrom(this.appointmentClient.getAppointmentById(id));
   }
 
   public async updateAsync(appointment: Appointment): Promise<any> {
-    try {
-      return firstValueFrom(this.appointmentClient.updateAppointment(appointment));
-    } catch (error) {
-      throw error;
-    }
+    return firstValueFrom(this.appointmentClient.updateAppointment(appointment));
   }
 
   public async deleteAsync(id: string): Promise<any> {
-    try {
-      return firstValueFrom(this.appointmentClient.deleteAppointment(id));
-    } catch (error) {
-      throw error;
-    }
+    return firstValueFrom(this.appointmentClient.deleteAppointment(id));
   }
 
   public async getAppointmentsPaginatedAsync(appointmentParams: AppointmentParams): Promise<Appointment[]> {
-    try {
-      return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(appointmentParams));
-    } catch (error) {
-      throw error;
-    }
+    return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(appointmentParams));
   }
 }

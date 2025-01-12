@@ -17,10 +17,6 @@ export class MailService {
 
   public async sendForgotPasswordEmailAsync(email: string): Promise<any>
   {
-    try {
-      return await firstValueFrom(this.mailClient.sendForgotPasswordEmail(email));
-    } catch (error){
-      throw error;
-    }
+    return await firstValueFrom(this.mailClient.sendForgotPasswordEmail(email));
   }
 }

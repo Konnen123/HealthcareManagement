@@ -16,11 +16,7 @@ export class SymptomService
   }
 
   public async predictAsync(symptomsList: any): Promise<any> {
-    try {
-      return await firstValueFrom(this.symptomClient.predict(symptomsList));
-    } catch (error){
-      throw error;
-    }
+    return await firstValueFrom(this.symptomClient.predict(symptomsList));
   }
 
 }
