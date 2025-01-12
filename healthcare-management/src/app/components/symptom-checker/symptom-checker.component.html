@@ -1,9 +1,8 @@
 <div class="form-container">
   <header class="header-section">
-    <h1>Medical Symptom Checker</h1>
+    <h1>{{ 'symptom-checker.TITLE' | translate }}</h1>
     <p>
-      Select the symptoms you are experiencing from the list below to receive a prediction
-      for possible medical conditions.
+      {{ 'symptom-checker.DESCRIPTION' | translate }}
     </p>
   </header>
 
@@ -16,7 +15,7 @@
         </button>
       </mat-chip-row>
       <input
-        placeholder="Select options..."
+        placeholder="{{ 'symptom-checker.SELECT_SYMPTOMS' | translate }}"
         [formControl]="multiSelectControl"
         [matAutocomplete]="auto"
         [matChipInputFor]="chipGrid"
@@ -40,13 +39,13 @@
       color="primary"
       (click)="submitSymptoms()"
     >
-      Submit Symptoms
+      {{ 'symptom-checker.SUBMIT_SYMPTOMS' | translate }}
     </button>
   </div>
 
   <!-- Result Section -->
   <div *ngIf="result">
-    <h3>Predicted medical condition:</h3>
+    <h3>{{ 'symptom-checker.RESULTS' | translate }}</h3>
     <p class="disease-result">{{ result }}</p>
   </div>
 </div>

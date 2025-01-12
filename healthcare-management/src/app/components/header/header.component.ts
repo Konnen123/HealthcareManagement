@@ -5,6 +5,8 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 import {MatButtonModule} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
+import {LanguagePickerComponent} from '../language-picker/language-picker.component';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -12,14 +14,17 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatToolbar,
     MatButtonModule,
     MatIcon,
-    MatTooltip
+    MatTooltip,
+    TranslatePipe,
+    LanguagePickerComponent
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent
+{
   constructor(private readonly router: Router,
-              private readonly authenticationService: AuthenticationService) {}
+              private readonly authenticationService: AuthenticationService,) {}
 
   logout() {
     this.authenticationService.logout();
@@ -28,5 +33,9 @@ export class HeaderComponent {
 
   redirectToSymptomChecker() {
     this.router.navigate(['/symptom-checker']);
+  }
+
+  onLogoClicked() {
+    this.router.navigate(['/']);
   }
 }

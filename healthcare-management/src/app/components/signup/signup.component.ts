@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import {Router} from '@angular/router';
 import { CustomValidators } from '../../shared/custom-validators';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
+import {LanguageService} from '../../services/language/language.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signup',
@@ -23,13 +25,14 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    MatError
+    MatError,
+    TranslatePipe
   ],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent {
-  signupForm: FormGroup;
+export class SignupComponent implements OnInit{
+  signupForm!: FormGroup;
 
   email: string = '';
   password: string = '';
@@ -43,8 +46,13 @@ export class SignupComponent {
   constructor(
     readonly fb: FormBuilder,
     readonly authenticationService: AuthenticationService,
-    readonly router: Router
-  ) {
+    readonly router: Router,
+    readonly languageService: LanguageService
+  ) {}
+
+  ngOnInit(): void {
+    this.languageService.setLanguage();
+
     this.signupForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.maxLength(50)]],
@@ -64,10 +72,6 @@ export class SignupComponent {
 
     return password === confirmPassword ? null : { mismatch: true };
   }
-
-
-  
-
 
   onSubmit(): void {
     const formData = { ... this.signupForm.value };

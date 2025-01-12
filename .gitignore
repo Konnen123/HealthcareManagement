@@ -88,3 +88,5 @@ coverage/
 CodeCoverageScript.bat
 .sonarqube/conf
 coverage.xml
+integration_coverage.xml
+unit_coverage.xml

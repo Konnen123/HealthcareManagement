@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatCard} from '@angular/material/card';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
@@ -7,6 +7,8 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import {NgIf} from '@angular/common';
+import {LanguageService} from '../../services/language/language.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -19,19 +21,26 @@ import {NgIf} from '@angular/common';
     MatError,
     FormsModule,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    TranslatePipe
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
-  loginForm: FormGroup;
+export class LoginComponent implements OnInit{
+  loginForm!: FormGroup;
 
   constructor(
     readonly router: Router,
     readonly authenticationService: AuthenticationService,
-    readonly fb: FormBuilder
-  ) {
+    readonly fb: FormBuilder,
+    private readonly languageService: LanguageService
+  ) {}
+
+  ngOnInit(): void
+  {
+    this.languageService.setLanguage();
+
     this.loginForm = this.fb.group({
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]]

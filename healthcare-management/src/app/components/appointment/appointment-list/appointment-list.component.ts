@@ -20,6 +20,9 @@ import {MatIcon} from '@angular/material/icon';
 import {FilterDialogComponent} from '../../filter-dialog/filter-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {AppointmentParams} from '../../../models/appointmentParams.model';
+import {TranslatePipe} from '@ngx-translate/core';
+import {LanguageService} from '../../../services/language/language.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-appointment-list',
@@ -37,7 +40,8 @@ import {AppointmentParams} from '../../../models/appointmentParams.model';
     MatTooltip,
     MatPaginator,
     MatButton,
-    MatIcon
+    MatIcon,
+    TranslatePipe
   ],
   templateUrl: './appointment-list.component.html',
   standalone: true,
@@ -57,11 +61,14 @@ export class AppointmentListComponent implements OnInit
 
   constructor(
     readonly appointmentService: AppointmentService,
-    readonly snackBar: MatSnackBar
+    readonly snackBar: MatSnackBar,
+    readonly languageService: LanguageService,
+    readonly router: Router
   ) {
   }
 
   ngOnInit(): void {
+    this.languageService.setLanguage();
     this.fetchAppointments();
     this.initializePage();
   }
@@ -122,5 +129,10 @@ export class AppointmentListComponent implements OnInit
         }
       }
     })
+  }
+
+  onAppointmentClicked(row: any)
+  {
+    this.router.navigate(['/appointments', row.id]);
   }
 }
