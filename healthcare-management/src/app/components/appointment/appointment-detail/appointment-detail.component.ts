@@ -53,7 +53,6 @@ export class AppointmentDetailComponent implements OnInit{
 
   onDelete() {
     this.appointmentService.deleteAsync(this.appointmentId).then(() => {
-      console.log('Appointment deleted successfully.');
       this.router.navigate(['/appointments']).then(r => console.log('Navigated to appointments.'));
     }).catch((error) => {
       this.showErrorSnackbar('An error occurred while deleting the appointment.');

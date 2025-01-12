@@ -1,0 +1,15 @@
+<div class="verify-email-container" [class.success]="isSuccess" [class.error]="!isSuccess">
+  <mat-card class="verify-card">
+    <mat-card-header>
+      <mat-card-title>
+        <span>{{ isSuccess ? '✅ Verification Success' : '❌ Verification Error' }}</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="message-text">{{ message }}</p>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" class="action-btn" (click)="goToHomepage()">Go to Homepage</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

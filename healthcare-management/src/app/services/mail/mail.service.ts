@@ -1,22 +1,22 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
-import {SymptomClient} from '../../clients/symptom.client';
+import {MailClient} from '../../clients/mail.client';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SymptomService
-{
+export class MailService {
+
   private readonly isBrowser: boolean
-  constructor(private readonly symptomClient: SymptomClient,
+  constructor(private readonly mailClient: MailClient,
               @Inject(PLATFORM_ID) platformId: object)
   {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
-  public async predictAsync(symptomsList: any): Promise<any> {
-    return await firstValueFrom(this.symptomClient.predict(symptomsList));
+  public async sendForgotPasswordEmailAsync(email: string): Promise<any>
+  {
+    return await firstValueFrom(this.mailClient.sendForgotPasswordEmail(email));
   }
-
 }

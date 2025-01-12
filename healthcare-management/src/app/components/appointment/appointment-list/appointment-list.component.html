@@ -53,6 +53,17 @@
       </td>
     </ng-container>
 
+    <!-- Update Button Column -->
+    <ng-container matColumnDef="update">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let appointment">
+        <button mat-button color="primary" (click)="updateAppointment(appointment.id)">
+          <mat-icon>edit</mat-icon>
+          Update
+        </button>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr class="appointment-row" mat-row *matRowDef="let row; columns: displayedColumns; " (click)="onAppointmentClicked(row)"></tr>
   </table>

@@ -1,17 +1,19 @@
-<button
-  mat-icon-button
-  matTooltip="{{ 'header.SELECT_LANGUAGE' | translate}}"
-  matTooltipPosition="above"
-  [matMenuTriggerFor]="menu"
-  aria-label="Select language">
-  <mat-icon>language</mat-icon>
-</button>
+<div class="language-picker">
+  <button
+    mat-icon-button
+    matTooltip="{{ 'header.SELECT_LANGUAGE' | translate}}"
+    matTooltipPosition="above"
+    [matMenuTriggerFor]="menu"
+    aria-label="Select language">
+    <mat-icon class="">language</mat-icon>
+  </button>
 
-<mat-menu #menu="matMenu">
-  <ng-container *ngFor="let language of languages | keyvalue">
-    <button mat-menu-item (click)="changeLanguage(language.key)"
-            [ngClass]="{'selected-language': isLanguageSelected(language.key)}">
-      {{ language.value }}
-    </button>
-  </ng-container>
-</mat-menu>
+  <mat-menu #menu="matMenu">
+    <ng-container *ngFor="let language of languages | keyvalue">
+      <button mat-menu-item (click)="changeLanguage(language.key)"
+              [ngClass]="{'selected-language': isLanguageSelected(language.key)}">
+        {{ language.value }}
+      </button>
+    </ng-container>
+  </mat-menu>
+</div>

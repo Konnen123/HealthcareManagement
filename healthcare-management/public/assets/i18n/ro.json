@@ -14,6 +14,7 @@
   },
   "LOGIN": "Autentificare",
   "REGISTER": "Înregistrare",
+  "BACK_LOGIN": "Deja ai un cont ? Autentifică-te",
   "FORGOT_PASSWORD": "Ai uitat parola?",
   "FIRST_NAME": "Prenume",
   "LAST_NAME": "Nume",
@@ -44,6 +45,7 @@
   "header":{
     "CHECK_SYMPTOMS": "Verifică simptomele",
     "SELECT_LANGUAGE": "Selectează limba",
+    "VIEW_APPOINTMENTS": "Vezi Programările",
     "LOGOUT": "Deloghează-te"
   },
   "symptom-checker": {
@@ -94,7 +96,40 @@
     "CHOOSE_DATE": "Alegeți data",
     "CANCEL": "Anulează",
     "APPLY": "Aplică"
+  },
+  "forgot-password": {
+    "FORGOT_PASSWORD": "Ai uitat parola?",
+    "EMAIL_REQUIRED": "Câmp obligatoriu",
+    "EMAIL_INVALID": "Emailul este invalid",
+    "SUBMIT": "Trimite"
+  },
+  "reset-password": {
+    "RESET_PASSWORD": "Resetează Parola",
+    "PASSWORD": "Noua Parolă",
+    "PASSWORD_REQUIRED": "Parola este obligatorie",
+    "PASSWORD_INVALID": "Parola trebuie să aibă minim 6 caractere",
+    "CONFIRM_PASSWORD": "Confirmă Parola",
+    "CONFIRM_PASSWORD_REQUIRED": "Confirmarea parolei este obligatorie",
+    "MISMATCH": "Parolele trebuie să coincidă",
+    "SAVE": "Salvează parola"
+  },
+  "landing-page": {
+    "HEADER": "Sănătatea ta, Prioritatea noastră",
+    "SUB_HEADER": "Un sistem de ultimă generație pentru gestionarea fișelor medicale, programărilor și prezicerea riscurilor pentru sănătate utilizând inteligența artificială.",
+    "GET_STARTED": "Începe acum"
+  },
+  "features": {
+    "MANAGE_RECORDS": {
+      "TITLE": "Gestionează fișele",
+      "DESCRIPTION": "Gestionează eficient datele pacienților și programările."
+    },
+    "PREDICT_HEALTH_RISKS": {
+      "TITLE": "Prezice riscurile pentru sănătate",
+      "DESCRIPTION": "Folosește AI pentru a prezice problemele de sănătate potențiale."
+    },
+    "SECURE_ACCESS": {
+      "TITLE": "Acces securizat",
+      "DESCRIPTION": "Asigură confidențialitatea datelor cu autentificare robustă."
+    }
   }
-
-
 }
