@@ -4,15 +4,15 @@ import { AppointmentService } from '../../../services/appointment/appointment.se
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';
-import {MatInputModule} from '@angular/material/input';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule, provideNativeDateAdapter} from '@angular/material/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {LanguageService} from '../../../services/language/language.service';
-import {UserService} from '../../../services/user/user.service';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {of} from 'rxjs';
-import {EventEmitter} from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LanguageService } from '../../../services/language/language.service';
+import { UserService } from '../../../services/user/user.service';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { EventEmitter } from '@angular/core';
 
 
 describe('AppointmentCreateComponent', () => {
@@ -75,7 +75,7 @@ describe('AppointmentCreateComponent', () => {
     const mockFormData = {
       patientId: 'd99ccb79-67e3-4d7c-8725-14f01981448f',
       doctorId: 'd99ccb79-67e3-4d7c-8725-14f01981448f',
-      date: new Date('2024-12-31'), // Use a Date object here
+      date: new Date('2024-12-31'),
       startTime: '10:00',
       endTime: '11:00',
       userNotes: 'Test note',

@@ -6,11 +6,13 @@ import { MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { CustomValidators } from '../../shared/custom-validators';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import {LanguageService} from '../../services/language/language.service';
 import {TranslatePipe} from '@ngx-translate/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-signup',
@@ -26,7 +28,8 @@ import {TranslatePipe} from '@ngx-translate/core';
     ReactiveFormsModule,
     CommonModule,
     MatError,
-    TranslatePipe
+    TranslatePipe,
+    RouterLink
   ],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
@@ -34,25 +37,16 @@ import {TranslatePipe} from '@ngx-translate/core';
 export class SignupComponent implements OnInit{
   signupForm!: FormGroup;
 
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  firstName: string = '';
-  lastName: string = '';
-  phoneNumber: string = '';
-  dateOfBirth: string = '';
-  role: string = '';
-
   constructor(
     readonly fb: FormBuilder,
     readonly authenticationService: AuthenticationService,
     readonly router: Router,
-    readonly languageService: LanguageService
+    readonly languageService: LanguageService,
+    readonly snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
     this.languageService.setLanguage();
-
     this.signupForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.maxLength(50)]],
@@ -76,11 +70,18 @@ export class SignupComponent implements OnInit{
   onSubmit(): void {
     const formData = { ... this.signupForm.value };
     if (this.signupForm.valid) {
+
       this.authenticationService.registerAsync(formData).then((response) => {
-        console.log('Register successful :', response);
+        this.snackBar.open('Registration successful.Check your email to verify email account.', 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+        });
         this.router.navigate(['/login']);
       }).catch((error) => {
-        console.error('Error at register ', error);
+        this.snackBar.open('Failed to register. Please try again.', 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+        });
       });
     }
   }

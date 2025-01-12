@@ -1,7 +1,3 @@
-<button class="go-back-button"
-        mat-button
-        *ngIf="roleService.isUserDoctor()"
-        (click)="onAppointmentsClick()">{{ 'appointment-detail.SEE_APPOINTMENTS' | translate }}</button>
 <mat-card *ngIf="!loading">
   <h3>{{ 'appointment-detail.DETAILS' | translate }}</h3>
   <div class="form-row">

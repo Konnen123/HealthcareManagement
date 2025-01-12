@@ -1,0 +1,28 @@
+<div class="landing-page-container">
+  <mat-toolbar color="primary">
+    <span>HealthSight</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/signup"> {{ 'REGISTER' | translate }}</button>
+    <button mat-button routerLink="/login">{{ 'LOGIN' | translate }}</button>
+  </mat-toolbar>
+
+  <div class="hero-section">
+    <h1>{{ 'landing-page.HEADER' | translate }}</h1>
+    <p>
+      {{ 'landing-page.SUB_HEADER' | translate }}
+    </p>
+    <button mat-raised-button color="accent" routerLink="/signup">{{ 'landing-page.GET_STARTED' | translate }}</button>
+  </div>
+
+  <div class="features-section">
+    <mat-card class="feature-card" *ngFor="let feature of features">
+      <mat-icon>{{ feature.icon }}</mat-icon>
+      <h3>{{ feature.title | translate }}</h3>
+      <p>{{ feature.description | translate }}</p>
+    </mat-card>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 HealthSight. All Rights Reserved.</p>
+  </footer>
+</div>

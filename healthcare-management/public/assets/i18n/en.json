@@ -14,6 +14,7 @@
   },
   "LOGIN": "Login",
   "REGISTER": "Register",
+  "BACK_LOGIN": "Already have an account? Login",
   "FORGOT_PASSWORD": "Forgot password?",
   "FIRST_NAME": "First Name",
   "LAST_NAME": "Last Name",
@@ -44,6 +45,7 @@
   "header":{
     "CHECK_SYMPTOMS": "Check Symptoms",
     "SELECT_LANGUAGE": "Select language",
+    "VIEW_APPOINTMENTS": "View Appointments",
     "LOGOUT": "Logout"
   },
   "symptom-checker": {
@@ -94,6 +96,43 @@
     "CHOOSE_DATE": "Choose date",
     "CANCEL": "Cancel",
     "APPLY": "Apply"
+  },
+  "forgot-password": {
+    "FORGOT_PASSWORD": "Forgot Password",
+    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_INVALID": "Please enter a valid email address",
+    "SUBMIT": "Submit",
+    "BACK_TO_LOGIN": "Back to Login",
+    "SUCCESS_MESSAGE": "Please check your email for the password reset link."
+  },
+  "reset-password": {
+    "RESET_PASSWORD": "Reset Password",
+    "PASSWORD": "New Password",
+    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_INVALID": "Password must have at least 6 characters",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "CONFIRM_PASSWORD_REQUIRED": "Confirm Password is required",
+    "MISMATCH": "Passwords must match",
+    "SAVE": "Save password"
+  },
+  "landing-page" : {
+    "HEADER": "Your Health, Our Priority",
+    "SUB_HEADER": "A cutting-edge system for managing patient records, appointments, and predicting health risks using AI.",
+    "GET_STARTED": "Get Started"
+  },
+  "features": {
+    "MANAGE_RECORDS": {
+      "TITLE": "Manage Records",
+      "DESCRIPTION": "Efficiently handle patient data and appointments."
+    },
+    "PREDICT_HEALTH_RISKS": {
+      "TITLE": "Predict Health Risks",
+      "DESCRIPTION": "Use AI to predict potential health issues."
+    },
+    "SECURE_ACCESS": {
+      "TITLE": "Secure Access",
+      "DESCRIPTION": "Ensure data privacy with robust authentication."
+    }
   }
 
 }

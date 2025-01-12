@@ -29,7 +29,6 @@ export class AppointmentUpdateComponent implements OnInit {
 
     const appointmentId = this.route.snapshot.paramMap.get('id');
     if (appointmentId) {
-      //console.log()
       this.appointmentService.getByIdAsync(appointmentId).then((data) => {
         this.appointmentData = data;
       }).catch(() => {

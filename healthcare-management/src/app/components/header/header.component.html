@@ -1,32 +1,52 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="header-toolbar">
   <!-- Title or Logo -->
   <button
     mat-button
     class="toolbar-title"
-    (click)="onLogoClicked()">HealthcareApp</button>
+    (click)="redirectToHomepage()">HealthSight</button>
 
-  <!-- Spacer to push the logout button to the right -->
-  <span class="spacer"></span>
+  <!-- Buttons Section -->
+  <div class="toolbar-actions">
+    <!-- Check Symptoms Button -->
+    <button
+      mat-icon-button
+      matTooltip="{{ 'header.CHECK_SYMPTOMS' | translate}}"
+      (click)="redirectToSymptomChecker()"
+      aria-label="Medical Condition">
+      <mat-icon>healing</mat-icon>
+    </button>
 
-  <!-- Check Symptoms Button -->
-  <button
-    mat-icon-button
-    matTooltip="{{ 'header.CHECK_SYMPTOMS' | translate}}"
-    (click)="redirectToSymptomChecker()"
-    aria-label="Medical Condition"
-  >
-    <mat-icon>healing</mat-icon>
-  </button>
+    <!-- Appointments Button for Doctors -->
+    <button
+      *ngIf="userRole === 'DOCTOR'"
+      mat-icon-button
+      matTooltip="{{ 'home.VIEW_APPOINTMENTS' | translate}}"
+      (click)="redirectToAppointments()"
+      aria-label="View Appointments">
+      <mat-icon>calendar_today</mat-icon>
+    </button>
 
-  <app-language-picker></app-language-picker>
+    <!-- Create Appointment Button for Patients -->
+    <button
+      *ngIf="userRole === 'PATIENT'"
+      mat-icon-button
+      matTooltip="{{ 'home.CREATE_APPOINTMENT' | translate}}"
+      (click)="redirectToCreateAppointment()"
+      aria-label="Create Appointment">
+      <mat-icon>add_circle</mat-icon>
+    </button>
 
-  <!-- Logout Button with Icon -->
-  <button
-    mat-icon-button
-    matTooltip="{{ 'header.LOGOUT' | translate}}"
-    matTooltipPosition="above"
-    (click)="logout()"
-    aria-label="Logout">
-    <mat-icon>logout</mat-icon>
-  </button>
+    <!-- Language Picker -->
+    <app-language-picker></app-language-picker>
+
+    <!-- Logout Button -->
+    <button
+      mat-icon-button
+      matTooltip="{{ 'header.LOGOUT' | translate}}"
+      matTooltipPosition="above"
+      (click)="logout()"
+      aria-label="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>

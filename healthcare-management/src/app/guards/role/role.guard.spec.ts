@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import {CanActivateFn, Router} from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 
 import { RoleGuard } from './role.guard';
-import {AuthenticationService} from '../../services/authentication/authentication.service';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
 
 describe('RoleGuard', () => {
   let roleGuard: RoleGuard;

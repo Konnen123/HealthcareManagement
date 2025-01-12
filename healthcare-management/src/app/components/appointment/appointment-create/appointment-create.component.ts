@@ -28,7 +28,6 @@ export class AppointmentCreateComponent implements OnInit{
   }
 
   onFormSubmit(formData: any): void {
-    console.log('Form data:', formData);
     this.appointmentService.createAsync(formData).then(appointmentId => {
       this.router.navigate([`/appointments/${appointmentId}`]);
     }).catch(() => {

@@ -26,4 +26,8 @@ export class AuthenticationClient {
   public refreshToken(refreshToken: string) : Observable<any> {
     return this.http.post(`${this.baseUrl}/refresh`, {refreshToken});
   }
+
+  public resetPassword(userData: any) : Observable<any> {
+    return this.http.put(`${this.baseUrl}/reset-password`, userData, { responseType: 'text' });
+  }
 }

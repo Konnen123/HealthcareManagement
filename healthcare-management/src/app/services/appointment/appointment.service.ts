@@ -28,53 +28,22 @@ export class AppointmentService{
     if (!this.isBrowser) {
       return Promise.reject('Not running in a browser environment.');
     }
-    try {
-      const result = firstValueFrom(this.appointmentClient.createAppointment(appointment));
-      console.log('Server response in the service :', result);
-      return result;
-    } catch (error) {
-      console.error('Error while creating appointment in service', error);
-      throw error;
-    }
+    return firstValueFrom(this.appointmentClient.createAppointment(appointment));
   }
 
   public async getByIdAsync(id: string): Promise<Appointment> {
-    try {
-      return await firstValueFrom(this.appointmentClient.getAppointmentById(id));
-    } catch (error) {
-      console.error('Error while getting appointment in service:', error);
-      throw error;
-    }
+    return await firstValueFrom(this.appointmentClient.getAppointmentById(id));
   }
 
   public async updateAsync(appointment: Appointment): Promise<any> {
-    try {
-      const result = firstValueFrom(this.appointmentClient.updateAppointment(appointment));
-      console.log('Server response:', result);
-      return result;
-    } catch (error) {
-      console.error('Error while updating appointment in service:', error);
-      throw error;
-    }
+    return firstValueFrom(this.appointmentClient.updateAppointment(appointment));
   }
 
   public async deleteAsync(id: string): Promise<any> {
-    try {
-      const result = firstValueFrom(this.appointmentClient.deleteAppointment(id));
-      console.log('Server response:', result);
-      return result;
-    } catch (error) {
-      console.error('Error while deleting appointment in service:', error);
-      throw error;
-    }
+    return firstValueFrom(this.appointmentClient.deleteAppointment(id));
   }
 
   public async getAppointmentsPaginatedAsync(appointmentParams: AppointmentParams): Promise<Appointment[]> {
-    try {
-      return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(appointmentParams));
-    } catch (error) {
-      console.error('Error while getting appointments paginated in service:', error);
-      throw error;
-    }
+    return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(appointmentParams));
   }
 }
