@@ -67,14 +67,10 @@ export class ForgotPassword2Component implements OnInit {
   }
 
   ngOnInit(): void{
-    //this.token = this.route.snapshot.queryParams['token'];
 
-    // Option 2: Subscribe to queryParams (useful if parameters change dynamically)
     this.route.queryParams.subscribe(params => {
       this.token = params['token'];
     });
-
-    //console.log('Token:', this.token); // This will log the token value
   }
 
   passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -87,16 +83,12 @@ export class ForgotPassword2Component implements OnInit {
   }
 
   onSubmit(): void {
-    //this.router.navigate(['/login']);
     if (this.resetPasswordForm.valid) {
       const payload = {
         password: this.resetPasswordForm.get('newPassword')?.value,
         token: decodeURIComponent(this.token).replace(/ /g, '+')
       };
 
-      //console.log('Payload:', payload);
-
-      // Make the POST request
       this.authService.resetPasswordAsync(payload)
         .then(() => {
           this.router.navigate(['/login']);

@@ -28,12 +28,10 @@ export class VerifyEmailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Read query parameters
     this.route.queryParams.subscribe(params => {
       this.status = params['status'] || '';
       this.description = params['description'] || '';
 
-      // Generate the message based on status and description
       this.generateMessage();
     });
   }

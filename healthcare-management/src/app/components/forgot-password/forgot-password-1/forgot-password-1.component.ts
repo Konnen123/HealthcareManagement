@@ -48,16 +48,13 @@ export class ForgotPassword1Component{
     this.router.navigate(['/login']);
   }
   onSubmit() : void {
-    //this.router.navigate(['/forgot-password/change-password']);
     if (this.forgotPasswordForm.valid) {
       const email = this.forgotPasswordForm.value.email;
-      //console.log('Submitting email:', email);
       this.mailService.sendForgotPasswordEmailAsync(this.forgotPasswordForm.value.email).then(() => {
         this.snackBar.open('Please check your email', 'Close', {
           duration: 5000,
         });
       }).catch((error) => {
-        //console.log('Error while sending forgot password email:', error);
         this.snackBar.open(error.description + '. Please Try again.', 'Close', {
           duration: 5000,
           panelClass: ['error-snackbar'],

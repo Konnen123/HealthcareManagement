@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit{
 
       this.authenticationService.setCookie('token', accessToken);
       this.authenticationService.setCookie('refreshToken', refreshToken);
-      //console.log('Response from the service:', response);
       this.router.navigate(['/home']);
     }).catch((error) => {
       console.error('Error from the service:', error);

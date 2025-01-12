@@ -29,5 +29,4 @@ describe('AuthenticationGuard', () => {
     expect(guard).toBeTruthy();
   });
 
-  // Add more tests to cover the guard's logic
 });

@@ -139,7 +139,6 @@ export class AuthenticationService
     try {
       return await firstValueFrom(this.authenticationClient.resetPassword(userData));
     } catch (error) {
-      //console.error('Error while resetting password in service', error);
       throw error;
     }
   }

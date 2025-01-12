@@ -72,14 +72,12 @@ export class SignupComponent implements OnInit{
     if (this.signupForm.valid) {
 
       this.authenticationService.registerAsync(formData).then((response) => {
-        //console.log('Register successful :', response);
         this.snackBar.open('Registration successful.Check your email to verify email account.', 'Close', {
           duration: 5000,
           panelClass: ['error-snackbar'],
         });
         this.router.navigate(['/login']);
       }).catch((error) => {
-        //console.error('Error at register ', error);
         this.snackBar.open('Failed to register. Please try again.', 'Close', {
           duration: 5000,
           panelClass: ['error-snackbar'],

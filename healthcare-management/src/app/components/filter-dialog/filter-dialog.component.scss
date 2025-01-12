@@ -6,16 +6,16 @@
   }
 
   .text-primary {
-    color: #3f51b5; // Material primary color (adjust as needed)
+    color: #3f51b5;
   }
 
   mat-form-field {
-    width: 100% !important; // Ensures form fields are full width
+    width: 100% !important;
     margin-bottom: 1rem;
   }
 
   .w-2 {
-  width: 50%; // Tailwind-like width for each filter section
+  width: 50%;
   padding-right: 1rem;
 }
 

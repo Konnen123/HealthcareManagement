@@ -80,9 +80,7 @@ export class AppointmentListComponent implements OnInit
   loadAppointments(): void {
     this.appointmentService.getAppointmentsPaginatedAsync(this.appointmentParams).then(appointments => {
       this.appointments = appointments;
-      //console.log('Appointments:', this.appointments);
     }).catch(error => {
-      //console.error('Error while fetching appointments:', error);
       this.showErrorSnackbar('Error while fetching appointments');
     });
   }
