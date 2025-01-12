@@ -3,6 +3,7 @@ using Domain.Errors;
 using Domain.Repositories;
 using Domain.Utils;
 using Identity.Persistence;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Repositories
@@ -26,11 +27,15 @@ namespace Identity.Repositories
             try
             {
                 var account = await _context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
-                return account == null ? Result<User>.Failure(AuthErrors.EmailNotFound(nameof(User), email)) : Result<User>.Success(account);
+                return account == null
+                    ? Result<User>.Failure(AuthErrors.EmailNotFound(nameof(User), email))
+                    : Result<User>.Success(account);
             }
             catch (Exception e)
             {
-                return Result<User>.Failure(EntityErrors.GetFailed(nameof(User), e.InnerException?.Message ?? $"An unexpected error occurred while retrieving the account with email {email}"));
+                return Result<User>.Failure(EntityErrors.GetFailed(nameof(User),
+                    e.InnerException?.Message ??
+                    $"An unexpected error occurred while retrieving the account with email {email}"));
             }
         }
 
@@ -39,11 +44,49 @@ namespace Identity.Repositories
             try
             {
                 var account = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
-                return account == null ? Result<User>.Failure(EntityErrors.NotFound(nameof(User), id)) : Result<User>.Success(account);
+                return account == null
+                    ? Result<User>.Failure(EntityErrors.NotFound(nameof(User), id))
+                    : Result<User>.Success(account);
             }
             catch (Exception e)
             {
-                return Result<User>.Failure(EntityErrors.GetFailed(nameof(User), e.InnerException?.Message ?? $"An unexpected error occurred while retrieving the account with id {id}"));
+                return Result<User>.Failure(EntityErrors.GetFailed(nameof(User),
+                    e.InnerException?.Message ??
+                    $"An unexpected error occurred while retrieving the account with id {id}"));
+            }
+        }
+
+        public async Task<Result<Unit>> UpdateUserPasswordAsync(User user,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return Result<Unit>.Success(Unit.Value);
+            }
+            catch (Exception ex)
+            {
+                return Result<Unit>.Failure(
+                    EntityErrors.UpdateFailed(nameof(User),
+                        ex.InnerException?.Message ?? "An unexpected error occurred while updating the user password")
+                );
+            }
+        }
+
+        public async Task<Result<Unit>> VerifyEmailAsync(User user, CancellationToken cancellationToken)
+        {
+            try
+            {
+                user.HasVerifiedEmail = true;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
+                return Result<Unit>.Success(Unit.Value);
+            }
+            catch (Exception e)
+            {
+                return Result<Unit>.Failure(EntityErrors.UpdateFailed(nameof(User), e.Message));
             }
         }
 
@@ -62,13 +105,14 @@ namespace Identity.Repositories
                     return Result<Guid>.Failure(AuthErrors.EmailAlreadyExists(nameof(User), $"{user.Email}"));
                 }
 
-                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User), dbEx.InnerException?.Message ?? "An unexpected error occurred while creating the user account"));
+                return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User),
+                    dbEx.InnerException?.Message ?? "An unexpected error occurred while creating the user account"));
             }
             catch (Exception e)
             {
                 return Result<Guid>.Failure(EntityErrors.CreateFailed(nameof(User), e.Message));
             }
         }
+        
     }
 }
-

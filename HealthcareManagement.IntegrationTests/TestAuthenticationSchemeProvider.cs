@@ -19,7 +19,5 @@ namespace HealthcareManagement.IntegrationTests
             var scheme = new AuthenticationScheme(Name, Name, typeof(TestAuthenticationHandler));
             return Task.FromResult(scheme)!;
         }
-
-
     }
 }

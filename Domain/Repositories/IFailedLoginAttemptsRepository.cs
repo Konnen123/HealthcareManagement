@@ -1,12 +1,13 @@
 ﻿
-using Domain.Entities.User;
+using Domain.Utils;
+using MediatR;
 
 namespace Domain.Repositories
 {
-    public interface IFailedLoginAttemptsRepository 
+    public interface IFailedLoginAttemptsRepository
     {
-        void AddFailedAttempt(Guid userId);
-        bool IsUserLockedOut(Guid userId);
-        void ResetFailedAttempts(Guid userId);
+        Task<Result<Unit>> AddFailedAttemptAsync(Guid userId);
+        Task<Result<Boolean>> IsUserLockedOut(Guid userId);
+        Task<Result<Unit>> ResetFailedAttemptsAsync(Guid userId);
     }
 }
