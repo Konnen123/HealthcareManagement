@@ -1,5 +1,5 @@
 <div class="appointment-list">
-  <h1>All Appointments</h1>
+  <h1>{{ 'appointment-list.APPOINTMENTS' | translate }}</h1>
 
   <!-- Filter and Paginator Container -->
   <div class="header-controls">
@@ -15,7 +15,7 @@
 
     <button class="match-input-height" mat-stroked-button (click)="openFiltersDialog()">
       <mat-icon>filter_list</mat-icon>
-      Filters
+      {{ 'appointment-list.FILTERS' | translate }}
     </button>
   </div>
 
@@ -23,29 +23,23 @@
 
     <!-- Patient ID Column -->
     <ng-container matColumnDef="patientId">
-      <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+      <th mat-header-cell *matHeaderCellDef> {{ 'appointment-list.PATIENT_NAME' | translate }} </th>
       <td mat-cell *matCellDef="let appointment">
-        <span matTooltip="{{ appointment.patientId }}">
-<!--        {{ appointment.patientId | slice:0:4 }}...{{ appointment.patientId | slice:-4 }}-->
-          John Doe
-      </span>
+        <span matTooltip="{{ appointment.patientId }}">{{appointment.patient.firstName}} {{appointment.patient.lastName}}</span>
       </td>
     </ng-container>
 
     <!-- Doctor ID Column -->
     <ng-container matColumnDef="doctorId">
-      <th mat-header-cell *matHeaderCellDef> Doctor Name </th>
+      <th mat-header-cell *matHeaderCellDef> {{ 'appointment-list.DOCTOR_NAME' | translate }} </th>
       <td mat-cell *matCellDef="let appointment">
-        <span matTooltip="{{ appointment.doctorId }}">
-<!--        {{ appointment.doctorId | slice:0:4 }}...{{ appointment.doctorId | slice:-4 }}-->
-          Patient Name
-      </span>
+        <span matTooltip="{{ appointment.doctorId }}">{{appointment.doctor.firstName}} {{appointment.doctor.lastName}}</span>
       </td>
     </ng-container>
 
     <!-- Date Column -->
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <th mat-header-cell *matHeaderCellDef> {{ 'appointment-list.DATE' | translate }} </th>
       <td mat-cell *matCellDef="let appointment">
         {{appointment.date}}
       </td>
@@ -53,14 +47,14 @@
 
     <!-- Time Column -->
     <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef> Time </th>
+      <th mat-header-cell *matHeaderCellDef> {{ 'appointment-list.INTERVAL_TIME' | translate }} </th>
       <td mat-cell *matCellDef="let appointment">
         {{appointment.startTime}}-{{appointment.endTime}}
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr class="appointment-row" mat-row *matRowDef="let row; columns: displayedColumns; " (click)="onAppointmentClicked(row)"></tr>
   </table>
 
 </div>

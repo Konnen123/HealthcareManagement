@@ -13,6 +13,11 @@ mat-card {
   gap: 20px;
 }
 
+.go-back-button{
+  margin-top: 20px;
+  color: #00796b;
+}
+
 .form-row {
   display: flex;
   gap: 20px;
@@ -64,4 +69,12 @@ mat-card {
 .error-message {
   text-align: center;
   color: #d32f2f;
+}
+.delete-button{
+  background-color: #d32f2f;
+  color: white;
+}
+.update-button{
+  background-color: #00796b;
+  color: white;
 }

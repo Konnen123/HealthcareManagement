@@ -10,6 +10,7 @@ import {CustomValidators} from '../../../shared/custom-validators';
 import {MatOption, MatSelect, MatSelectChange} from '@angular/material/select';
 import {DoctorDto} from '../../../shared/dtos/doctor.dto';
 import {UserService} from '../../../services/user/user.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
@@ -30,7 +31,8 @@ import {UserService} from '../../../services/user/user.service';
     ReactiveFormsModule,
     MatSelect,
     MatOption,
-    NgForOf
+    NgForOf,
+    TranslatePipe
   ],
   templateUrl: './appointment-form.component.html',
   standalone: true,

@@ -3,12 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';
 import {AppointmentService} from '../../../services/appointment/appointment.service';
+import {TranslatePipe} from '@ngx-translate/core';
+import {LanguageService} from '../../../services/language/language.service';
 
 @Component({
   selector: 'app-appointment-update',
   templateUrl: './appointment-update.component.html',
   imports: [
-    AppointmentFormComponent
+    AppointmentFormComponent,
+    TranslatePipe
   ]
 })
 export class AppointmentUpdateComponent implements OnInit {
@@ -17,10 +20,13 @@ export class AppointmentUpdateComponent implements OnInit {
   constructor(
     readonly route: ActivatedRoute,
     readonly appointmentService: AppointmentService,
-    readonly snackBar: MatSnackBar
+    readonly snackBar: MatSnackBar,
+    readonly languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
+    this.languageService.setLanguage();
+
     const appointmentId = this.route.snapshot.paramMap.get('id');
     if (appointmentId) {
       //console.log()

@@ -1,33 +1,53 @@
 <div class="login-container">
   <mat-card class="login-card">
-    <h2>Login</h2>
+    <h2>{{ "LOGIN" | translate }}</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" name="email" required />
+        <mat-label>{{ "email.EMAIL" | translate }}</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          name="email"
+          required
+        />
         <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-          Email is required
+          {{ "email.REQUIRED" | translate }}
         </mat-error>
         <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-          Please enter a valid email address
+          {{ "email.INVALID" | translate }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" name="password" required />
+        <mat-label>{{ "password.PASSWORD" | translate }}</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          name="password"
+          required
+        />
         <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-          Password is required
+          {{ "password.REQUIRED" | translate }}
         </mat-error>
         <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-          Password must be at least 6 characters
+          {{ "password.INVALID" | translate }}
         </mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit">Login</button>
-      <button mat-raised-button color="accent" type="button" (click)="redirectToSignup()">Sign Up</button>
-
+      <button mat-raised-button color="primary" type="submit">
+        {{ "LOGIN" | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="button"
+        (click)="redirectToSignup()"
+      >
+        {{ "REGISTER" | translate }}
+      </button>
     </form>
-    <a (click)="redirectToForgotPassword()" class="recover-password">Forgot your password?</a>
+    <a href="#" class="recover-password">{{ "FORGOT_PASSWORD" | translate }}</a>
   </mat-card>
 </div>
