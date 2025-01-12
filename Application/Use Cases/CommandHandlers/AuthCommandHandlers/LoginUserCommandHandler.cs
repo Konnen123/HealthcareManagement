@@ -1,6 +1,7 @@
 ﻿using Application.Use_Cases.Commands.AuthCommands;
 using Application.Use_Cases.Responses;
 using Domain.Entities;
+using Domain.Entities.Tokens;
 using Domain.Entities.User;
 using Domain.Errors;
 using Domain.Repositories;
@@ -36,13 +37,19 @@ namespace Application.Use_Cases.CommandHandlers.AuthCommandHandlers
                 return Result<TokenResponse>.Failure(AuthErrors.LoginFailed(nameof(User), "User not found"));
             }
             var user = userResult.Value!;
-            if (_failedLoginAttemptsRepository.IsUserLockedOut(user.UserId))
+            var lockedUserResult = await _failedLoginAttemptsRepository.IsUserLockedOut(user.UserId);
+            if (!lockedUserResult.IsSuccess)
             {
-                return Result<TokenResponse>.Failure(AuthErrors.UserAccountLocked(nameof(User), "User account temporarely locked due to too many failed login attempts"));
+                return Result<TokenResponse>.Failure(lockedUserResult.Error!);
+            }
+            var isUserLockedOut = lockedUserResult.Value!;
+            if (isUserLockedOut)
+            {
+                return Result<TokenResponse>.Failure(AuthorizationErrors.UserAccountLocked(nameof(User), "User account temporarily locked due to too many failed login attempts"));
             }
             if (!_passwordHashingService.VerifyPassword(request.Password, user.Password))
             {
-                _failedLoginAttemptsRepository.AddFailedAttempt(user.UserId);
+                await _failedLoginAttemptsRepository.AddFailedAttemptAsync(user.UserId);
                 return Result<TokenResponse>.Failure(AuthErrors.LoginFailed(nameof(User), "Invalid password"));
             }
 
@@ -60,7 +67,7 @@ namespace Application.Use_Cases.CommandHandlers.AuthCommandHandlers
             }
             
             var token = _tokenService.GenerateAccessToken(user);
-            _failedLoginAttemptsRepository.ResetFailedAttempts(user.UserId);
+            await _failedLoginAttemptsRepository.ResetFailedAttemptsAsync(user.UserId);
             
             var refreshToken = _tokenService.GenerateRefreshToken(user, request.DeviceInfo, request.IpAddress);
             refreshToken.User = user; 

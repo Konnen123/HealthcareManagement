@@ -1,3 +1,4 @@
+using Domain.Entities.Tokens;
 using Domain.Entities.User;
 using Domain.Errors;
 using Domain.Repositories;

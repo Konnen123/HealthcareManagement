@@ -41,12 +41,21 @@ builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_
 builder.Configuration["Jwt:AccessExpiry"] = Environment.GetEnvironmentVariable("JWT_ACCESS_EXPIRY_TIME_SECONDS");
 builder.Configuration["Jwt:RefreshExpiry"] = Environment.GetEnvironmentVariable("JWT_REFRESH_EXPIRY_TIME_DAYS");
 
+builder.Configuration["SmtpSettings:SmtpServer"] = Environment.GetEnvironmentVariable("SMTP_SERVER");
+builder.Configuration["SmtpSettings:Port"] = Environment.GetEnvironmentVariable("SMTP_PORT");
+builder.Configuration["SmtpSettings:Username"] = Environment.GetEnvironmentVariable("SMTP_USERNAME");
+builder.Configuration["SmtpSettings:Password"] = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+builder.Configuration["SmtpSettings:FromEmail"] = Environment.GetEnvironmentVariable("SMTP_FROM_EMAIL");
+
 builder.Configuration["ML:DiagnosisModelPath"] = Environment.GetEnvironmentVariable("DIAGNOSIS_MODEL_PATH");
 builder.Configuration["ML:OutputFilePath"] = Environment.GetEnvironmentVariable("OUTPUT_DIAGNOSIS_PATH");
 
 builder.Configuration["AWS:AccessKey"] = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
 builder.Configuration["AWS:SecretKey"] = Environment.GetEnvironmentVariable("AWS_SECRET_KEY");
 builder.Configuration["AWS:Region"] = Environment.GetEnvironmentVariable("AWS_REGION");
+
+builder.Configuration["Server"] = "https://localhost:7121";
+
 
 var MyAllowSpecificOrigin = "MyAllowSpecificOrigin";
 builder.Services.AddCors(options =>
