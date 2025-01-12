@@ -23,7 +23,108 @@ namespace Identity.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempts+FailedLoginAttempt", b =>
+            modelBuilder.Entity("Domain.Entities.Tokens.RefreshToken", b =>
+                {
+                    b.Property<Guid>("RefreshTokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<string>("DeviceInfo")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RefreshTokenId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Tokens.ResetPasswordToken", b =>
+                {
+                    b.Property<Guid>("ResetPasswordTokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ResetPasswordTokenId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("reset_password_tokens", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Tokens.VerifyEmailToken", b =>
+                {
+                    b.Property<Guid>("VerifyEmailTokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("VerifyEmailTokenId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("verify_email_tokens", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempt", b =>
                 {
                     b.Property<Guid>("AttemptId")
                         .ValueGeneratedOnAdd()
@@ -78,6 +179,9 @@ namespace Identity.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<bool>("HasVerifiedEmail")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
@@ -103,45 +207,6 @@ namespace Identity.Migrations
                     b.ToTable("users", (string)null);
 
                     b.UseTptMappingStrategy();
-                });
-
-            modelBuilder.Entity("RefreshToken", b =>
-                {
-                    b.Property<Guid>("RefreshTokenId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("uuid_generate_v4()");
-
-                    b.Property<string>("DeviceInfo")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("IssuedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("RefreshTokenId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User.Patient", b =>
@@ -184,18 +249,7 @@ namespace Identity.Migrations
                     b.ToTable("super_admins", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempts+FailedLoginAttempt", b =>
-                {
-                    b.HasOne("Domain.Entities.User.User", "UserAuthentication")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserAuthentication");
-                });
-
-            modelBuilder.Entity("RefreshToken", b =>
+            modelBuilder.Entity("Domain.Entities.Tokens.RefreshToken", b =>
                 {
                     b.HasOne("Domain.Entities.User.User", "User")
                         .WithMany("RefreshTokens")
@@ -204,6 +258,39 @@ namespace Identity.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Tokens.ResetPasswordToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User.User", "UserAuthentication")
+                        .WithOne("ResetPasswordToken")
+                        .HasForeignKey("Domain.Entities.Tokens.ResetPasswordToken", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserAuthentication");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Tokens.VerifyEmailToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User.User", "UserAuthentication")
+                        .WithOne("VerifyEmailToken")
+                        .HasForeignKey("Domain.Entities.Tokens.VerifyEmailToken", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserAuthentication");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User.FailedLoginAttempt", b =>
+                {
+                    b.HasOne("Domain.Entities.User.User", "UserAuthentication")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserAuthentication");
                 });
 
             modelBuilder.Entity("Domain.Entities.User.Patient", b =>
@@ -254,6 +341,12 @@ namespace Identity.Migrations
             modelBuilder.Entity("Domain.Entities.User.User", b =>
                 {
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("ResetPasswordToken")
+                        .IsRequired();
+
+                    b.Navigation("VerifyEmailToken")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

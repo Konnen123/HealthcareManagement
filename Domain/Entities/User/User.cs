@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities.Tokens;
 using Domain.Utils;
 
 namespace Domain.Entities.User
@@ -23,5 +24,9 @@ namespace Domain.Entities.User
         public Roles Role { get; set; }
 
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+        
+        public ResetPasswordToken ResetPasswordToken { get; set; } = null!;
+        public VerifyEmailToken VerifyEmailToken { get; set; } = null!;
+        public bool HasVerifiedEmail { get; set; }
     }
 }
