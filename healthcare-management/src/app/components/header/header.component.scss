@@ -1,26 +1,31 @@
-mat-toolbar {
+.header-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
   background-color: #00796b;
-
-  .toolbar-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-  }
-
-  .spacer {
-    flex: 1 1 auto;
-  }
-
-  button[mat-icon-button] {
-    color: white;
-  }
-
-  button[mat-flat-button] {
-    margin-right: 10px;
-    color: white;
-  }
 }
+
+.toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+
+  cursor: pointer;
+
+  margin-left: calc(5%);
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+
+  margin-right: calc(5%);
+}
+
+button[mat-icon-button] {
+  color: white;
+}
+
+
+

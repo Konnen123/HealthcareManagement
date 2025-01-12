@@ -17,11 +17,10 @@ export class SymptomService
 
   public async predictAsync(symptomsList: any): Promise<any> {
     try {
-      const result = await firstValueFrom(this.symptomClient.predict(symptomsList));
-      console.log('Server response in the service :', result);
-      return result;
+      //console.log('Server response in the service :', result);
+      return await firstValueFrom(this.symptomClient.predict(symptomsList));
     } catch (error){
-      console.error('Error while predicting in service', error);
+      //console.error('Error while predicting in service', error);
       throw error;
     }
   }

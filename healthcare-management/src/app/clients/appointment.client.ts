@@ -50,29 +50,6 @@ export class AppointmentClient
     const queryParams = [...filters, ...pagination].join('&');
 
     return this.http.get<Appointment[]>(`${this.baseUrl}?${queryParams}`);
-
-
-    // let queryParts: string[] = [];
-    //
-    // if (appointmentParams.startTime) {
-    //   queryParts.push(`$filter=startTime eq ${appointmentParams.startTime}`);
-    // }
-    //
-    // if (appointmentParams.date) {
-    //   const dateFilter = `date eq ${appointmentParams.date}`;
-    //   if (appointmentParams.startTime) {
-    //     queryParts[0] = `${queryParts[0]} and ${dateFilter}`;
-    //   } else {
-    //     queryParts.push(`$filter=${dateFilter}`);
-    //   }
-    // }
-    //
-    // queryParts.push(`$top=${appointmentParams.top}`);
-    // queryParts.push(`$skip=${appointmentParams.skip}`);
-    //
-    // const queryParams = queryParts.join('&');
-    //
-    // return this.http.get<Appointment[]>(`${this.baseUrl}?${queryParams}`);
   }
 
   private constructFilters(startTime:string, date: string): string[] {

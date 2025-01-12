@@ -29,11 +29,8 @@ export class AppointmentService{
       return Promise.reject('Not running in a browser environment.');
     }
     try {
-      const result = firstValueFrom(this.appointmentClient.createAppointment(appointment));
-      console.log('Server response in the service :', result);
-      return result;
+      return firstValueFrom(this.appointmentClient.createAppointment(appointment));
     } catch (error) {
-      console.error('Error while creating appointment in service', error);
       throw error;
     }
   }
@@ -42,29 +39,22 @@ export class AppointmentService{
     try {
       return await firstValueFrom(this.appointmentClient.getAppointmentById(id));
     } catch (error) {
-      console.error('Error while getting appointment in service:', error);
       throw error;
     }
   }
 
   public async updateAsync(appointment: Appointment): Promise<any> {
     try {
-      const result = firstValueFrom(this.appointmentClient.updateAppointment(appointment));
-      console.log('Server response:', result);
-      return result;
+      return firstValueFrom(this.appointmentClient.updateAppointment(appointment));
     } catch (error) {
-      console.error('Error while updating appointment in service:', error);
       throw error;
     }
   }
 
   public async deleteAsync(id: string): Promise<any> {
     try {
-      const result = firstValueFrom(this.appointmentClient.deleteAppointment(id));
-      console.log('Server response:', result);
-      return result;
+      return firstValueFrom(this.appointmentClient.deleteAppointment(id));
     } catch (error) {
-      console.error('Error while deleting appointment in service:', error);
       throw error;
     }
   }
@@ -73,7 +63,6 @@ export class AppointmentService{
     try {
       return await firstValueFrom(this.appointmentClient.getAppointmentsPaginated(appointmentParams));
     } catch (error) {
-      console.error('Error while getting appointments paginated in service:', error);
       throw error;
     }
   }

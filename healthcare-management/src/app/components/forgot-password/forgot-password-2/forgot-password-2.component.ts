@@ -1,12 +1,24 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatCard} from '@angular/material/card';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
-import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import {MatInput} from '@angular/material/input';
 import {NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CustomValidators} from '../../../shared/custom-validators';
+import {AuthenticationService} from '../../../services/authentication/authentication.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {LanguageService} from '../../../services/language/language.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
@@ -20,33 +32,82 @@ import {CustomValidators} from '../../../shared/custom-validators';
     MatButton,
     ReactiveFormsModule,
     MatLabel,
-    MatError
+    MatError,
+    TranslatePipe
   ],
   templateUrl: './forgot-password-2.component.html',
   styleUrl: './forgot-password-2.component.scss'
 })
-export class ForgotPassword2Component {
+export class ForgotPassword2Component implements OnInit {
   resetPasswordForm: FormGroup;
+  token: string = '';
 
-  newPassword: string = '';
-  confirmPassword: string = '';
-
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    readonly fb: FormBuilder,
+    readonly router: Router,
+    readonly route: ActivatedRoute,
+    readonly authService: AuthenticationService,
+    readonly snackBar: MatSnackBar,
+    private readonly languageService: LanguageService
+    ) {
+    this.languageService.setLanguage();
     this.resetPasswordForm = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(100)]],
-      confirmPassword: ['', [Validators.required, CustomValidators.passwordsMatch('password')]]
+      newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
+      confirmPassword: ['', [Validators.required]]
     });
-    this.resetPasswordForm.addValidators(this.passwordMatchValidator);
+
+    this.resetPasswordForm.get('confirmPassword')?.setValidators([
+      Validators.required,
+      this.passwordsMatchValidator.bind(this)
+    ]);
+
+    this.resetPasswordForm.get('newPassword')?.valueChanges.subscribe(() => {
+      this.resetPasswordForm.get('confirmPassword')?.updateValueAndValidity();
+    });
   }
 
-  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const newPassword = control.get('newPassword')?.value;
-    const confirmPassword = control.get('confirmPassword')?.value;
+  ngOnInit(): void{
+    //this.token = this.route.snapshot.queryParams['token'];
 
-    return newPassword === confirmPassword ? null : { mismatch: true };
+    // Option 2: Subscribe to queryParams (useful if parameters change dynamically)
+    this.route.queryParams.subscribe(params => {
+      this.token = params['token'];
+    });
+
+    //console.log('Token:', this.token); // This will log the token value
+  }
+
+  passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const newPassword = this.resetPasswordForm?.get('newPassword')?.value;
+    const confirmPassword = control.value;
+
+    return newPassword && confirmPassword && newPassword !== confirmPassword
+      ? { passwordsMismatch: true }
+      : null;
   }
 
   onSubmit(): void {
-    this.router.navigate(['/login']);
+    //this.router.navigate(['/login']);
+    if (this.resetPasswordForm.valid) {
+      const payload = {
+        password: this.resetPasswordForm.get('newPassword')?.value,
+        token: decodeURIComponent(this.token).replace(/ /g, '+')
+      };
+
+      //console.log('Payload:', payload);
+
+      // Make the POST request
+      this.authService.resetPasswordAsync(payload)
+        .then(() => {
+          this.router.navigate(['/login']);
+          this.snackBar.open('Password reset successfully', 'Close', {
+            panelClass: ['error-snackbar'],
+            duration: 3000
+          });
+        })
+        .catch((error) => {
+          console.error('Error while resetting password', error);
+        });
+    }
   }
 }

@@ -21,7 +21,7 @@ public static class EmailContentBuilder
             Hello {firstName},
 
             Welcome to HealthCare! To complete your registration, please verify your email address by clicking the link below:
-            https://localhost:7121/api/v1/Auth/verify-email?token={verificationToken}
+            http://localhost:5072/api/v1/Auth/verify-email?token={verificationToken}
 
             If you didn’t create an account with us, you can safely ignore this email.
 

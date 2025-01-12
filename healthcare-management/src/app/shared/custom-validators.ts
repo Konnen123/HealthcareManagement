@@ -43,6 +43,7 @@ export class CustomValidators {
     //console.log('Is valid:', isValid); // Check comparison result
     return isValid ? null : { pastDate: true };
   }
+
   static passwordsMatch(passwordControlName: string): (control: AbstractControl) => ValidationErrors | null {
     return (control: AbstractControl): ValidationErrors | null => {
       const parent = control.parent;
@@ -61,23 +62,23 @@ export class CustomValidators {
 
   static dateOfBirthValidator(control: AbstractControl): ValidationErrors | null {
     const dateOfBirth = control.value;
-  
+
     if (!dateOfBirth) {
       return null;
     }
-  
+
     const inputDate = new Date(dateOfBirth);
     const today = new Date();
     const hundredYearsAgo = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
-  
+
     if (inputDate < hundredYearsAgo) {
-      return { tooOld: true }; 
+      return { tooOld: true };
     }
-  
+
     if (inputDate > today) {
       return { futureDate: true };
     }
-  
+
     return null;
   }
 }

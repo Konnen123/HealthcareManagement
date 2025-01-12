@@ -8,7 +8,6 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, provideNativeDateAdapter} from '@angular/material/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-;
 
 describe('AppointmentCreateComponent', () => {
   let component: AppointmentCreateComponent;

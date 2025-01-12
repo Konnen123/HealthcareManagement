@@ -79,7 +79,7 @@ export class AppointmentFormComponent implements OnInit, OnChanges{
   onSubmit(): void {
     if (this.appointmentForm.valid) {
 
-      console.log(this.appointmentForm.value);
+      //console.log(this.appointmentForm.value);
       const rawData = this.appointmentForm.value;
 
       const appointmentData = {

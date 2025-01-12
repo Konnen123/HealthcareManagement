@@ -80,9 +80,9 @@ export class AppointmentListComponent implements OnInit
   loadAppointments(): void {
     this.appointmentService.getAppointmentsPaginatedAsync(this.appointmentParams).then(appointments => {
       this.appointments = appointments;
-      console.log('Appointments:', this.appointments);
+      //console.log('Appointments:', this.appointments);
     }).catch(error => {
-      console.error('Error while fetching appointments:', error);
+      //console.error('Error while fetching appointments:', error);
       this.showErrorSnackbar('Error while fetching appointments');
     });
   }
@@ -134,5 +134,9 @@ export class AppointmentListComponent implements OnInit
   onAppointmentClicked(row: any)
   {
     this.router.navigate(['/appointments', row.id]);
+  }
+
+  updateAppointment(appointmentId : string): void {
+    this.router.navigate(['/appointments/update/', appointmentId]);
   }
 }

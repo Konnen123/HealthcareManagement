@@ -48,6 +48,6 @@
         {{ "REGISTER" | translate }}
       </button>
     </form>
-    <a href="#" class="recover-password">{{ "FORGOT_PASSWORD" | translate }}</a>
+    <a class="recover-password" (click)="redirectToForgotPassword()">{{ "FORGOT_PASSWORD" | translate }}</a>
   </mat-card>
 </div>

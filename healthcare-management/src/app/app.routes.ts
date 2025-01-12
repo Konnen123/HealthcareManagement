@@ -39,6 +39,11 @@ export const routes: Routes = [
   },
   {
     path: '',
+    loadComponent: () => import('./components/landing-page/landing-page.component').then(m => m.LandingPageComponent),
+    data: { isNavbarHidden: true },
+  },
+  {
+    path: 'home',
     loadComponent: () => import('./components/home-page/home-page.component').then(m => m.HomePageComponent),
     canActivate: [AuthenticationGuard],
   },
@@ -54,27 +59,19 @@ export const routes: Routes = [
   },
   {
     path: 'forgot-password',
-    data: { isNavbarHidden: true },
-    children: [
-      {
-        path: '',
-        loadComponent: () => import('./components/forgot-password/forgot-password-1/forgot-password-1.component').then(m => m.ForgotPassword1Component),
-        data: { isNavbarHidden: true }
-      },
-      {
-        path: 'change-password',
-        loadComponent: () => import('./components/forgot-password/forgot-password-2/forgot-password-2.component').then(m => m.ForgotPassword2Component),
-        data: { isNavbarHidden: true }
-      }
-    ]
+    loadComponent: () => import('./components/forgot-password/forgot-password-1/forgot-password-1.component').then(m => m.ForgotPassword1Component),
+    data: { isNavbarHidden: true }
   },
   {
-    path: '',
-    loadComponent: () => import('./components/appointment/appointment-list/appointment-list.component').then(m => m.AppointmentListComponent),
-    canActivate: [AuthenticationGuard, RoleGuard],
-    data: { expectedRole: ['DOCTOR'] }
+    path: 'verify-email',
+    loadComponent: () => import('./components/verify-email/verify-email.component').then(m => m.VerifyEmailComponent),
+    data: { isNavbarHidden: true }
   },
-
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./components/forgot-password/forgot-password-2/forgot-password-2.component').then(m => m.ForgotPassword2Component),
+    data: { isNavbarHidden: true }
+  },
   {
     path: 'access-denied',
     loadComponent: () => import('./components/access-denied/access-denied.component').then(m => m.AccessDeniedComponent),

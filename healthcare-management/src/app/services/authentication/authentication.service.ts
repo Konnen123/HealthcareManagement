@@ -1,6 +1,5 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {isPlatformBrowser} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
@@ -23,11 +22,8 @@ export class AuthenticationService
 
   public async registerAsync(userData: any): Promise<any> {
     try {
-      const result = await firstValueFrom(this.authenticationClient.register(userData));
-      console.log('Server response in the service :', result);
-      return result;
+      return await firstValueFrom(this.authenticationClient.register(userData));
     } catch (error){
-      console.error('Error while registering in service', error);
       throw error;
     }
 
@@ -37,7 +33,7 @@ export class AuthenticationService
     try {
       return await firstValueFrom(this.authenticationClient.login(userData));
     } catch (error){
-      console.error('Error while logging in service', error);
+      //console.error('Error while logging in service', error);
       throw error;
     }
   }
@@ -87,6 +83,7 @@ export class AuthenticationService
       return true;
     }
   }
+
   public isRefreshTokenExpired(): boolean
   {
     if (!this.isBrowser)
@@ -136,6 +133,15 @@ export class AuthenticationService
     if (!this.isBrowser) return;
 
     document.cookie = `${name}=${value}; path=/`;
+  }
+
+  public async resetPasswordAsync(userData: any): Promise<any> {
+    try {
+      return await firstValueFrom(this.authenticationClient.resetPassword(userData));
+    } catch (error) {
+      //console.error('Error while resetting password in service', error);
+      throw error;
+    }
   }
 
 }
