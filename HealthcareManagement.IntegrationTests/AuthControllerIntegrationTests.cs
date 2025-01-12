@@ -77,6 +77,10 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
 
         //Assert
         response.EnsureSuccessStatusCode();
+        var token = dbContext.ResetPasswordTokens.FirstOrDefault(t => t.UserId == user.UserId);
+        Assert.Null(token);
+        var updatedUser = dbContext.Users.FirstOrDefault(u => u.UserId == user.UserId);
+        Assert.NotNull(updatedUser);
     }
 
     [Fact]
