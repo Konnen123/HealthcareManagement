@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Appointment} from '../../../models/appointment.model';
 import {of} from 'rxjs';
+import {LanguageService} from '../../../services/language/language.service';
+import {RoleService} from '../../../services/role/role.service';
 
 const APP_CONFIG = new InjectionToken<any>('app.config');
 
@@ -16,13 +18,14 @@ describe('AppointmentDetailComponent', () => {
   let fixture: ComponentFixture<AppointmentDetailComponent>;
   let appointmentService: jasmine.SpyObj<AppointmentService>;
   let router: jasmine.SpyObj<Router>;
-  let snackBar: jasmine.SpyObj<MatSnackBar>;
 
   beforeEach(async () => {
     const appointmentServiceSpy = jasmine.createSpyObj('AppointmentService', ['deleteAsync', 'getByIdAsync']);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     const activatedRouteSpy = { params: of({ id: '123' }) };
+    const languageServiceSpy = jasmine.createSpyObj('LanguageService', ['setLanguage']);
+    const roleServiceSpy = jasmine.createSpyObj('RoleService', ['isUserDoctor']);
     await TestBed.configureTestingModule({
       imports: [
         AppointmentDetailComponent,
@@ -30,10 +33,13 @@ describe('AppointmentDetailComponent', () => {
       ],
       providers: [
         { provide: AppointmentService, useValue: appointmentServiceSpy },
+        {provide: RoleService, useValue: {}},
         { provide: Router, useValue: routerSpy },
         { provide: APP_CONFIG, useValue: {} },
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: ActivatedRoute, useValue: activatedRouteSpy },
+        { provide: LanguageService, useValue: languageServiceSpy },
+        { provide: RoleService, useValue: roleServiceSpy },
         provideNativeDateAdapter()
       ]
     })

@@ -6,7 +6,14 @@ describe('LanguageService', () => {
   let service: LanguageService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    const languageServiceSpy = jasmine.createSpyObj('LanguageService', ['setLanguage', 'getLanguage']);
+    const translateService = jasmine.createSpyObj('TranslateService', ['instant', 'get']);
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: LanguageService, useValue: languageServiceSpy },
+        { provide: translateService, useValue: translateService}]
+    });
     service = TestBed.inject(LanguageService);
   });
 

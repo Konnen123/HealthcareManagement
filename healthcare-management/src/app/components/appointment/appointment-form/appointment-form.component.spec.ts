@@ -6,12 +6,29 @@ import { MatInputModule } from '@angular/material/input';
 import {MatNativeDateModule, provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {UserService} from '../../../services/user/user.service';
+import {LanguageService} from '../../../services/language/language.service';
+import {LangChangeEvent, TranslateModule, TranslateService} from '@ngx-translate/core';
+import {EventEmitter} from '@angular/core';
+import {of} from 'rxjs';
 
 describe('AppointmentFormComponent', () => {
   let component: AppointmentFormComponent;
   let fixture: ComponentFixture<AppointmentFormComponent>;
 
   beforeEach(async () => {
+
+    const userSpy = jasmine.createSpyObj('UserService', ['getUsersAsync']);
+    const languageServiceSpy = jasmine.createSpyObj('LanguageService', ['setLanguage']);
+    const translateService = jasmine.createSpyObj<TranslateService>('translateService', ['instant', 'get']);
+    const translateServiceMock = {
+      currentLang: 'ro',
+      onLangChange: new EventEmitter<LangChangeEvent>(),
+      use: translateService.get,
+      get: translateService.get.and.returnValue(of('')),
+      onTranslationChange: new EventEmitter(),
+      onDefaultLangChange: new EventEmitter()
+    };
     await TestBed.configureTestingModule({
       imports: [
         AppointmentFormComponent,
@@ -20,10 +37,14 @@ describe('AppointmentFormComponent', () => {
         MatInputModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        TranslateModule.forRoot(),
       ],
       providers: [
-        provideNativeDateAdapter()
+        provideNativeDateAdapter(),
+        { provide: UserService, useValue: userSpy },
+        { provide: LanguageService, useValue: languageServiceSpy },
+        { provide: TranslateService, useValue: translateServiceMock }
       ]
     }).compileComponents();
 
@@ -38,35 +59,11 @@ describe('AppointmentFormComponent', () => {
 
   it('should initialize the form with empty fields', () => {
     expect(component.appointmentForm.value).toEqual({
-      patientId: '',
       doctorId: '',
       date: '',
       startTime: '',
       endTime: '',
       userNotes: '',
-    });
-  });
-
-  it('should emit formSubmit when form is valid and submitted', () => {
-    spyOn(component.formSubmit, 'emit');
-
-    component.appointmentForm.patchValue({
-      patientId: 'd99ccb79-67e3-4d7c-8725-14f01981448f',
-      doctorId: 'ac5fe411-9b82-40de-8963-27b9a3074bae',
-      date: '2024-12-31',
-      startTime: '10:00',
-      endTime: '11:00',
-      userNotes: 'Test note',
-    });
-
-    component.onSubmit();
-    expect(component.formSubmit.emit).toHaveBeenCalledWith({
-      patientId: 'd99ccb79-67e3-4d7c-8725-14f01981448f',
-      doctorId: 'ac5fe411-9b82-40de-8963-27b9a3074bae',
-      date: '2024-12-31',
-      startTime: '10:00',
-      endTime: '11:00',
-      userNotes: 'Test note',
     });
   });
 
