@@ -116,7 +116,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
         dbContext.Users.Add(user);
         dbContext.ResetPasswordTokens.Add(resetPasswordToken);
         await dbContext.SaveChangesAsync();
-        var resetPasswordCommand = InvalidResetPasswordCommandSUT(newPassword);
+        var resetPasswordCommand = ResetPasswordCommandInvalidSUT(newPassword);
 
         var serialize = JsonConvert.SerializeObject(resetPasswordCommand);
         HttpClient client = this.factory.CreateClient();
@@ -160,6 +160,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
     [Fact]
     public async Task Login_GivenLoginCommandInvalid_ShouldReturnBadRequestResponse()
     {
+        //Arrange
         var registerUserCommand = ResetPasswordCommandSUT("mock", "mock");
         var serialize = JsonConvert.SerializeObject(registerUserCommand);
         HttpClient client = this.factory.CreateClient();
@@ -181,7 +182,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
     {
         //Arrange
         var user = PatientSUT();
-        var registerUserCommand = RegisterUserCommandInvalidSUT(user);
+        var registerUserCommand = RegisterUserCommandSUT(user);
         registerUserCommand.Email = "invalid-email";
         
         var serialize = JsonConvert.SerializeObject(registerUserCommand);
@@ -242,7 +243,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
         };
     }
 
-    private static ResetPasswordCommand InvalidResetPasswordCommandSUT(string password)
+    private static ResetPasswordCommand ResetPasswordCommandInvalidSUT(string password)
     {
         return new ResetPasswordCommand()
         {
@@ -271,7 +272,7 @@ public class AuthControllerIntegrationTests : IClassFixture<WebApplicationFactor
         };
     }
 
-    private static RegisterUserCommand RegisterUserCommandInvalidSUT(User user)
+    private static RegisterUserCommand RegisterUserCommandSUT(User user)
     {
         return new RegisterUserCommand()
         {
