@@ -54,7 +54,7 @@ builder.Configuration["AWS:AccessKey"] = Environment.GetEnvironmentVariable("AWS
 builder.Configuration["AWS:SecretKey"] = Environment.GetEnvironmentVariable("AWS_SECRET_KEY");
 builder.Configuration["AWS:Region"] = Environment.GetEnvironmentVariable("AWS_REGION");
 
-builder.Configuration["Server"] = "http://localhost:5072";
+builder.Configuration["Server"] = "https://healthcare-management-eight.vercel.app/";
 
 
 

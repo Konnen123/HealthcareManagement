@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatCard} from '@angular/material/card';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
@@ -35,7 +35,7 @@ export class ForgotPassword1Component{
     readonly router: Router,
     readonly mailService: MailService,
     readonly snackBar: MatSnackBar,
-    private fb: FormBuilder,
+    readonly fb: FormBuilder,
     private readonly languageService: LanguageService
   ) {
     this.forgotPasswordForm = this.fb.group({
@@ -49,7 +49,6 @@ export class ForgotPassword1Component{
   }
   onSubmit() : void {
     if (this.forgotPasswordForm.valid) {
-      const email = this.forgotPasswordForm.value.email;
       this.mailService.sendForgotPasswordEmailAsync(this.forgotPasswordForm.value.email).then(() => {
         this.snackBar.open('Please check your email', 'Close', {
           duration: 5000,
