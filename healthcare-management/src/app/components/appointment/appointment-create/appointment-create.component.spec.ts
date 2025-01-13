@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppointmentCreateComponent } from './appointment-create.component';
 import { AppointmentService } from '../../../services/appointment/appointment.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';
 import { MatInputModule } from '@angular/material/input';
@@ -19,6 +19,7 @@ describe('AppointmentCreateComponent', () => {
   let component: AppointmentCreateComponent;
   let fixture: ComponentFixture<AppointmentCreateComponent>;
   let mockAppointmentService: jasmine.SpyObj<AppointmentService>;
+  let mockSnackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
   let router: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
@@ -53,7 +54,8 @@ describe('AppointmentCreateComponent', () => {
         { provide: Router, useValue: routerSpy },
         { provide: LanguageService, useValue: languageServiceSpy },
         { provide: TranslateService, useValue: translateServiceMock },
-        { provide: UserService, useValue: userServiceSpy },
+        { provide: UserService, useValue: userServiceSpy},
+        { provide: MatSnackBar, useValue: mockSnackBar },
         provideNativeDateAdapter()
       ],
     }).compileComponents();
@@ -83,6 +85,30 @@ describe('AppointmentCreateComponent', () => {
     component.onFormSubmit(mockFormData);
 
     expect(mockAppointmentService.createAsync).toHaveBeenCalledWith(mockFormData);
+  });
+
+  it('should call languageService.setLanguage on init', () => {
+    const languageService = TestBed.inject(LanguageService) as jasmine.SpyObj<LanguageService>;
+    expect(languageService.setLanguage).toHaveBeenCalled();
+  });
+
+  it('should call createAsync and navigate to the appointment details on successful form submission', async () => {
+    const mockAppointmentId = '12345';
+    mockAppointmentService.createAsync.and.returnValue(Promise.resolve(mockAppointmentId));
+
+    const mockFormData = {
+      patientId: 'd99ccb79-67e3-4d7c-8725-14f01981448f',
+      doctorId: 'd99ccb79-67e3-4d7c-8725-14f01981448f',
+      date: new Date('2024-12-31'),
+      startTime: '10:00',
+      endTime: '11:00',
+      userNotes: 'Test note',
+    };
+
+    await component.onFormSubmit(mockFormData);
+
+    expect(mockAppointmentService.createAsync).toHaveBeenCalledWith(mockFormData);
+    expect(router.navigate).toHaveBeenCalledWith([`/appointments/${mockAppointmentId}`]);
   });
 
 });

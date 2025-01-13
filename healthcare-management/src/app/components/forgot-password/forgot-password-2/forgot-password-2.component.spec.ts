@@ -111,6 +111,25 @@ describe('ForgotPassword2Component', () => {
     });
   });
 
+  it('should disable the submit button if form is invalid', () => {
+    const formElement = fixture.nativeElement.querySelector('button[type="submit"]');
+
+    component.resetPasswordForm.setValue({
+      newPassword: '',
+      confirmPassword: ''
+    });
+
+    fixture.detectChanges();
+    expect(formElement.disabled).toBeTrue();
+
+    component.resetPasswordForm.setValue({
+      newPassword: 'ValidPassword123',
+      confirmPassword: 'ValidPassword123'
+    });
+
+    fixture.detectChanges();
+    expect(formElement.disabled).toBeFalse();
+  });
 
   it('should invalidate form if passwords do not match', () => {
     component.resetPasswordForm.setValue({
@@ -120,5 +139,28 @@ describe('ForgotPassword2Component', () => {
 
     const confirmPasswordControl = component.resetPasswordForm.get('confirmPassword');
     expect(confirmPasswordControl?.errors).toEqual({ passwordsMismatch: true });
+  });
+
+  it('should validate password length', () => {
+    component.resetPasswordForm.setValue({
+      newPassword: 'short',
+      confirmPassword: 'short'
+    });
+
+    const newPasswordControl = component.resetPasswordForm.get('newPassword');
+    expect(newPasswordControl?.errors).toEqual({ minlength: { requiredLength: 6, actualLength: 5 } });
+  });
+
+  it('should handle language service initialization', () => {
+    expect(mockLanguageService.setLanguage).toHaveBeenCalled();
+  });
+
+  it('should update confirmPassword validity when newPassword changes', () => {
+    const confirmPasswordControl = component.resetPasswordForm.get('confirmPassword');
+    spyOn(confirmPasswordControl!, 'updateValueAndValidity');
+
+    component.resetPasswordForm.get('newPassword')?.setValue('NewPassword123');
+
+    expect(confirmPasswordControl?.updateValueAndValidity).toHaveBeenCalled();
   });
 });

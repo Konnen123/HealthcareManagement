@@ -64,5 +64,6 @@ describe('RoleGuard', () => {
     expect(result).toBeTrue();
     expect(router.navigate).not.toHaveBeenCalled();
   });
+
 });
 

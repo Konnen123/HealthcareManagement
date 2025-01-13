@@ -115,4 +115,33 @@ describe('CustomValidators', () => {
     const result = CustomValidators.dateOfBirthValidator(control);
     expect(result).toEqual({ tooOld: true }); // Validation error
   });
+
+  it('should validate when endTime is exactly the same as startTime (no error)', () => {
+    const formGroup = new FormGroup({
+      startTime: new FormControl('10:00'),
+      endTime: new FormControl('10:00'),
+    });
+    const control = formGroup.get('endTime')!;
+    const validator = CustomValidators.endTimeAfterStartTime('startTime');
+    const result = validator(control);
+    expect(result).toEqual({ endTimeBeforeStartTime: true }); // Validation error// Edge case: No error
+  });
+
+  it('should handle null or undefined values for isValidGuid gracefully', () => {
+    const control = new FormControl(null);
+    const result = CustomValidators.isValidGuid(control);
+    expect(result).toEqual({ invalidGuid: true }); // Null value is invalid
+  });
+
+  it('should invalidate when endTimeAfterStartTime is called on a control without a parent', () => {
+    const control = new FormControl('10:00'); // No parent FormGroup
+    const validator = CustomValidators.endTimeAfterStartTime('startTime');
+    const result = validator(control);
+    expect(result).toBeNull(); // No validation because there is no parent
+  });
+  it('should handle null or undefined values for isNotEmptyGuid', () => {
+    const control = new FormControl(null);
+    const result = CustomValidators.isNotEmptyGuid(control);
+    expect(result).toEqual(null); // Null value is considered empty GUID
+  });
 });

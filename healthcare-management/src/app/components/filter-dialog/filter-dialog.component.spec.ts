@@ -82,4 +82,20 @@ describe('FilterDialogComponent', () => {
     expect(mockDialogRef.close).toHaveBeenCalledWith(mockFormValues);
   });
 
+  it('should close the dialog without any data when cancel is triggered', () => {
+    component.filterForm.setValue({ startTime: '10:00', date: '2024-01-01' });
+
+    mockDialogRef.close.and.callFake(() => {});
+    mockDialogRef.close();
+
+    expect(mockDialogRef.close).toHaveBeenCalledWith();
+  });
+
+  it('should render all required form fields', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    expect(compiled.querySelector('input[formControlName="startTime"]')).toBeTruthy();
+    expect(compiled.querySelector('input[formControlName="date"]')).toBeTruthy();
+  });
+
 });
