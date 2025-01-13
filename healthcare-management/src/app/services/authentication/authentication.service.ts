@@ -130,4 +130,8 @@ export class AuthenticationService
     return await firstValueFrom(this.authenticationClient.resetPassword(userData));
   }
 
+  public async verifyEmailAsync(verifyToken: string): Promise<any> {
+    return await firstValueFrom(this.authenticationClient.verifyEmail(verifyToken));
+  }
+
 }

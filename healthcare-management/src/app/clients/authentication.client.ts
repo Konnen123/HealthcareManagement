@@ -30,4 +30,8 @@ export class AuthenticationClient {
   public resetPassword(userData: any) : Observable<any> {
     return this.http.put(`${this.baseUrl}/reset-password`, userData, { responseType: 'text' });
   }
+
+  public verifyEmail(verifyToken: string) : Observable<any> {
+    return this.http.get(`${this.baseUrl}/verify-email?token=${verifyToken}`);
+  }
 }
