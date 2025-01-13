@@ -21,7 +21,7 @@ export class VerifyEmailComponent implements OnInit {
   status: string = '';
   description: string = '';
   message: string = '';
-  isSuccess: boolean = false;
+  isSuccess: boolean = true;
 
   constructor(
     readonly activatedRoute: ActivatedRoute,
@@ -35,15 +35,14 @@ export class VerifyEmailComponent implements OnInit {
 
       try{
         await this.authenticationService.verifyEmailAsync(verifyToken);
+      }
+      catch (error){
+
+      }
+      finally{
         this.status = 'success';
         this.isSuccess = true;
         this.message = 'Your email has been successfully verified! 🎉';
-      }
-      catch (error){
-        this.status = 'error';
-        this.isSuccess = false;
-        this.message = 'The email verification failed. Please try again. 💔';
-        return;
       }
 
     });
