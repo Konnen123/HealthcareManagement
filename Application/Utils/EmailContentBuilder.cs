@@ -8,7 +8,7 @@ public static class EmailContentBuilder
             Hello {firstName},
 
             We received a request to reset your password. Use the link below to reset it:
-            http://localhost:4200/reset-password?token={resetPasswordToken}
+            https://healthcare-management-eight.vercel.app/reset-password?token={resetPasswordToken}
 
             If you didn’t ask to reset your password, you can safely ignore this email.
 
