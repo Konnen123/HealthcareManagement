@@ -1,10 +1,10 @@
 import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {AppConfig} from '../app-config/app.config.interface';
-import {APP_SERVICE_CONFIG} from '../app-config/app.config';
+import {AppConfig} from '../../app-config/app.config.interface';
+import {APP_SERVICE_CONFIG} from '../../app-config/app.config';
 import {Observable} from 'rxjs';
-import {Appointment} from '../models/appointment.model';
-import {AppointmentParams} from '../models/appointmentParams.model';
+import {Appointment} from '../../models/appointment.model';
+import {AppointmentParams} from '../../models/appointmentParams.model';
 
 @Injectable({
   providedIn: 'root',

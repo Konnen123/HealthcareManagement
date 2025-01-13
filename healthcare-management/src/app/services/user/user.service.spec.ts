@@ -6,7 +6,12 @@ describe('UserService', () => {
   let service: UserService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    const userServiceSpy = jasmine.createSpyObj('UserService', ['getUsers', 'getUser']);
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: UserService, useValue: userServiceSpy }
+      ]
+    });
     service = TestBed.inject(UserService);
   });
 

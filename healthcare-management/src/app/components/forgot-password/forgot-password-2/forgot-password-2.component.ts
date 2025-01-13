@@ -14,7 +14,7 @@ import {MatInput} from '@angular/material/input';
 import {NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CustomValidators} from '../../../shared/custom-validators';
+import {CustomValidators} from '../../../shared/custom-validators/custom-validators';
 import {AuthenticationService} from '../../../services/authentication/authentication.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LanguageService} from '../../../services/language/language.service';
@@ -67,7 +67,6 @@ export class ForgotPassword2Component implements OnInit {
   }
 
   ngOnInit(): void{
-
     this.route.queryParams.subscribe(params => {
       this.token = params['token'];
     });
@@ -93,12 +92,14 @@ export class ForgotPassword2Component implements OnInit {
         .then(() => {
           this.router.navigate(['/login']);
           this.snackBar.open('Password reset successfully', 'Close', {
-            panelClass: ['error-snackbar'],
             duration: 3000
           });
         })
         .catch((error) => {
-          console.error('Error while resetting password', error);
+          this.snackBar.open('Error while resetting password. Please try again', 'Close', {
+            panelClass: ['error-snackbar'],
+            duration: 3000
+          });
         });
     }
   }

@@ -6,7 +6,7 @@ import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {CustomValidators} from '../../../shared/custom-validators';
+import {CustomValidators} from '../../../shared/custom-validators/custom-validators';
 import {MatOption, MatSelect, MatSelectChange} from '@angular/material/select';
 import {DoctorDto} from '../../../shared/dtos/doctor.dto';
 import {UserService} from '../../../services/user/user.service';

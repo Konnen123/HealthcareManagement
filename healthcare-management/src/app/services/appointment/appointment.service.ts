@@ -1,5 +1,5 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {AppointmentClient} from '../../clients/appointment.client';
+import {AppointmentClient} from '../../clients/appointment/appointment.client';
 import {isPlatformBrowser} from '@angular/common';
 import {Appointment} from '../../models/appointment.model';
 import {firstValueFrom} from 'rxjs';

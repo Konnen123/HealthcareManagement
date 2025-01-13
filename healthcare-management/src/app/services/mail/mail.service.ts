@@ -1,7 +1,7 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
-import {MailClient} from '../../clients/mail.client';
+import {MailClient} from '../../clients/mail/mail.client';
 
 @Injectable({
   providedIn: 'root'
