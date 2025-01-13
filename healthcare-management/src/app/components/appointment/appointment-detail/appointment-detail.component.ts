@@ -74,7 +74,7 @@ export class AppointmentDetailComponent implements OnInit{
       });
   }
 
-  private showErrorSnackbar(message: string): void {
+  public showErrorSnackbar(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'center',

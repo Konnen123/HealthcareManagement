@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import { AppointmentService } from '../../../services/appointment/appointment.service';
 import {Appointment} from '../../../models/appointment.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {formatDate, formatTime } from '../../../shared/date-time.utils';
+import {formatDate, formatTime } from '../../../shared/date-time/date-time.utils';
 
 import {
   MatCell,
@@ -102,7 +102,7 @@ export class AppointmentListComponent implements OnInit
     })
   }
 
-  private showErrorSnackbar(message: string): void {
+  public showErrorSnackbar(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'center',

@@ -86,5 +86,17 @@ describe('AppointmentDetailComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/appointments']);
   });
 
+  it('should handle error when fetching appointment details fails', async () => {
+    const mockError = { status: 404 } as any;
+
+    appointmentService.getByIdAsync.and.returnValue(Promise.reject(mockError));
+    component.fetchAppointmentDetails();
+
+    await fixture.whenStable();
+
+    expect(component.loading).toBeTrue();
+    expect(component.appointmentDetails).toBeUndefined(); // Ensure no details were set
+    expect(appointmentService.getByIdAsync).toHaveBeenCalledWith('123');
+  });
 
 });

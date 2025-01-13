@@ -1,51 +1,54 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignupComponent } from './signup.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { LanguageService } from '../../services/language/language.service';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
+import { Directive, Input } from '@angular/core';
 import { of } from 'rxjs';
-import { EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+// Mock RouterLink directive
+@Directive({
+  selector: '[routerLink]',
+})
+class MockRouterLink {
+  @Input() routerLink: any;
+}
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
+  let mockAuthService: jasmine.SpyObj<AuthenticationService>;
   let mockRouter: jasmine.SpyObj<Router>;
-  let mockAuthenticationService: jasmine.SpyObj<AuthenticationService>;
-  let mockSnackBar: jasmine.SpyObj<MatSnackBar>;
   let mockLanguageService: jasmine.SpyObj<LanguageService>;
+  let mockSnackBar: jasmine.SpyObj<MatSnackBar>;
 
   beforeEach(async () => {
+    mockAuthService = jasmine.createSpyObj('AuthenticationService', ['registerAsync']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    mockAuthenticationService = jasmine.createSpyObj('AuthenticationService', ['registerAsync']);
-    mockSnackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
     mockLanguageService = jasmine.createSpyObj('LanguageService', ['setLanguage']);
+    mockSnackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
 
     await TestBed.configureTestingModule({
       imports: [
-        SignupComponent,
         ReactiveFormsModule,
-        FormsModule,
         MatSnackBarModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        MatSelectModule,
         TranslateModule.forRoot(),
-        BrowserAnimationsModule,
+        SignupComponent,
+        MockRouterLink
       ],
       providers: [
+        { provide: AuthenticationService, useValue: mockAuthService },
         { provide: Router, useValue: mockRouter },
-        { provide: AuthenticationService, useValue: mockAuthenticationService },
-        { provide: MatSnackBar, useValue: mockSnackBar },
         { provide: LanguageService, useValue: mockLanguageService },
+        { provide: MatSnackBar, useValue: mockSnackBar },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: { get: () => null } } },
+        }, // Mock ActivatedRoute
       ],
     }).compileComponents();
 
@@ -54,8 +57,8 @@ describe('SignupComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
-
+  // Add your other tests here
 });

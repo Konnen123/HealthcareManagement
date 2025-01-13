@@ -132,4 +132,79 @@ describe('AppointmentFormComponent', () => {
     expect(component.appointmentForm.controls['endTime'].errors?.['endTimeBeforeStartTime']).toBeTrue(); // Corectarea cheii
   });
 
+  it('should update doctorId control when a doctor is selected', () => {
+    const mockEvent = { value: { userId: '123' } } as any;
+
+    component.onDoctorSelectionChange(mockEvent);
+
+    expect(component.appointmentForm.controls['doctorId'].value).toBe('123');
+  });
+
+  it('should not update doctorId control when event value is null', () => {
+    const mockEvent = { value: null } as any;
+
+    component.onDoctorSelectionChange(mockEvent);
+
+    expect(component.appointmentForm.controls['doctorId'].value).toBe('');
+  });
+
+  it('should format date correctly', () => {
+    const date = new Date('2024-01-01');
+    const formattedDate = component.formatDate(date);
+
+    expect(formattedDate).toBe('2024-01-01');
+  });
+
+  it('should format time correctly', () => {
+    const time = '10:30:45';
+    const formattedTime = component.formatTime(time);
+
+    expect(formattedTime).toBe('10:30');
+  });
+
+  it('should validate userNotes length', () => {
+    const control = component.appointmentForm.controls['userNotes'];
+
+    control.setValue('A'.repeat(501)); // Exceeding max length
+    control.markAsTouched();
+
+    expect(control.valid).toBeFalse();
+    expect(control.errors?.['maxlength']).toEqual({ requiredLength: 500, actualLength: 501 });
+
+    control.setValue('A'.repeat(500)); // Within max length
+    expect(control.valid).toBeTrue();
+    expect(control.errors?.['maxlength']).toBeUndefined();
+  });
+
+  it('should reset the form when called with resetForm', () => {
+    component.appointmentForm.setValue({
+      doctorId: '123',
+      date: new Date('2024-01-01'),
+      startTime: '10:00',
+      endTime: '11:00',
+      userNotes: 'Test Note',
+    });
+
+    component.appointmentForm.reset();
+
+    expect(component.appointmentForm.value).toEqual({
+      doctorId: null,
+      date: null,
+      startTime: null,
+      endTime: null,
+      userNotes: null,
+    });
+  });
+
+  it('should initialize the form with null fields', () => {
+    expect(component.appointmentForm.value).toEqual({
+      doctorId: '',
+      date: '',
+      startTime: '',
+      endTime: '',
+      userNotes: '',
+    });
+  });
+
+
 });

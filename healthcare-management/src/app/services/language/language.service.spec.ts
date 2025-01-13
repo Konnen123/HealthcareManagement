@@ -14,8 +14,8 @@ describe('LanguageService', () => {
     TestBed.configureTestingModule({
       providers: [
         LanguageService,
-        { provide: PLATFORM_ID, useValue: 'browser' }, // Simulăm rularea pe browser
-        { provide: TranslateService, useValue: translateServiceSpy }, // Mock-ul TranslateService
+        { provide: PLATFORM_ID, useValue: 'browser' },
+        { provide: TranslateService, useValue: translateServiceSpy },
       ],
     });
 
@@ -26,7 +26,7 @@ describe('LanguageService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should set the language and update document.lang', () => {
+  it('should set the language from localStorage if available', () => {
     spyOn(localStorage, 'getItem').and.returnValue('ro');
     spyOn(localStorage, 'setItem');
 
@@ -37,11 +37,21 @@ describe('LanguageService', () => {
     expect(document.documentElement.lang).toBe('ro');
   });
 
+  it('should set the default language if localStorage does not have a value', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(null);
+    spyOn(localStorage, 'setItem');
+
+    service.setLanguage();
+
+    expect(localStorage.setItem).toHaveBeenCalledWith('language', 'en');
+    expect(translateServiceSpy.use).toHaveBeenCalledWith('en');
+    expect(document.documentElement.lang).toBe('en');
+  });
+
   it('should return the current language', () => {
     const currentLang = service.getLanguage();
     expect(currentLang).toBe('en');
   });
-
 
   it('should return available languages', () => {
     const languages = service.getLanguages();
@@ -49,4 +59,35 @@ describe('LanguageService', () => {
     expect(languages.get('en')).toBe('English');
     expect(languages.get('ro')).toBe('Română');
   });
+
+  // it('should not set language when running on a non-browser platform', () => {
+  //   TestBed.overrideProvider(PLATFORM_ID, { useValue: 'server' });
+  //   service = TestBed.inject(LanguageService);
+  //
+  //   spyOn(localStorage, 'setItem');
+  //   service.setLanguage();
+  //
+  //   expect(localStorage.setItem).not.toHaveBeenCalled();
+  //   expect(translateServiceSpy.use).not.toHaveBeenCalled();
+  // });
+  //
+  // it('should not change the language when running on a non-browser platform', () => {
+  //   TestBed.overrideProvider(PLATFORM_ID, { useValue: 'server' });
+  //   service = TestBed.inject(LanguageService);
+  //
+  //   spyOn(localStorage, 'setItem');
+  //   spyOn(location, 'reload');
+  //   service.changeLanguage('ro');
+  //
+  //   expect(localStorage.setItem).not.toHaveBeenCalled();
+  //   expect(location.reload).not.toHaveBeenCalled();
+  // });
+  //
+  // it('should handle invalid or empty language values gracefully', () => {
+  //   spyOn(localStorage, 'setItem');
+  //   service.changeLanguage('');
+  //
+  //   expect(localStorage.setItem).toHaveBeenCalledWith('language', '');
+  //   expect(translateServiceSpy.use).not.toHaveBeenCalled();
+  // });
 });

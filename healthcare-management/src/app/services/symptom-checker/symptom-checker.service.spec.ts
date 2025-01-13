@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { SymptomService } from './symptom-checker.service';
-import { SymptomClient } from '../../clients/symptom.client';
+import { SymptomClient } from '../../clients/symptom/symptom.client';
 import { of } from 'rxjs';
 import { PLATFORM_ID } from '@angular/core';
 

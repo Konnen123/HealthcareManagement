@@ -14,7 +14,7 @@ import {MatInput} from '@angular/material/input';
 import {NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CustomValidators} from '../../../shared/custom-validators';
+import {CustomValidators} from '../../../shared/custom-validators/custom-validators';
 import {AuthenticationService} from '../../../services/authentication/authentication.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LanguageService} from '../../../services/language/language.service';

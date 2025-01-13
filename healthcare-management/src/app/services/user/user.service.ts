@@ -1,5 +1,5 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {UserClient} from '../../clients/user.client';
+import {UserClient} from '../../clients/user/user.client';
 import {isPlatformBrowser} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
 import {DoctorDto} from '../../shared/dtos/doctor.dto';

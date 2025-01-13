@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MailService } from './mail.service';
-import { MailClient } from '../../clients/mail.client';
+import { MailClient } from '../../clients/mail/mail.client';
 import { of } from 'rxjs';
 import { PLATFORM_ID } from '@angular/core';
 

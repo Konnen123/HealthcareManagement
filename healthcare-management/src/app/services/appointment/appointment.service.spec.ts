@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppointmentService } from './appointment.service';
-import { AppointmentClient } from '../../clients/appointment.client';
+import { AppointmentClient } from '../../clients/appointment/appointment.client';
 import { PLATFORM_ID } from '@angular/core';
 import { of } from 'rxjs';
 import { Appointment } from '../../models/appointment.model';

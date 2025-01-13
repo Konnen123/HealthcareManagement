@@ -1,7 +1,7 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
-import {SymptomClient} from '../../clients/symptom.client';
+import {SymptomClient} from '../../clients/symptom/symptom.client';
 
 @Injectable({
   providedIn: 'root'

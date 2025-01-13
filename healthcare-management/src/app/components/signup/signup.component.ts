@@ -7,7 +7,7 @@ import { MatSelect, MatOption } from '@angular/material/select';
 import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
-import { CustomValidators } from '../../shared/custom-validators';
+import { CustomValidators } from '../../shared/custom-validators/custom-validators';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import {LanguageService} from '../../services/language/language.service';
 import {TranslatePipe} from '@ngx-translate/core';
