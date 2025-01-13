@@ -13,7 +13,6 @@ import {LanguageService} from '../../services/language/language.service';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
-
 @Component({
   selector: 'app-signup',
   imports: [
